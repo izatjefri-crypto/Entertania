@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Resident Evil Requiem Review</title>
+    <!-- Structured Data for Review -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-reviews {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- REVIEW HEADER --- */
+        .review-header {
+            margin-bottom: 30px;
+        }
+
+        .review-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .review-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .review-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .review-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .review-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- REVIEW SCORE BANNER --- */
+        .score-banner {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: #1a1f2b;
+            padding: 25px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #b31919;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .score-circle .score {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-circle .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .score-info h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .score-info p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .score-info .reviewer-name {
+            color: #4a90e2;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* --- REVIEW CONTENT LAYOUT --- */
+        .review-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- MAIN REVIEW CONTENT --- */
+        .review-main {
+            width: 100%;
+        }
+
+        .review-hero-image {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .review-hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .review-article h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 30px 0 20px 0;
+            color: white;
+        }
+
+        .review-article h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .review-article p {
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .review-article .quote {
+            background: #1a1f2b;
+            padding: 25px;
+            border-left: 4px solid #4a90e2;
+            margin: 30px 0;
+            font-style: italic;
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .review-article .verdict {
+            background: #1a1f2b;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .review-article .verdict h3 {
+            margin-top: 0;
+            color: #b31919;
+        }
+
+        .review-article .verdict p {
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .pros h4, .cons h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .pros ul, .cons ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pros li, .cons li {
+            padding: 8px 0;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pros li i {
+            color: #4ade80;
+        }
+
+        .cons li i {
+            color: #b31919;
+        }
+
+        /* --- RIGHT SIDEBAR (REVIEW INFO) --- */
+        .review-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item .label {
+            color: #a0a5b1;
+        }
+
+        .info-item .value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .platform-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .platform-icons i {
+            font-size: 24px;
+            color: #a0a5b1;
+        }
+
+        .similar-review-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+            cursor: pointer;
+        }
+
+        .similar-review-item:last-child {
+            border-bottom: none;
+        }
+
+        .similar-review-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .similar-review-item .meta {
+            display: flex;
+            gap: 15px;
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .similar-review-item .score-small {
+            color: #b31919;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .review-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .score-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-header h1 {
+                font-size: 32px;
+            }
+        }
+
+        /* --- COMMENTS SECTION --- */
+.comments-section {
+    margin-top: 50px;
+}
+
+.comments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.comments-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comments-title i {
+    color: #4a90e2;
+}
+
+.comments-title span {
+    color: #4a90e2;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.comments-sort select {
+    background: #1a1f2b;
+    color: white;
+    border: 1px solid #2a3456;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Comment Thread */
+.comment-thread {
+    margin-bottom: 30px;
+}
+
+.comment-card {
+    background: #1a1f2b;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.comment-main {
+    display: flex;
+    gap: 15px;
+}
+
+.comment-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.comment-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.comment-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-author-name {
+    font-weight: 600;
+    color: white;
+    font-size: 16px;
+}
+
+.comment-author-badge {
+    color: #4a90e2;
+    font-size: 12px;
+    background: rgba(74, 144, 226, 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.comment-time {
+    color: #a0a5b1;
+    font-size: 13px;
+}
+
+.comment-text {
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.comment-action-btn {
+    background: transparent;
+    border: none;
+    color: #a0a5b1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.comment-action-btn i {
+    font-size: 18px;
+}
+
+/* Reply Thread */
+.reply-thread {
+    margin-left: 65px;
+    margin-top: 15px;
+}
+
+.reply-card {
+    background: #14171e;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.reply-card:last-child {
+    margin-bottom: 0;
+}
+
+.reply-main {
+    display: flex;
+    gap: 15px;
+}
+
+.reply-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.reply-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reply-content {
+    flex: 1;
+}
+
+.reply-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.reply-author-name {
+    font-weight: 600;
+    color: white;
+    font-size: 14px;
+}
+
+.reply-author-badge {
+    background: #4a90e2;
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.reply-time {
+    color: #a0a5b1;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.reply-text {
+    color: #e0e0e0;
+    line-height: 1.6;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.reply-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.reply-action-btn {
+    background: transparent;
+    border: none;
+    color: #a0a5b1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.reply-action-btn i {
+    font-size: 16px;
+}
+
+/* Load More Button */
+.load-more-container {
+    text-align: center;
+    margin: 40px 0 20px 0;
+}
+
+.load-more-btn {
+    background: transparent;
+    border: 1px solid #4a90e2;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.load-more-btn:hover {
+    background: rgba(74, 144, 226, 0.1);
+}
+
+/* Comment Form */
+.comment-form {
+    background: #1a1f2b;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.comment-form h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    background: #14171e;
+    border: 1px solid #2a3456;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    min-height: 100px;
+    margin-bottom: 15px;
+    outline: none;
+    font-family: inherit;
+}
+
+.comment-form textarea:focus {
+    border-color: #4a90e2;
+}
+
+.comment-form-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.comment-submit-btn {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.comment-submit-btn i {
+    font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .comments-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .reply-thread {
+        margin-left: 20px;
+    }
+    
+    .comment-main, .reply-main {
+        flex-direction: column;
+    }
+    
+    .comment-avatar, .reply-avatar {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Resident Evil Requiem Review</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item active"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="game-reviews.html" class="back-to-reviews">
+                <i class='bx bx-arrow-back'></i>
+                Back to Reviews
+            </a>
+        </div>
+
+        <!-- REVIEW HEADER -->
+        <div class="review-header">
+            <h1>Resident Evil Requiem Review</h1>
+            <div class="review-meta">
+                <div class="review-meta-item">
+                    <i class='bx bx-calendar'></i>
+                    <span>Reviewed: <strong>March 15, 2026</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-user'></i>
+                    <span>By <strong>TRISTAN OGILVIE</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Posted: <strong>1 day ago</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong>10</strong> comments</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCORE BANNER -->
+        <div class="score-banner">
+            <div class="score-circle">
+                <span class="score">8.5</span>
+                <span class="score-label">Great</span>
+            </div>
+            <div class="score-info">
+                <h2>Requiem for a scream</h2>
+                <p>The latest installment in the survival horror franchise brings back the tension and terror that fans have been craving.</p>
+                <p class="reviewer-name">— Tristan Ogilvie</p>
+            </div>
+        </div>
+
+        <!-- REVIEW LAYOUT -->
+        <div class="review-layout">
+            <!-- MAIN REVIEW CONTENT -->
+            <div class="review-main">
+                <!-- HERO IMAGE -->
+                <div class="review-hero-image">
+                    <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil Requiem">
+                </div>
+
+                <!-- REVIEW ARTICLE -->
+                <div class="review-article">
+                    <h2>Introduction</h2>
+                    <p>Resident Evil Requiem marks a bold return to the survival horror roots that made the franchise famous, while introducing new mechanics that breathe fresh life into the series. Set between the events of Resident Evil 7 and Village, this latest installment follows FBI analyst Grace Ashcroft as she investigates a mysterious outbreak in a remote Eastern European village.</p>
+                    
+                    <p>The game opens with a chilling atmosphere that immediately sets the tone. The developers have masterfully crafted an environment that feels both familiar and terrifyingly new. Every shadow hides a threat, every sound could be your last.</p>
+
+                    <div class="quote">
+                        "Resident Evil Requiem doesn't just rely on jump scares; it builds tension through masterful pacing and environmental storytelling that would make even the original directors proud."
+                    </div>
+
+                    <h2>Gameplay Evolution</h2>
+                    <p>The core gameplay mechanics have been refined to offer a perfect balance between action and horror. The inventory system returns with some clever updates, and the new "Fear System" dynamically adjusts enemy behavior based on your playstyle. Play aggressively, and enemies become more cunning. Play stealthily, and they'll start hunting in packs.</p>
+
+                    <p>Leon S. Kennedy makes a welcome return, and his sections offer a more action-oriented approach that contrasts beautifully with Grace's survival-focused gameplay. The dual-protagonist structure works exceptionally well, offering two distinct perspectives on the same terrifying events.</p>
+
+                    <h2>Visual and Audio Design</h2>
+                    <p>The RE Engine continues to impress, delivering some of the most photorealistic horror visuals to date. Character models are incredibly detailed, and the lighting system creates an oppressive atmosphere that never lets up. The sound design deserves special mention - every creak, every distant moan, every sudden silence is carefully crafted to keep you on edge.</p>
+
+                    <h2>Pros and Cons</h2>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>Pros</h4>
+                            <ul>
+                                <li><i class='bx bx-check'></i> Tense, atmospheric horror</li>
+                                <li><i class='bx bx-check'></i> Excellent dual-protagonist system</li>
+                                <li><i class='bx bx-check'></i> Stunning visuals and sound design</li>
+                                <li><i class='bx bx-check'></i> Meaningful player choices</li>
+                                <li><i class='bx bx-check'></i> Great replay value</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>Cons</h4>
+                            <ul>
+                                <li><i class='bx bx-x'></i> Some pacing issues in middle chapters</li>
+                                <li><i class='bx bx-x'></i> Puzzle difficulty inconsistent</li>
+                                <li><i class='bx bx-x'></i> Limited enemy variety</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2>Story and Characters</h2>
+                    <p>Without spoiling anything, the narrative takes some bold risks that pay off spectacularly. Grace Ashcroft is a welcome addition to the Resident Evil universe - intelligent, capable, and genuinely terrified in a way that makes her relatable. Leon's return is handled with care, giving fans exactly what they want while advancing his character arc.</p>
+
+                    <p>The story connects dots between previous games in satisfying ways, answering questions fans have had for years while raising new mysteries for future installments.</p>
+
+                    <!-- VERDICT -->
+                    <div class="verdict">
+                        <h3>Verdict</h3>
+                        <p>Resident Evil Requiem is a triumphant return to form that honors the series' legacy while pushing it forward. With its tense atmosphere, smart gameplay innovations, and compelling story, it's an essential experience for horror fans and a strong contender for survival horror game of the year.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR - REVIEW INFO -->
+            <div class="review-side">
+                <!-- GAME INFO CARD -->
+                <div class="info-card">
+                    <h3>Game Information</h3>
+                    <div class="info-item">
+                        <span class="label">Platform</span>
+                        <span class="value">PS5, Xbox X|S, PC</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Developer</span>
+                        <span class="value">Capcom</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Publisher</span>
+                        <span class="value">Capcom</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Release Date</span>
+                        <span class="value">March 10, 2026</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Genre</span>
+                        <span class="value">Survival Horror</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Playtime</span>
+                        <span class="value">15-20 hours</span>
+                    </div>
+                    <div class="platform-icons">
+                        <i class='bx bxl-play-store'></i>
+                        <i class='bx bxl-windows'></i>
+                        <i class='bx bx-xbox'></i>
+                    </div>
+                </div>
+
+                <!-- SCORE BREAKDOWN CARD -->
+                <div class="info-card">
+                    <h3>Score Breakdown</h3>
+                    <div class="info-item">
+                        <span class="label">Gameplay</span>
+                        <span class="value">8.5</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Graphics</span>
+                        <span class="value">9.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Sound</span>
+                        <span class="value">9.5</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Story</span>
+                        <span class="value">8.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Replay Value</span>
+                        <span class="value">8.0</span>
+                    </div>
+                </div>
+
+                <!-- SIMILAR REVIEWS CARD -->
+                <div class="info-card">
+                    <h3>Similar Reviews</h3>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='Styx-Blades-of-Greed-Review.html'">
+                        <h4>Styx: Blades of Greed</h4>
+                        <div class="meta">
+                            <span>5d ago</span>
+                            <span class="score-small">7.5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='godofwar-sons-of-sparta-review.html'">
+                        <h4>God of War Sons of Sparta</h4>
+                        <div class="meta">
+                            <span>7d ago</span>
+                            <span class="score-small">9.0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='rdr2-review.html'">
+                        <h4>Red Dead Redemption 2</h4>
+                        <div class="meta">
+                            <span>2w ago</span>
+                            <span class="score-small">10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='cyberpunk-phantom-liberty-review.html'">
+                        <h4>Cyberpunk 2077: Phantom Liberty</h4>
+                        <div class="meta">
+                            <span>3w ago</span>
+                            <span class="score-small">9.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAGS CARD -->
+                <div class="info-card">
+                    <h3>Tags</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Survival Horror</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Resident Evil</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Capcom</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">PS5</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Zombies</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Single Player</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMENTS SECTION -->
+        <div class="comments-section">
+            <div class="comments-header">
+                <h3 class="comments-title">
+                    <i class='bx bx-message'></i>
+                    Comments <span>(10)</span>
+                </h3>
+                <div class="comments-sort">
+                    <select>
+                        <option>Newest First</option>
+                        <option>Oldest First</option>
+                        <option>Most Liked</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- COMMENT 1 - User with Admin Reply -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">DragonSlayer</span>
+                                    <span class="comment-author-badge">Member</span>
+                                </div>
+                                <span class="comment-time">2 hours ago</span>
+                            </div>
+                            <p class="comment-text">Great review! I just finished the game last night and completely agree about the atmosphere. The sound design in particular had me jumping out of my seat multiple times. That said, I felt the final boss was a bit underwhelming compared to the rest of the game. Did anyone else feel that way?</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 24
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ADMIN REPLY to COMMENT 1 -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Admin">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">TRISTAN OGILVIE</span>
+                                        <span class="reply-author-badge">Admin</span>
+                                        <span class="reply-time">1 hour ago</span>
+                                    </div>
+                                    <p class="reply-text">Thanks for reading! I actually agree about the final boss - it felt a bit rushed compared to the meticulous build-up. The development team has mentioned they're working on a patch that might address some of the endgame pacing. Keep an eye out!</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 12
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 2 - User with multiple replies -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">NightWolf</span>
+                                    <span class="comment-author-badge">Veteran</span>
+                                </div>
+                                <span class="comment-time">5 hours ago</span>
+                            </div>
+                            <p class="comment-text">I'm conflicted about the 8.5 score. Don't get me wrong, I loved the game, but the inventory management felt more frustrating than tense. Having to constantly discard items got old by chapter 10. Still, Leon's sections were fantastic. Anyone else prefer playing as Leon over Grace?</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 18
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPLY to COMMENT 2 from another user -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">FrostMage</span>
+                                        <span class="reply-time">3 hours ago</span>
+                                    </div>
+                                    <p class="reply-text">I actually preferred Grace! Her sections felt more like classic survival horror. Leon's parts were fun but felt more like action sequences. Different strokes I guess!</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 8
+                                        </button>
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-reply'></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADMIN REPLY to COMMENT 2 -->
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Admin">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">TRISTAN OGILVIE</span>
+                                        <span class="reply-author-badge">Admin</span>
+                                        <span class="reply-time">2 hours ago</span>
+                                    </div>
+                                    <p class="reply-text">The inventory complaints are valid! I mentioned that in the full review but it got cut for space. There's a patch coming that supposedly adds an extra row to the inventory. Fingers crossed it helps!</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 15
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 3 - Simple user comment -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">ShadowBlade</span>
+                                    <span class="comment-author-badge">New Member</span>
+                                </div>
+                                <span class="comment-time">1 day ago</span>
+                            </div>
+                            <p class="comment-text">Just bought this based on your review! First Resident Evil game I've played since RE4. Hope I don't get too scared lol</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 7
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 4 - Another with Admin reply -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="assets/images/Zubir.jpeg" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">BaiMotoKembali</span>
+                                    <span class="comment-author-badge">Contributor</span>
+                                </div>
+                                <span class="comment-time">2 days ago</span>
+                            </div>
+                            <p class="comment-text">The graphics are insane on PS5! But I noticed some frame drops in the swamp area. Did anyone else experience this? Playing on performance mode and it dropped to what felt like 40fps during combat.</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 31
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN REPLY to COMMENT 4 -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Admin">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">TRISTAN OGILVIE</span>
+                                        <span class="reply-author-badge">Admin</span>
+                                        <span class="reply-time">1 day ago</span>
+                                    </div>
+                                    <p class="reply-text">I noticed that too during my playthrough. Capcom has acknowledged the issue and said a performance patch is coming next week. For now, switching to resolution mode actually helped stabilize it a bit (ironically!).</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 19
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOAD MORE COMMENTS BUTTON -->
+            <div class="load-more-container">
+                <button class="load-more-btn">
+                    Load More Comments (2)
+                </button>
+            </div>
+
+            <!-- WRITE A COMMENT FORM -->
+            <div class="comment-form">
+                <h4>Add Your Comment</h4>
+                <textarea placeholder="Join the discussion..."></textarea>
+                <div class="comment-form-footer">
+                    <button class="comment-submit-btn">
+                        <i class='bx bx-send'></i>
+                        Post Comment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Check login status
+        let userLoggedIn = localStorage.getItem('username') || sessionStorage.getItem('username');
+
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+            }
+        });
+
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

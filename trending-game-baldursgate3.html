@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Baldur's Gate 3 - Game Details | Entertania</title>
+    <link rel="website icon" type="jpeg" href="assets/images/Entertanialogo.jpeg">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Baldur's Gate 3 - Award-winning CRPG set in the Dungeons & Dragons universe. Read reviews, check system requirements, view screenshots and access the complete Baldur's Gate 3 guide.">
+    <meta name="keywords" content="Baldur's Gate 3, BG3, Larian Studios, D&D, CRPG, RPG, Dungeons & Dragons, gaming">
+    <meta name="author" content="Entertania">
+    
+    <style>
+        /* --- RESET & BASE (same as homepage) --- */
+        body {
+            background-color: #14171e;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Atas */
+        .navbar {
+            background-color: #001242;
+            padding: 15px 0;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 500;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            font-size: 35px;
+            font-weight: 900;
+            color: #e5eeee;
+        }
+
+        /* Container Utama */
+        .main-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR (same as homepage) --- */
+        .sidebar {
+            width: 250px;
+            background-color: #121620;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #2d3446;
+            z-index: 9999;
+            transition: transform 0.3s ease, visibility 0.3s;
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+            visibility: hidden;
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 10px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar__item i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .sidebar__item:hover {
+            background-color: #353b4b;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .sidebar__item.active i {
+            color: #ffffff !important;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+        }
+
+        /* Search Bar */
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        /* Footer Sidebar */
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #333;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 25px;
+            width: 30px;
+            height: 30px;
+            background: #2d3446;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- CONTENT --- */
+        .content {
+            margin-left: 250px;
+            padding: 40px;
+            padding-top: 80px;
+            transition: margin-left 0.3s ease;
+            min-height: calc(100vh - 120px);
+            width: calc(100% - 250px);
+        }
+
+        .content.shifted {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        /* --- GAME DETAIL PAGE STYLES --- */
+        .game-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Back Button */
+        .back-button {
+            margin-bottom: 30px;
+        }
+
+        .back-to-games {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-games:hover {
+            background: #4a90e2;
+            transform: translateX(-5px);
+        }
+
+        /* Game Header Layout - Left Poster + Right Info */
+        .game-header {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        /* Fix for game poster to match container */
+        .game-poster-large {
+            width: 100%;
+            height: 400px; /* Fixed height to ensure consistency */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-color: #1a1f2b; /* Background color while loading */
+        }
+
+        .game-poster-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This makes the image cover the entire container */
+            object-position: center; /* Centers the image */
+            display: block;
+        }
+
+        .game-info-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title-large {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Rating & Guide Row */
+        .rating-guide-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .rating-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #14171e;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .rating-score {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4a90e2;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            font-size: 20px;
+        }
+
+        .rating-text {
+            font-size: 14px;
+            color: #a0a5b1;
+        }
+
+        .guide-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .guide-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
+        }
+
+        .guide-button i {
+            font-size: 20px;
+        }
+
+        /* Game Meta Info */
+        .game-meta-info {
+            margin-bottom: 25px;
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .meta-item:last-child {
+            border-bottom: none;
+        }
+
+        .meta-label {
+            width: 120px;
+            color: #a0a5b1;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            flex: 1;
+            color: white;
+        }
+
+        .meta-value i {
+            color: #4a90e2;
+            margin-right: 5px;
+        }
+
+        /* Game Description */
+        .game-description {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            line-height: 1.7;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+        }
+
+        /* Screenshots Section */
+        .screenshots-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .section-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .screenshot-card {
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #2a3456;
+        }
+
+        .screenshot-card:hover {
+            transform: translateY(-5px);
+            border-color: #4a90e2;
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
+        }
+
+        .screenshot-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .screenshot-card p {
+            padding: 12px;
+            margin: 0;
+            text-align: center;
+            color: #a0a5b1;
+            font-size: 13px;
+        }
+
+        /* System Requirements Section */
+        .requirements-section {
+            margin-bottom: 40px;
+        }
+
+        .requirements-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .requirements-box {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .requirements-box h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirements-box h3 i {
+            color: #4a90e2;
+        }
+
+        .requirement-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .requirement-item:last-child {
+            border-bottom: none;
+        }
+
+        .req-label {
+            color: #4a90e2;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .req-value {
+            color: white;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .game-header {
+                grid-template-columns: 1fr;
+            }
+            
+            .screenshots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .requirements-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .screenshots-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-guide-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .game-title-large {
+                font-size: 32px;
+            }
+        }
+
+        /* Red Logout Button */
+        .logout-btn { 
+            width: 100%; 
+            background: transparent; 
+            border: 1px solid #b31919;
+            color: #b31919;
+            padding: 10px; 
+            border-radius: 25px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            margin-top: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover { 
+            background: #b31919;
+            color: white;
+        }
+        
+        .user-profile { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            background: rgba(255,255,255,0.1); 
+            padding: 6px 12px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .user-profile img { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+        }
+        
+        .login-prompt { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .login-prompt button { 
+            background: transparent; 
+            border: 1px solid #4a90e2; 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s ease;
+        }
+        .login-prompt .signup-btn { 
+            background: linear-gradient(135deg, #4a90e2, #3570b2); 
+            border: none; 
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto;">
+            <div style="font-size: 35px; font-weight: 900; color: #e5eeee;">Entertania</div>
+        </div>
+    </nav>
+</header>
+
+<div class="main-container">
+
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html">
+                <img src="assets/images/Entertanialogo.jpeg" alt="Entertania">
+            </a>
+        </div>
+
+        <ul class="sidebar__list">
+            <li>
+                <a href="index.html" class="sidebar__item">
+                    <i class='bx bx-home-alt-2'></i> Homepage
+                </a>
+            </li>
+            
+            <li class="sidebar-search-container">
+                <form action="search.php" method="GET" style="width: 100%;">
+                    <div class="sidebar-search">
+                        <i class='bx bx-search'></i> 
+                        <input type="text" name="q" placeholder="Search games..." id="gameSearch">
+                    </div>
+                </form>
+            </li>
+
+            <li>
+                <a href="Forum-discussion.html" class="sidebar__item">
+                    <i class='bx bx-message-detail'></i> Forum discussion
+                </a>
+            </li>
+
+            <li>
+                <a href="game-reviews.html" class="sidebar__item">
+                    <i class='bx bx-star'></i> Game Reviews
+                </a>
+            </li>
+            
+            <li>
+                <a href="guides.html" class="sidebar__item">
+                    <i class='bx bx-compass'></i> Guide
+                </a>
+            </li>
+
+            <li>
+                <a href="price-tracker.html" class="sidebar__item">
+                    <i class='bx bx-line-chart'></i> Price Tracker
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar__footer" id="sidebarFooter">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <main class="content" id="mainContent">
+        <div class="game-detail-container">
+            
+            <!-- Back Button -->
+            <div class="back-button">
+                <a href="index.html" class="back-to-games">
+                    <i class='bx bx-arrow-back'></i>
+                    Back to Homepage
+                </a>
+            </div>
+
+            <!-- Game Header: Left Poster + Right Info -->
+            <div class="game-header">
+                <div class="game-poster-large">
+                    <img src="assets/images/Baldur.jpeg" alt="Baldur's Gate 3">
+                </div>
+                
+                <div class="game-info-right">
+                    <h1 class="game-title-large">Baldur's Gate 3</h1>
+                    
+                    <!-- Rating and Guide Button Row -->
+                    <div class="rating-guide-row">
+                        <div class="rating-box">
+                            <span class="rating-score">96%</span>
+                            <div>
+                                <div class="rating-stars">
+                                    <i class='bx bxs-star'></i>
+                                    <i class='bx bxs-star'></i>
+                                    <i class='bx bxs-star'></i>
+                                    <i class='bx bxs-star'></i>
+                                    <i class='bx bxs-star'></i>
+                                </div>
+                                <span class="rating-text">Based on 42.3k reviews</span>
+                            </div>
+                        </div>
+                        
+                        <a href="guide-baldursgate3.html" class="guide-button">
+                            <i class='bx bx-compass'></i>
+                            Baldur's Gate 3 Guide
+                        </a>
+                    </div>
+                    
+                    <!-- Release, Publisher, Genres -->
+                    <div class="game-meta-info">
+                        <div class="meta-item">
+                            <span class="meta-label">Release Date:</span>
+                            <span class="meta-value">August 3, 2023</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Publisher:</span>
+                            <span class="meta-value">Larian Studios</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Developer:</span>
+                            <span class="meta-value">Larian Studios</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Genres:</span>
+                            <span class="meta-value">
+                                <i class='bx bx-dice'></i> CRPG, 
+                                <i class='bx bx-magic'></i> Fantasy, 
+                                <i class='bx bx-group'></i> Party-Based RPG
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Platforms:</span>
+                            <span class="meta-value">
+                                <i class='bx bx-windows'></i> PC, 
+                                <i class='bx bx-playstation'></i> PS5, 
+                                <i class='bx bx-xbox'></i> Xbox Series X|S, 
+                                <i class='bx bx-mac'></i> Mac
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- About the Game -->
+                    <div class="game-description">
+                        <h3 style="color: white; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <i class='bx bx-info-circle' style="color: #4a90e2;"></i> About Baldur's Gate 3
+                        </h3>
+                        <p>Baldur's Gate 3 is a story-rich, party-based RPG set in the Dungeons & Dragons universe. Gather your party and return to the Forgotten Realms in a tale of fellowship and betrayal, sacrifice and survival, and the lure of absolute power. With over 200 hours of gameplay, countless choices and consequences, and deep character customization, every player's journey is unique.</p>
+                        <p style="margin-top: 15px;">Choose from 12 classes and 11 races, recruit memorable companions like Shadowheart, Gale, and Astarion, and engage in turn-based combat inspired by D&D 5th edition rules. Your choices shape the story - will you save the realm or succumb to the darkness within? Winner of over 250 Game of the Year awards, BG3 sets a new standard for RPGs .</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Screenshots Section -->
+            <div class="screenshots-section">
+                <h2 class="section-title">
+                    <i class='bx bx-images'></i>
+                    Game Screenshots
+                </h2>
+                
+                <div class="screenshots-grid">
+                    <div class="screenshot-card">
+                        <img src="assets/images/bg3-ss1.jpg" alt="Baldur's Gate 3 Gameplay 1" onerror="this.src='https://via.placeholder.com/400x225/1e2330/4a90e2?text=Party+Combat'">
+                        <p>baldur's gate 3 viewt</p>
+                    </div>
+                    <div class="screenshot-card">
+                        <img src="assets/images/bg3-ss2.jpg" alt="Baldur's Gate 3 Gameplay 2" onerror="this.src='https://via.placeholder.com/400x225/1e2330/4a90e2?text=Character+Creation'">
+                        <p>combat</p>
+                    </div>
+                    <div class="screenshot-card">
+                        <img src="assets/images/bg3-ss3.jpg" alt="Baldur's Gate 3 Gameplay 3" onerror="this.src='https://via.placeholder.com/400x225/1e2330/4a90e2?text=Companion+Moments'">
+                        <p>select items</p>
+                    </div>
+                    <div class="screenshot-card">
+                        <img src="assets/images/bg3-ss4.jpg" alt="Baldur's Gate 3 Gameplay 4" onerror="this.src='https://via.placeholder.com/400x225/1e2330/4a90e2?text=Exploring+Baldur%27s+Gate'">
+                        <p>character screen shot</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Requirements Section -->
+            <div class="requirements-section">
+                <h2 class="section-title">
+                    <i class='bx bx-desktop'></i>
+                    System Requirements
+                </h2>
+                
+                <div class="requirements-container">
+                    <!-- Minimum Requirements -->
+                    <div class="requirements-box">
+                        <h3>
+                            <i class='bx bx-minus-circle'></i>
+                            Minimum Requirements
+                        </h3>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">OS</div>
+                            <div class="req-value">Windows 10 64-bit</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Processor</div>
+                            <div class="req-value">Intel Core i5-4690 / AMD Ryzen 3 1200</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Memory</div>
+                            <div class="req-value">8 GB RAM</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Graphics</div>
+                            <div class="req-value">Nvidia GeForce GTX 970 / AMD Radeon RX 480</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Storage</div>
+                            <div class="req-value">150 GB available space</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">DirectX</div>
+                            <div class="req-value">Version 11</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommended Requirements -->
+                    <div class="requirements-box">
+                        <h3>
+                            <i class='bx bx-check-circle'></i>
+                            Recommended Requirements
+                        </h3>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">OS</div>
+                            <div class="req-value">Windows 11 64-bit</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Processor</div>
+                            <div class="req-value">Intel Core i7-8700K / AMD Ryzen 5 3600</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Memory</div>
+                            <div class="req-value">16 GB RAM</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Graphics</div>
+                            <div class="req-value">Nvidia GeForce RTX 2060 / AMD Radeon RX 5700 XT</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Storage</div>
+                            <div class="req-value">150 GB SSD</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">DirectX</div>
+                            <div class="req-value">Version 12</div>
+                        </div>
+                        
+                        <div class="requirement-item">
+                            <div class="req-label">Additional Notes</div>
+                            <div class="req-value">SSD required for optimal performance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Sidebar Toggle
+    const sidebar = document.getElementById('mySidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const content = document.querySelector('.content');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        toggleBtn.classList.toggle('moved');
+
+        if (sidebar.classList.contains('closed')) {
+            toggleIcon.innerText = '❯';
+            content.style.marginLeft = "0";
+            content.style.width = "100%";
+        } else {
+            toggleIcon.innerText = '❮';
+            content.style.marginLeft = "250px";
+            content.style.width = "calc(100% - 250px)";
+        }
+    });
+
+    // Login/Logout functionality
+    function checkLoginStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const sidebarFooter = document.querySelector('.sidebar__footer');
+        
+        if (currentUser && currentUser.loggedIn) {
+            // User is logged in
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        } else {
+            // User is not logged in
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+
+    function viewProfile() {
+        window.location.href = 'profile.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        window.location.reload();
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+    // Placeholder images for screenshots (in case actual images don't exist)
+    document.addEventListener('DOMContentLoaded', function() {
+        const screenshots = document.querySelectorAll('.screenshot-card img');
+        const screenshotTitles = [
+            'Party+Combat',
+            'Character+Creation',
+            'Companion+Moments',
+            'Exploring+Baldur%27s+Gate'
+        ];
+        
+        screenshots.forEach((img, index) => {
+            img.addEventListener('error', function() {
+                this.src = `https://via.placeholder.com/400x225/1e2330/4a90e2?text=${screenshotTitles[index]}`;
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

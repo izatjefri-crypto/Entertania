@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<meta charset="UTF-8">
+<title>Resident Evil Requiem | Entertania</title>
+<!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+
+<style>
+
+/* --- SIDEBAR FIX (Disatukan) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+             border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+           width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        /* --- TOGGLE BUTTON (ANAK PANAH) --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px; /* Kedudukan asal di hujung sidebar */
+            top: 25px;
+            width: 30px;
+            height: 30px;
+            background: #2d3446;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000; /* Paling atas sekali */
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        .page-content {
+         margin-left: 250px;
+         transition: margin-left 0.3s ease;
+       }
+
+       .page-content.shifted {
+         margin-left: 0;
+       }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .btn-login:active {
+    transform: scale(0.95); /* Kesan butang ditekan */
+    background-color: #e0e0e0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #14171e;
+    color: white;
+}
+
+/* Header */
+.header {
+    background-color: #001242;
+    padding: 15px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+/* Hero Section */
+.hero-section { display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 40px 0; }
+.hero-content { text-align: center; max-width: 900px; }
+.hero-content h1 { font-size: 36px; font-weight: 900; color: #fff; margin: 0 0 10px 0; }
+.hero-content p { font-size: 16px; color: #ccc; margin: 0; }
+.hero-image img { width: 100%; max-width: 900px; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+/* Main Container */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* Info */
+.game-info {
+    flex: 1;
+}
+
+.game-info h2 {
+    margin-top: 0;
+}
+
+/* Details Table */
+.details {
+    margin-top: 15px;
+}
+
+.details p {
+    margin: 6px 0;
+    color: #ccc;
+}
+
+.headline-paragraph {
+    font-size: 20px;      /* Besarkan text */
+    line-height: 1.9;     /* Jarak antara baris */
+    font-weight: 500;     /* Tebalkan sikit */
+    color: #ffffff;
+}
+
+/* Video Section */
+.video-section {
+    margin-top: 40px;
+}
+
+.video-section h3 {
+    margin-bottom: 15px;
+}
+
+.video-section h3 {
+    font-size: 26px;
+    color: #ffffff;
+    border-left: 5px solid #b31919;
+    padding-left: 12px;
+}
+
+
+iframe {
+    width: 100%;
+    height: 450px;
+    border-radius: 10px;
+    border: none;
+}
+
+.video-wrapper video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* This keeps it perfectly widescreen on all devices */
+    background-color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden; /* Ini akan memotong bahagian logo YouTube yang terkeluar */
+    border: 3px solid #b31919;
+    box-shadow: 0 0 25px rgba(179, 25, 25, 0.5);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: -8%;
+    left: -8%;
+    width: 116%;
+    height: 116%;
+    border: none;
+}
+
+
+/* Menghalang interaksi dengan elemen atas YouTube (Tajuk) */
+.video-overlay-blocker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Lindung bahagian tajuk atas */
+    z-index: 5;
+    background: transparent;
+}
+
+.video-wrapper:hover .video-poster::after {
+    transform: scale(1.1);
+    background: #b31919;
+}
+
+/* Description */
+.description {
+    margin-top: 40px;
+}
+
+.description p {
+    line-height: 1.7;
+    color: #ddd;
+}
+
+/* Gaya untuk Gameplay Wrapper Baru */
+.gameplay-wrapper {
+    background-color: #1a1f2b; /* Warna latar belakang sedikit berbeza untuk membezakan seksyen */
+    padding: 50px 0;
+    margin-top: 40px;
+    border-top: 1px solid #2d3446;
+    border-bottom: 1px solid #2d3446;
+}
+
+.gameplay-wrapper video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.section-title {
+    font-size: 28px;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #a0a5b1;
+    margin-bottom: 25px;
+}
+
+.gameplay-video-box {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.gameplay-video-box video {
+    width: 100%;
+    border-radius: 15px;
+    border: 3px solid #353b4b;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    display: block;
+}
+
+.gameplay-info {
+    text-align: center;
+    margin-top: 20px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* YouTube Custom Preview */
+
+.yt-player {
+    position: relative;
+    cursor: pointer;
+}
+
+.video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    color: white;
+    background: rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.play-btn:hover {
+    background: rgba(179,25,25,0.6);
+}
+
+
+/* Screenshot Section */
+.screenshot-section {
+    background-color: #141924;
+    padding: 50px 0;
+    margin-top: 40px;
+}
+
+.screenshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.screenshot-grid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #353b4b;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.screenshot-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+/* Game Bottom Section */
+.game-bottom {
+    margin: 100px auto;
+    max-width: 1100px;
+    padding: 0 30px;
+}
+
+.game-bottom-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    background: #1a1f2b;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    flex-wrap: wrap;
+}
+
+.game-poster img {
+    width: 280px;
+    border-radius: 12px;
+    border: 2px solid #353b4b;
+}
+
+.game-info {
+    flex: 1;
+}
+
+.game-info h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.details p {
+    margin: 8px 0;
+    font-size: 15px;
+    color: #ccc;
+}
+
+/* Back Button */
+.back-btn {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.back-btn a {
+    background-color: white;
+    color: black;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.back-btn a:hover {
+    background-color: #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+}
+
+/* Lightbox Zoom */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20000;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(255,255,255,0.2);
+    animation: zoomIn 0.3s ease;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Zoom Animation */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Entertania</h1>
+</div>
+
+<div class="main-container">
+
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+     <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html">
+                <img src="assets/images/Entertanialogo.jpeg" alt="Entertania">
+            </a>
+        </div>
+
+        <ul class="sidebar__list">
+             <li>
+        <a href="index.html" class="sidebar__item active">
+            <i class='bx  bx-home-alt-2'></i> Homepage
+        </a>
+    </li>
+            
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx  bx-search'></i> 
+                    <input type="text" placeholder="Search games..." id="gameSearch">
+                </div>
+            </li>
+
+         <li>
+            <a href="Forum-discussion.html" class="sidebar__item">
+            <i class='bx bx-message-detail'></i>  Forum discussion
+         </a>
+
+         </li>
+
+            <li>
+        <a href="game-reviews.html" class="sidebar__item">
+            <i class='bx  bx-star'></i>  Game Reviews
+        </a>
+    </li>
+             <li>
+        <a href="game-reviews.html" class="sidebar__item">
+            <i class='bx  bx-compass'></i> Guide
+        </a>
+    </li>
+        </ul>
+
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+     <div class="page-content">
+
+      <!-- Hero Section -->
+     <div class="hero-section">
+     <div class="hero-content">
+        <h1>HERE THINGS ABOUT RESIDENT EVIL REQUIEM NEED TO KNOW BEFORE PLAY IT</h1>
+     </div>
+     </div>
+
+<!-- Main Content -->
+<div class="container">
+
+    <p class="headline-paragraph">
+<strong></strong> represents a chilling evolution of the survival horror genre, pushing the franchise deeper into psychological terror while maintaining its signature intensity. Set in a world scarred by biological disasters, the game immerses players in environments filled with decay, silence, and constant dread. Every location is crafted to feel oppressive and alive, using dynamic lighting, environmental storytelling, and unsettling sound design to build an atmosphere where fear lingers even in moments of calm. The sense of isolation is powerful, making players feel vulnerable as danger can emerge at any moment.
+</p>
+
+<p class="headline-paragraph">
+Gameplay in Resident Evil Requiem strikes a careful balance between survival horror and action, ensuring that combat never feels reckless or overly empowering. Resources are scarce, enemies are relentless, and every confrontation demands strategic thinking. The combat system feels heavier and more deliberate, rewarding precision and patience rather than brute force. Enemy encounters are designed to be unpredictable, forcing players to adapt quickly while managing limited ammunition and healing items. This constant pressure reinforces the core survival horror experience, where escaping alive is often more important than eliminating every threat.
+</p>
+
+<p class="headline-paragraph">
+Beyond its intense gameplay, Resident Evil Requiem delivers a deeply emotional narrative that explores themes of loss, guilt, and the long-lasting consequences of past outbreaks. The story unfolds through cinematic cutscenes, environmental clues, and character-driven moments that add emotional weight to the horror. Rather than relying solely on shock value, the game builds tension through storytelling and atmosphere, drawing players deeper into its haunting world. Each revelation feels meaningful, gradually expanding the lore while keeping players invested in the fate of its characters.
+</p>
+
+<p class="headline-paragraph">
+With next-generation visuals, refined mechanics, and a darker tone that embraces the franchise’s roots, Resident Evil Requiem stands as a bold reinvention of the series. It delivers not only terrifying encounters and unforgettable monsters, but also a carefully crafted experience that tests the player’s courage, intelligence, and emotional resilience. This is not just a return to horror — it is a reminder of why Resident Evil remains one of the most iconic and enduring names in the genre.
+</p>
+
+    <!-- Video Section -->
+
+    <div class="video-section">
+
+    <h3>Game Trailer</h3>
+
+  <div class="video-wrapper">
+    <video controls poster="assets/images/evilrqm.jpeg">
+        <source src="assets/videos/Resident Evil Requiem - 4th Trailer.mp4" type="video/mp4">
+    </video>
+</div>
+    </div>
+
+
+    <!-- Description -->
+    <div class="description">
+
+        <h3>About the Game</h3>
+
+        <p>
+        Resident Evil Requiem is the latest installment in the legendary 
+        survival horror franchise developed by Capcom. 
+        The game delivers intense atmosphere, realistic graphics, 
+        and terrifying enemies.
+        </p>
+
+        <p>
+        Players will explore dark environments, solve puzzles, 
+        manage limited resources, and uncover hidden secrets 
+        while fighting against bio-organic threats.
+        The story continues the legacy of the Resident Evil universe 
+        with new characters and deeper lore.
+        </p>
+
+        <p>
+        With improved combat mechanics, advanced AI enemies, 
+        and immersive storytelling, Resident Evil Requiem 
+        promises to be one of the best horror games of its generation.
+        </p>
+
+    </div>
+
+    <div class="gameplay-wrapper">
+    <div class="container">
+        <h3 class="section-title">Gameplay Showcase</h3>
+        <div class="gameplay-video-box">
+           <div class="video-wrapper">
+    <video controls poster="assets/images/evilrqm.jpeg">
+        <source src="assets/videos/RESIDENT EVIL 9 REQUIEM FULL DEMO   PS5 PRO   4K ULTRA HD.mp4" type="video/mp4">
+    </video>
+</div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Screenshot Section -->
+<div class="screenshot-section">
+
+    <div class="container">
+        <h3 class="section-title">Game Screenshots</h3>
+        <p class="section-subtitle">Explore in-game scenes from Resident Evil Requiem</p>
+
+        <div class="screenshot-grid">
+
+            <img src="assets/images/resident-evil-requiem-leon-chainsaw-fight.avif" alt="Resident Evil Screenshot 1" class="zoom-img">
+            <img src="assets/images/residentevilss.jpg" alt="Resident Evil Screenshot 2" class="zoom-img">
+            <img src="assets/images/racooncity.jpg" alt="Resident Evil Screenshot 3" class="zoom-img">
+            <img src="assets/images/kick.jpg" alt="Resident Evil Screenshot 4" class="zoom-img">
+
+        </div>
+    </div>
+
+</div>
+
+      <!-- Image Popup / Lightbox -->
+  <div id="lightbox" class="lightbox">
+     <span class="lightbox-close">&times;</span>
+     <img id="lightbox-img" src="">
+     </div>
+
+     <!-- Resident Evil Requiem Section -->
+ <div class="game-bottom">
+    <div class="game-bottom-wrapper">
+        <div class="game-poster">
+            <img src="assets/images/evilrqm.jpeg" alt="Resident Evil Requiem">
+        </div>
+
+        <div class="game-info">
+            <h2>Resident Evil Requiem</h2>
+
+            <div class="details">
+                <p><strong>Genre:</strong> Survival Horror</p>
+                <p><strong>Developer:</strong> Capcom</p>
+                <p><strong>Platform:</strong> PS5, Xbox Series X, PC</p>
+                <p><strong>Release Date:</strong> 2026</p>
+                <p><strong>Mode:</strong> Single Player</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Back Button -->
+    <div class="back-btn">
+        <a href="index.html"class="game detail.html">← Back to Homepage</a>
+    </div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2026 Entertania Gamer Website
+</footer>
+
+<script>
+const sidebar = document.getElementById('mySidebar');
+const toggleBtn = document.getElementById('sidebarToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+const pageContent = document.querySelector('.page-content');
+
+toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('closed');
+    toggleBtn.classList.toggle('moved');
+    pageContent.classList.toggle('shifted');
+
+    if (sidebar.classList.contains('closed')) {
+        toggleIcon.innerText = '❯';
+    } else {
+        toggleIcon.innerText = '❮';
+    }
+});
+
+    // Screenshot Zoom Function
+const zoomImages = document.querySelectorAll('.zoom-img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const closeBtn = document.querySelector('.lightbox-close');
+
+zoomImages.forEach(img => {
+    img.addEventListener('click', () => {
+        lightbox.style.display = "flex";
+        lightboxImg.src = img.src;
+    });
+});
+
+// Close button
+closeBtn.addEventListener('click', () => {
+    lightbox.style.display = "none";
+});
+
+// Close when clicking background
+lightbox.addEventListener('click', (e) => {
+    if (e.target !== lightboxImg) {
+        lightbox.style.display = "none";
+    }
+});
+
+document.querySelectorAll('.yt-player').forEach(player => {
+    player.addEventListener('click', function () {
+
+        const videoId = this.dataset.id;
+
+        const iframe = document.createElement('iframe');
+
+        iframe.src =
+        `assets/images/https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&modestbranding=1`;
+
+        iframe.allow =
+        "autoplay; encrypted-media; fullscreen";
+
+        iframe.allowFullscreen = true;
+
+        this.innerHTML = "";
+        this.appendChild(iframe);
+
+    });
+});
+
+// Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+</script>
+</body>
+</html>

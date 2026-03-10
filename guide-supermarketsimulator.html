@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermarket Simulator: Complete Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a90e2;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a90e2;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #6aa9ff;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- DEPARTMENT CARDS --- */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .dept-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid #4a90e2;
+            transition: transform 0.3s ease;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dept-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .dept-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .dept-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .dept-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        .dept-tag {
+            display: inline-block;
+            background: #2a3456;
+            color: #4a90e2;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        /* --- UPGRADE GRID --- */
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .upgrade-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .upgrade-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upgrade-card h4 i {
+            color: #4a90e2;
+        }
+
+        .upgrade-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .price-tag {
+            background: #2a3456;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- PRODUCT GRID --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .product-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .product-card h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .product-card p {
+            color: #a0a5b1;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .product-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: #2a3456;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .profit-badge {
+            background: #4ade80;
+            color: black;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #b31919;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #b31919;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 98%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- RED LOGOUT BUTTON --- */
+        .logout-btn { 
+            width: 100%; 
+            background: transparent; 
+            border: 1px solid #b31919;
+            color: #b31919;
+            padding: 10px; 
+            border-radius: 25px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            margin-top: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        .logout-btn:hover { 
+            background: #b31919;
+            color: white;
+        }
+        .logout-btn i {
+            font-size: 18px;
+        }
+        
+        .login-prompt { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .login-prompt button { 
+            background: transparent; 
+            border: 1px solid #4a90e2; 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s ease;
+        }
+        .login-prompt .signup-btn { 
+            background: linear-gradient(135deg, #4a90e2, #3570b2); 
+            border: none; 
+        }
+        .login-prompt .signup-btn:hover {
+            background: linear-gradient(135deg, #3570b2, #4a90e2);
+        }
+        .login-prompt button:hover {
+            background: #4a90e2;
+        }
+        
+        .user-profile { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            background: rgba(255,255,255,0.1); 
+            padding: 6px 12px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        .user-profile:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .user-profile img { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                left: 0;
+            }
+            .page-content {
+                margin-left: 0;
+            }
+            .toggle-btn {
+                display: none;
+            }
+            .dept-grid, .upgrade-grid, .product-grid, .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dept-grid, .upgrade-grid, .product-grid, .tips-grid {
+                grid-template-columns: 1fr;
+            }
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Supermarket Simulator: Complete Guide</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search products...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>Supermarket Simulator: Complete Guide</h1>
+            <p>Build and manage your own retail empire</p>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong> Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong> CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION -->
+        <div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Supermarket Simulator - 17 Tips & Tricks (Beginner to Advanced).mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('start')">Getting Started</button>
+            <button class="guide-tab" onclick="showSection('products')">Products & Pricing</button>
+            <button class="guide-tab" onclick="showSection('layout')">Store Layout</button>
+            <button class="guide-tab" onclick="showSection('upgrades')">Upgrades & Licenses</button>
+            <button class="guide-tab" onclick="showSection('staff')">Staff Management</button>
+            <button class="guide-tab" onclick="showSection('tips')">Pro Tips</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- GETTING STARTED SECTION -->
+                <div id="start" class="guide-section">
+                    <h2><i class='bx bx-flag'></i> Getting Started in Supermarket Simulator</h2>
+                    
+                    <h3>First Day Tips</h3>
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <h4>Starting Capital</h4>
+                            <p>You begin with $10,000. Use it wisely - stock basic products and save for licenses.</p>
+                            <span class="mode-tag">$10k start</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Basic Operations</h4>
+                            <p>Stock shelves, man the register, check prices. Customers expect full shelves.</p>
+                            <span class="mode-tag">Hands-on</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Store Hours</h4>
+                            <p>Open 8 AM - 10 PM. Use closing time to restock and reorganize.</p>
+                            <span class="mode-tag">14 hours</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>First Goals</h4>
+                            <p>Reach Level 2, unlock new products, expand your store space.</p>
+                            <span class="mode-tag">Level up</span>
+                        </div>
+                    </div>
+
+                    <h3>Beginner Tips for New Managers</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-package'></i> Stock Strategically</h4>
+                            <p>Keep 2-3 of each product. Empty shelves lose customers and money.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-dollar'></i> Watch Your Prices</h4>
+                            <p>Check competitor prices. Don't overprice or underprice too much.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-check-shield'></i> Security First</h4>
+                            <p>Install cameras early. Shoplifters will steal your profits.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-line-chart'></i> Track Sales</h4>
+                            <p>Use the computer to see what sells best. Stock high-demand items.</p>
+                        </div>
+                    </div>
+
+                    <h3>Essential Early Purchases</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Basic Shelving</h4><p>$500 each. Start with 4-6 units.</p></div>
+                        <div class="item-card"><h4>Second Register</h4><p>$2,500. Reduce customer wait.</p></div>
+                        <div class="item-card"><h4>Security Camera</h4><p>$1,000. Stop theft.</p></div>
+                        <div class="item-card"><h4>Storage Rack</h4><p>$800. Hold extra stock.</p></div>
+                    </div>
+                </div>
+
+                <!-- PRODUCTS & PRICING SECTION -->
+                <div id="products" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-package'></i> Products & Pricing Strategy</h2>
+                    
+                    <h3>Most Profitable Products</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <h4>Electronics</h4>
+                            <p>High margin, slow turnover. Unlock at higher levels.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 15+</span>
+                                <span class="profit-badge">+45% margin</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <h4>Meat & Deli</h4>
+                            <p>High demand, good profit. Requires fridge.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 8+</span>
+                                <span class="profit-badge">+35% margin</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <h4>Household Items</h4>
+                            <p>Steady sellers. Cleaning supplies, paper goods.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 5+</span>
+                                <span class="profit-badge">+25% margin</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <h4>Beverages</h4>
+                            <p>High volume, moderate profit. Soda, water, juice.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 3+</span>
+                                <span class="profit-badge">+20% margin</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <h4>Snacks</h4>
+                            <p>Highest volume. Chips, candy, cookies.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 1</span>
+                                <span class="profit-badge">+15% margin</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <h4>Dairy & Eggs</h4>
+                            <p>Essential items. Customers expect stock.</p>
+                            <div class="product-stats">
+                                <span class="stat-badge">Level 2+</span>
+                                <span class="profit-badge">+18% margin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Pricing Strategy Guide</h3>
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Competitor Pricing</h3>
+                            <p>Check competitor prices daily. Price 5-10% lower for high volume, match for essentials.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Loss Leaders</h3>
+                            <p>Price some items at cost to attract customers. Make profit on other items.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Bulk Discounts</h3>
+                            <p>Offer multi-buy deals. "3 for $5" increases volume.</p>
+                        </div>
+                    </div>
+
+                    <h3>Product Unlock Levels</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Level 1-4</h4><p>Snacks, drinks, basic groceries</p></div>
+                        <div class="item-card"><h4>Level 5-9</h4><p>Household, frozen foods, bakery</p></div>
+                        <div class="item-card"><h4>Level 10-14</h4><p>Fresh produce, deli counter</p></div>
+                        <div class="item-card"><h4>Level 15-20</h4><p>Electronics, clothing, appliances</p></div>
+                    </div>
+                </div>
+
+                <!-- STORE LAYOUT SECTION -->
+                <div id="layout" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-grid'></i> Store Layout & Design</h2>
+                    
+                    <h3>Optimal Store Layout</h3>
+                    <div class="dept-grid">
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-cart'></i></div>
+                            <h4>Entrance Zone</h4>
+                            <p>Carts, baskets, seasonal items. High impulse buys here.</p>
+                            <span class="dept-tag">Impulse</span>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-basket'></i></div>
+                            <h4>Perimeter</h4>
+                            <p>Fresh items around edges. Dairy, meat, produce.</p>
+                            <span class="dept-tag">Essential</span>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-grid'></i></div>
+                            <h4>Center Aisles</h4>
+                            <p>Dry goods, canned items, household. Low profit items.</p>
+                            <span class="dept-tag">Volume</span>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-credit-card'></i></div>
+                            <h4>Checkout Area</h4>
+                            <p>Registers, impulse items. Keep lines moving.</p>
+                            <span class="dept-tag">Critical</span>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-fridge'></i></div>
+                            <h4>Refrigerated Section</h4>
+                            <p>Fridges and freezers together. Energy efficient.</p>
+                            <span class="dept-tag">Cold</span>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-icon"><i class='bx bx-store'></i></div>
+                            <h4>Back Room</h4>
+                            <p>Storage, employee area. Keep organized.</p>
+                            <span class="dept-tag">Storage</span>
+                        </div>
+                    </div>
+
+                    <h3>Aisle Placement Strategy</h3>
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Customer Traffic Flow</h3>
+                            <p>Place high-demand items at the back. Customers walk past other products.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>End Caps</h3>
+                            <p>End of aisles = prime real estate. Use for promotions and new items.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Category Grouping</h3>
+                            <p>Keep related items together. Pasta next to sauce, chips next to soda.</p>
+                        </div>
+                    </div>
+
+                    <h3>Expansion Priority</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>First Expansion</h4>
+                            <p>Add 2-3 aisles. Focus on increasing product variety.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Second Expansion</h4>
+                            <p>Add refrigerated section. Unlock dairy and frozen.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Third Expansion</h4>
+                            <p>Deli counter and bakery. High profit margins.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Final Expansion</h4>
+                            <p>Electronics and clothing. Premium departments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UPGRADES & LICENSES SECTION -->
+                <div id="upgrades" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-upgrade'></i> Upgrades & Licenses Guide</h2>
+                    
+                    <h3>Essential Licenses</h3>
+                    <div class="upgrade-grid">
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-food-menu'></i> Grocery License</h4>
+                            <p>Basic food items. Required for Level 2+. Cost: $5,000</p>
+                            <span class="price-tag">$5,000</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-fridge'></i> Refrigeration License</h4>
+                            <p>Dairy, meat, frozen foods. Cost: $15,000</p>
+                            <span class="price-tag">$15,000</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-cake'></i> Bakery License</h4>
+                            <p>Fresh bread, pastries, cakes. Cost: $25,000</p>
+                            <span class="price-tag">$25,000</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-bowl-hot'></i> Deli License</h4>
+                            <p>Prepared foods, deli meats. Cost: $30,000</p>
+                            <span class="price-tag">$30,000</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-tv'></i> Electronics License</h4>
+                            <p>TVs, phones, appliances. Cost: $50,000</p>
+                            <span class="price-tag">$50,000</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4><i class='bx bx-closet'></i> Clothing License</h4>
+                            <p>Apparel and accessories. Cost: $40,000</p>
+                            <span class="price-tag">$40,000</span>
+                        </div>
+                    </div>
+
+                    <h3>Store Upgrades</h3>
+                    <div class="upgrade-grid">
+                        <div class="upgrade-card">
+                            <h4>Additional Register</h4>
+                            <p>Reduce checkout lines. Each new register costs more.</p>
+                            <span class="price-tag">$2,500+</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4>Security Cameras</h4>
+                            <p>Reduce theft by 50%. Essential investment.</p>
+                            <span class="price-tag">$1,000 each</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4>Storage Expansion</h4>
+                            <p>Hold more stock. Buy in bulk for discounts.</p>
+                            <span class="price-tag">$3,000+</span>
+                        </div>
+                        <div class="upgrade-card">
+                            <h4>Store Renovation</h4>
+                            <p>Better floors, lighting, aesthetics. Happy customers.</p>
+                            <span class="price-tag">$10,000+</span>
+                        </div>
+                    </div>
+
+                    <h3>Equipment Upgrades</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Better Shelving</h4><p>Hold more products. $1,500</p></div>
+                        <div class="item-card"><h4>Commercial Fridge</h4><p>Energy efficient. $4,000</p></div>
+                        <div class="item-card"><h4>Self-Checkout</h4><p>Automated. $8,000</p></div>
+                        <div class="item-card"><h4>Price Scanner</h4><p>Customer convenience. $2,000</p></div>
+                    </div>
+                </div>
+
+                <!-- STAFF MANAGEMENT SECTION -->
+                <div id="staff" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-group'></i> Staff Management Guide</h2>
+                    
+                    <h3>Employee Types</h3>
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Cashiers</h3>
+                            <p>Manages registers. Hire when lines get long. Starting wage: $12/hr</p>
+                            <div class="chapter-meta">
+                                <span>Speed: 3/5</span>
+                                <span>Cost: $12/hr</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Stockers</h3>
+                            <p>Restocks shelves. Essential for busy stores. Starting wage: $11/hr</p>
+                            <div class="chapter-meta">
+                                <span>Speed: 3/5</span>
+                                <span>Cost: $11/hr</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Security Guards</h3>
+                            <p>Prevents theft. Reduces shoplifting by 75%. Starting wage: $14/hr</p>
+                            <div class="chapter-meta">
+                                <span>Theft reduction</span>
+                                <span>Cost: $14/hr</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Managers</h3>
+                            <p>Oversees operations. Boosts employee efficiency. Starting wage: $18/hr</p>
+                            <div class="chapter-meta">
+                                <span>Efficiency +15%</span>
+                                <span>Cost: $18/hr</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Staffing Strategy</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>Hiring Order</h4>
+                            <p>1st hire: Cashier. 2nd hire: Stocker. 3rd: Security. Then expand.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Scheduling Tips</h4>
+                            <p>Overlap shifts during peak hours (5-8 PM). Minimal staff on slow days.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Training</h4>
+                            <p>Spend on employee training. Faster work, fewer mistakes.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Morale</h4>
+                            <p>Keep wages competitive. Happy employees work faster.</p>
+                        </div>
+                    </div>
+
+                    <h3>Staff Ratios</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Small Store</h4><p>1 Cashier + 1 Stocker</p></div>
+                        <div class="item-card"><h4>Medium Store</h4><p>2 Cashiers + 2 Stockers + 1 Security</p></div>
+                        <div class="item-card"><h4>Large Store</h4><p>3 Cashiers + 3 Stockers + 2 Security + 1 Manager</p></div>
+                    </div>
+                </div>
+
+                <!-- PRO TIPS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Advanced Tips & Secrets</h2>
+                    
+                    <h3>Money Making Strategies</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-line-chart'></i> Bulk Buying</h4>
+                            <p>Buy in bulk from wholesaler. Lower cost per unit, higher profit margin.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-purchase-tag'></i> Dynamic Pricing</h4>
+                            <p>Raise prices on weekends. Lower on weekdays. Match demand.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-package'></i> Private Label</h4>
+                            <p>Unlock store brand products. Higher margins, loyal customers.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-calendar'></i> Seasonal Displays</h4>
+                            <p>Holiday items = high profit. Stock up before holidays.</p>
+                        </div>
+                    </div>
+
+                    <h3>Common Mistakes to Avoid</h3>
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Over-expanding Too Fast</h3>
+                            <p>Don't take loans for big expansions. Grow organically. Debt kills profits.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Ignoring Shoplifters</h3>
+                            <p>Security cameras pay for themselves. Theft adds up fast.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Poor Shelf Placement</h3>
+                            <p>Put high-margin items at eye level. Kids' items low, adult items high.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Neglecting Online Orders</h3>
+                            <p>Delivery and pickup services = extra revenue stream.</p>
+                        </div>
+                    </div>
+
+                    <h3>Maximizing Customer Satisfaction</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>Cleanliness</h4>
+                            <p>Sweep floors, clean windows. Clean stores attract more customers.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Music</h4>
+                            <p>Background music improves shopping experience. Keep it moderate.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Samples</h4>
+                            <p>Free samples increase sales of promoted items.</p>
+                        </div>
+                    </div>
+
+                    <h3>Secret Tips</h3>
+                    <div class="tip-card">
+                        <p>• Loyalty program unlocks at Level 12 - sign up customers for recurring revenue</p>
+                        <p>• Rainy days = more customers - stock up before forecast</p>
+                        <p>• Near-expiry items - mark down 30%, sell fast</p>
+                        <p>• Employee of the month - morale boost for minimal cost</p>
+                        <p>• Hidden suppliers - unlock by reaching reputation milestones</p>
+                    </div>
+
+                    <h3>Efficiency Checklist</h3>
+                    <div class="tip-card">
+                        <p>✓ Check competitor prices daily</p>
+                        <p>✓ Review sales data every Monday</p>
+                        <p>✓ Restock high-demand items first</p>
+                        <p>✓ Train employees monthly</p>
+                        <p>✓ Update store layout seasonally</p>
+                        <p>✓ Monitor theft reports weekly</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 98%</p>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p style="color:#a0a5b1; font-size:13px;">Updated for Latest Patch</p>
+                </div>
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('start')"><i class='bx bx-flag'></i> Getting Started</a>
+                    <a href="#" class="quick-link" onclick="showSection('products')"><i class='bx bx-package'></i> Products & Pricing</a>
+                    <a href="#" class="quick-link" onclick="showSection('layout')"><i class='bx bx-grid'></i> Store Layout</a>
+                    <a href="#" class="quick-link" onclick="showSection('upgrades')"><i class='bx bx-upgrade'></i> Upgrades & Licenses</a>
+                    <a href="#" class="quick-link" onclick="showSection('staff')"><i class='bx bx-group'></i> Staff Management</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Pro Tips</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('supermarketSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('supermarketSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('supermarketSidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            const sections = ['start','products','layout','upgrades','staff','tips'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach((tab, index) => {
+                tab.classList.remove('active');
+                if (sections[index] === sectionId) tab.classList.add('active');
+            });
+        }
+
+        // Login/Logout functionality with RED logout button
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const sidebarFooter = document.querySelector('.sidebar__footer');
+            const navActions = document.getElementById('navActions');
+            
+            if (currentUser && currentUser.loggedIn) {
+                // User is logged in
+                if (navActions) {
+                    navActions.innerHTML = `<div class="user-profile" onclick="window.location.href='profile.html'"><img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=b31919&color=fff&size=32'}" alt="Profile"><span>${currentUser.username}</span></div>`;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom:10px;">
+                            <i class='bx bx-user-circle'></i> ${currentUser.username}
+                        </button>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
+                    `;
+                }
+            } else {
+                // User is not logged in
+                if (navActions) {
+                    navActions.innerHTML = `<div class="login-prompt"><button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button><button onclick="window.location.href='login.html'">Log In</button></div>`;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `<a href="login.html" style="text-decoration:none; display:block;"><button class="btn-login"><i class='bx bx-user-circle'></i> Sign up or log in</button></a>`;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

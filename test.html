@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" conetnt="IE=edge">
+    <meta name="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <title>Login Form | Entertania</title>
+    <link rel="website icon" type="jpeg" href="assets/css/Entertanialogo.jpeg">
+    <link rel="stylesheet" href="assets/css/Login.css">
+    <!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+    </head>
+
+    <body>
+
+        <div class="login-container">
+    <div class="login-card">
+        <div class="brand-header">
+            <img src="assets/images/Entertanialogo.jpeg" alt="Entertania Logo" class="brand-logo">
+            <h2>Log in</h2>
+        </div>
+
+        <form action="#" method="POST">
+            <div class="input-group">
+                <label for="username">Email or username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-group">
+                <div class="label-row">
+                    <label for="password">Password</label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="login-btn">Log In</button>
+        </form>
+
+        <div class="footer-text">
+    Don't have an account? <a href="register.html" class="register-link">Register here</a>
+</div>
+
+        <div class="separator">
+            <span>Or continue with</span>
+        </div>
+
+        <div class="social-login">
+            <button class="social-icon"></button>
+            <button class="social-icon"></button>
+            <button class="social-icon"></button>
+            <button class="social-icon"></button>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Terms of Use</a> • <a href="#">Privacy Policy</a>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent page refresh
+        const username = document.getElementById('username').value;
+        if (username) {
+            localStorage.setItem('username', username);
+            window.location.href = 'guides.html'; // Redirect back to guides
+        } else {
+            alert('Please enter your username');
+        }
+    });
+</script>
+</html>
+    

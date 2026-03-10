@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valorant Complete Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+            width: calc(100% - 250px);
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #fd4554;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #ff6f7e;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #e9e2e3;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #fd4554;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- AGENT GRID --- */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .agent-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid;
+        }
+
+        .agent-card.duelist { border-left-color: #fd4554; }
+        .agent-card.controller { border-left-color: #4a90e2; }
+        .agent-card.initiator { border-left-color: #4ade80; }
+        .agent-card.sentinel { border-left-color: #ffd700; }
+
+        .agent-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .agent-role {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #2a3456;
+        }
+
+        .agent-abilities {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .agent-abilities li {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .agent-abilities i {
+            color: #fd4554;
+            font-size: 14px;
+        }
+
+        /* --- WEAPONS GRID --- */
+        .weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .weapon-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .weapon-icon {
+         width: 80px;
+         height: 80px;
+         background: #2a3456;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         margin: 0 auto 15px;
+        }
+
+        .weapon-icon img{
+         width: 60px;
+         height: auto;
+         object-fit: contain;
+}
+
+        .weapon-icon i {
+            font-size: 40px;
+            color: #fd4554;
+        }
+
+        .weapon-cost {
+            color: #4ade80;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .weapon-stats {
+            font-size: 12px;
+            color: #a0a5b1;
+            margin-top: 10px;
+        }
+
+        /* --- MAP GRID --- */
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .map-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .map-card h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .map-callouts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .callout {
+            background: #2a3456;
+            padding: 5px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* --- TIPS GRID --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #fd4554;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #fd4554;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- ECONOMY TABLE --- */
+        .economy-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .economy-table th {
+            background: #fd4554;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .economy-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a3456;
+            color: #e0e0e0;
+        }
+
+        .economy-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- ABILITY TABLE --- */
+        .ability-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .ability-table th {
+            background: #2a3456;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .ability-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 85%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        .rank-tier {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #14171e;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .rank-icon {
+            width: 32px;
+            height: 32px;
+            background: #2a3456;
+            border-radius: 50%;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0 !important;
+            }
+            
+            .page-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .agent-grid, .weapons-grid, .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .agent-grid, .weapons-grid, .tips-grid, .map-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Valorant Complete Guide</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>Valorant Complete Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong>15,234 Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong>45K CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION -->
+<div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/The ULTIMATE Beginners Guide For VALORANT 2026!.mp4" type="video/mp4">
+            
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('agents')">Agents</button>
+            <button class="guide-tab" onclick="showSection('weapons')">Weapons</button>
+            <button class="guide-tab" onclick="showSection('maps')">Maps</button>
+            <button class="guide-tab" onclick="showSection('economy')">Economy</button>
+            <button class="guide-tab" onclick="showSection('mechanics')">Mechanics</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Strategies</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- AGENTS SECTION -->
+                <div id="agents" class="guide-section">
+                    <h2><i class='bx bx-group'></i> Agents Overview</h2>
+                    
+                    <p>Valorant agents are divided into four roles: Duelists (entry fraggers), Controllers (smoke specialists), Initiators (info gatherers), and Sentinels (defenders).</p>
+
+                    <h3>Duelists</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card duelist">
+                            <h4>Jett <span class="agent-role">Duelist</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-wind'></i> Tailwind (Dash)</li>
+                                <li><i class='bx bx-cloud'></i> Updraft (Jump)</li>
+                                <li><i class='bx bx-shield'></i> Blade Storm (Knives)</li>
+                                <li><i class='bx bx-smoke'></i> Cloudburst (Smoke)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card duelist">
+                            <h4>Reyna <span class="agent-role">Duelist</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-eyedropper'></i> Devour (Heal)</li>
+                                <li><i class='bx bx-hide'></i> Dismiss (Invuln)</li>
+                                <li><i class='bx bx-star'></i> Empress (Ultimate)</li>
+                                <li><i class='bx bx-blind'></i> Leer (Flash)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card duelist">
+                            <h4>Phoenix <span class="agent-role">Duelist</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-fire'></i> Blaze (Wall)</li>
+                                <li><i class='bx bx-meteor'></i> Curveball (Flash)</li>
+                                <li><i class='bx bx-hot'></i> Hot Hands (Heal)</li>
+                                <li><i class='bx bx-sun'></i> Run It Back (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card duelist">
+                            <h4>Raze <span class="agent-role">Duelist</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-bomb'></i> Boom Bot</li>
+                                <li><i class='bx bx-rocket'></i> Paint Shells</li>
+                                <li><i class='bx bx-backpack'></i> Blast Pack</li>
+                                <li><i class='bx bx-missile'></i> Showstopper (Ult)</li>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Controllers</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card controller">
+                            <h4>Brimstone <span class="agent-role">Controller</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-smoke'></i> Sky Smoke</li>
+                                <li><i class='bx bx-fire'></i> Incendiary</li>
+                                <li><i class='bx bx-bolt'></i> Stim Beacon</li>
+                                <li><i class='bx bx-meteor'></i> Orbital Strike (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card controller">
+                            <h4>Omen <span class="agent-role">Controller</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-hide'></i> Shrouded Step</li>
+                                <li><i class='bx bx-smoke'></i> Dark Cover</li>
+                                <li><i class='bx bx-blind'></i> Paranoia</li>
+                                <li><i class='bx bx-map'></i> From the Shadows (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card controller">
+                            <h4>Viper <span class="agent-role">Controller</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-gas'></i> Toxic Screen</li>
+                                <li><i class='bx bx-cloud'></i> Poison Cloud</li>
+                                <li><i class='bx bx-flask'></i> Snake Bite</li>
+                                <li><i class='bx bx-cylinder'></i> Viper's Pit (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card controller">
+                            <h4>Astra <span class="agent-role">Controller</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-star'></i> Gravity Well</li>
+                                <li><i class='bx bx-moon'></i> Nova Pulse</li>
+                                <li><i class='bx bx-smoke'></i> Nebula</li>
+                                <li><i class='bx bx-crown'></i> Cosmic Divide (Ult)</li>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Initiators</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card initiator">
+                            <h4>Sova <span class="agent-role">Initiator</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-bow'></i> Recon Bolt</li>
+                                <li><i class='bx bx-bolt'></i> Shock Bolt</li>
+                                <li><i class='bx bx-drone'></i> Owl Drone</li>
+                                <li><i class='bx bx-crosshair'></i> Hunter's Fury (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card initiator">
+                            <h4>Breach <span class="agent-role">Initiator</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-flash'></i> Flashpoint</li>
+                                <li><i class='bx bx-bolt'></i> Fault Line</li>
+                                <li><i class='bx bx-crown'></i> Aftershock</li>
+                                <li><i class='bx bx-sun'></i> Rolling Thunder (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card initiator">
+                            <h4>Skye <span class="agent-role">Initiator</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-paw'></i> Trailblazer</li>
+                                <li><i class='bx bx-flash'></i> Guiding Light</li>
+                                <li><i class='bx bx-leaf'></i> Regrowth</li>
+                                <li><i class='bx bx-group'></i> Seekers (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card initiator">
+                            <h4>KAY/O <span class="agent-role">Initiator</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-flash'></i> FLASH/DRIVE</li>
+                                <li><i class='bx bx-cog'></i> ZERO/POINT</li>
+                                <li><i class='bx bx-shield'></i> FRAG/MENT</li>
+                                <li><i class='bx bx-command'></i> NULL/CMD (Ult)</li>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Sentinels</h3>
+                    <div class="agent-grid">
+                        <div class="agent-card sentinel">
+                            <h4>Sage <span class="agent-role">Sentinel</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-shield'></i> Barrier Orb</li>
+                                <li><i class='bx bx-heart'></i> Heal Orb</li>
+                                <li><i class='bx bx-slow'></i> Slow Orb</li>
+                                <li><i class='bx bx-plus'></i> Resurrection (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card sentinel">
+                            <h4>Cypher <span class="agent-role">Sentinel</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-camera'></i> Trapwire</li>
+                                <li><i class='bx bx-cog'></i> Cyber Cage</li>
+                                <li><i class='bx bx-hide'></i> Spycam</li>
+                                <li><i class='bx bx-map'></i> Neural Theft (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card sentinel">
+                            <h4>Killjoy <span class="agent-role">Sentinel</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-bot'></i> Turret</li>
+                                <li><i class='bx bx-alarm'></i> Alarmbot</li>
+                                <li><i class='bx bx-grenade'></i> Nanoswarm</li>
+                                <li><i class='bx bx-command'></i> Lockdown (Ult)</li>
+                            </div>
+                        </div>
+                        <div class="agent-card sentinel">
+                            <h4>Chamber <span class="agent-role">Sentinel</span></h4>
+                            <div class="agent-abilities">
+                                <li><i class='bx bx-gun'></i> Headhunter</li>
+                                <li><i class='bx bx-run'></i> Rendezvous</li>
+                                <li><i class='bx bx-trap'></i> Trademark</li>
+                                <li><i class='bx bx-sniper'></i> Tour De Force (Ult)</li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEAPONS SECTION -->
+                <div id="weapons" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-gun'></i> Weapons Guide</h2>
+                    
+                    <h3>Sidearms</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/classic.avif" alt="classic">
+                            </div>
+                            <h4>Classic</h4>
+                            <div class="weapon-cost">Free</div>
+                            <div class="weapon-stats">Damage: 78/26 | Mag: 12</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/shortry.avif" alt="shorty">
+                            </div>
+                            <h4>Shorty</h4>
+                            <div class="weapon-cost">150</div>
+                            <div class="weapon-stats">Damage: 12x3 | Mag: 2</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/frenzy.avif" alt="frenzy">
+                            </div>
+                            <h4>Frenzy</h4>
+                            <div class="weapon-cost">450</div>
+                            <div class="weapon-stats">Damage: 78 | Mag: 13</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/ghost.avif" alt="ghost">
+                            </i></div>
+                            <h4>Ghost</h4>
+                            <div class="weapon-cost">500</div>
+                            <div class="weapon-stats">Damage: 105 | Mag: 15</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/sheriff.avif" alt="sheriff">
+                            </i></div>
+                            <h4>Sheriff</h4>
+                            <div class="weapon-cost">800</div>
+                            <div class="weapon-stats">Damage: 145 | Mag: 6</div>
+                        </div>
+                    </div>
+
+                    <h3>SMGs</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/stinger.avif" alt="stinger">
+                            </div>
+                            <h4>Stinger</h4>
+                            <div class="weapon-cost">950</div>
+                            <div class="weapon-stats">Damage: 67 | Mag: 20</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/spectre.avif" alt="spectree">
+                            </div>
+                            <h4>Spectre</h4>
+                            <div class="weapon-cost">1600</div>
+                            <div class="weapon-stats">Damage: 78 | Mag: 30</div>
+                        </div>
+                    </div>
+
+                    <h3>Shotguns</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/bucky.avif" alt="bucky">
+                            </div>
+                            <h4>Bucky</h4>
+                            <div class="weapon-cost">850</div>
+                            <div class="weapon-stats">Damage: 44 | Mag: 5</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/judge.avif" alt="judge">
+                            </div>
+                            <h4>Judge</h4>
+                            <div class="weapon-cost">1850</div>
+                            <div class="weapon-stats">Damage: 34 | Mag: 7</div>
+                        </div>
+                    </div>
+
+                    <h3>Rifles</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/bulldog.avif" alt="bulldog">
+                            </div>
+                            <h4>Bulldog</h4>
+                            <div class="weapon-cost">2050</div>
+                            <div class="weapon-stats">Damage: 115 | Mag: 24</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/guardian.avif" alt="guardian">
+                            </div>
+                            <h4>Guardian</h4>
+                            <div class="weapon-cost">2250</div>
+                            <div class="weapon-stats">Damage: 195 | Mag: 12</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/phantom.avif" alt="phantom">
+                            </div>
+                            <h4>Phantom</h4>
+                            <div class="weapon-cost">2900</div>
+                            <div class="weapon-stats">Damage: 156 | Mag: 30</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/vandal.avif" alt="vandal">
+                            </div>
+                            <h4>Vandal</h4>
+                            <div class="weapon-cost">2900</div>
+                            <div class="weapon-stats">Damage: 160 | Mag: 25</div>
+                        </div>
+                    </div>
+
+                    <h3>Sniper Rifles</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/marshal.avif" alt="marshal">
+                            </div>
+                            <h4>Marshal</h4>
+                            <div class="weapon-cost">950</div>
+                            <div class="weapon-stats">Damage: 101 | Mag: 5</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/operator.avif" alt="operator">
+                            </div>
+                            <h4>Operator</h4>
+                            <div class="weapon-cost">4700</div>
+                            <div class="weapon-stats">Damage: 255 | Mag: 5</div>
+                        </div>
+                    </div>
+
+                    <h3>Heavy Weapons</h3>
+                    <div class="weapons-grid">
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/ares.avif" alt="ares">
+                            </div>
+                            <h4>Ares</h4>
+                            <div class="weapon-cost">1550</div>
+                            <div class="weapon-stats">Damage: 72 | Mag: 50</div>
+                        </div>
+                        <div class="weapon-card">
+                            <div class="weapon-icon">
+                                <img src="assets/images/odin.avif" alt="odin">
+                            </div>
+                            <h4>Odin</h4>
+                            <div class="weapon-cost">3200</div>
+                            <div class="weapon-stats">Damage: 95 | Mag: 100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAPS SECTION -->
+                <div id="maps" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-map'></i> Maps Guide</h2>
+                    
+                    <div class="map-grid">
+                        <div class="map-card">
+                            <h4>Ascent</h4>
+                            <div class="map-callouts">
+                                <span class="callout">A Main</span>
+                                <span class="callout">A Site</span>
+                                <span class="callout">B Main</span>
+                                <span class="callout">B Site</span>
+                                <span class="callout">Market</span>
+                                <span class="callout">Mid</span>
+                            </div>
+                        </div>
+                        <div class="map-card">
+                            <h4>Bind</h4>
+                            <div class="map-callouts">
+                                <span class="callout">A Site</span>
+                                <span class="callout">B Site</span>
+                                <span class="callout">A Teleporter</span>
+                                <span class="callout">B Teleporter</span>
+                                <span class="callout">U-Hall</span>
+                                <span class="callout">Hookah</span>
+                            </div>
+                        </div>
+                        <div class="map-card">
+                            <h4>Haven</h4>
+                            <div class="map-callouts">
+                                <span class="callout">A Site</span>
+                                <span class="callout">B Site</span>
+                                <span class="callout">C Site</span>
+                                <span class="callout">Garage</span>
+                                <span class="callout">Mid</span>
+                                <span class="callout">Long</span>
+                            </div>
+                        </div>
+                        <div class="map-card">
+                            <h4>Split</h4>
+                            <div class="map-callouts">
+                                <span class="callout">A Site</span>
+                                <span class="callout">B Site</span>
+                                <span class="callout">A Rope</span>
+                                <span class="callout">B Rope</span>
+                                <span class="callout">Heaven</span>
+                                <span class="callout">Sewer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ECONOMY SECTION -->
+                <div id="economy" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-money'></i> Economy Guide</h2>
+                    
+                    <table class="economy-table">
+                        <thead>
+                            <tr>
+                                <th>Round</th>
+                                <th>Type</th>
+                                <th>Recommended Buy</th>
+                                <th>Min Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Round 1</td>
+                                <td>Pistol</td>
+                                <td>Classic + Light Shields</td>
+                                <td>800</td>
+                            </tr>
+                            <tr>
+                                <td>Round 2</td>
+                                <td>Anti-Eco</td>
+                                <td>SMG + Light Shields</td>
+                                <td>1900</td>
+                            </tr>
+                            <tr>
+                                <td>Round 3</td>
+                                <td>Full Buy</td>
+                                <td>Rifle + Heavy Shields</td>
+                                <td>3900</td>
+                            </tr>
+                            <tr>
+                                <td>Save Round</td>
+                                <td>Eco</td>
+                                <td>Classic only</td>
+                                <td>0-1500</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="info-card" style="margin-top: 20px;">
+                        <h4>Economy Tips</h4>
+                        <p>• Win bonus: +3000 credits for winning</p>
+                        <p>• Loss bonus: +1900 credits (increases each consecutive loss)</p>
+                        <p>• Plant spike: +300 credits for your team</p>
+                        <p>• Kill bonus: +200 credits per kill</p>
+                    </div>
+                </div>
+
+                <!-- MECHANICS SECTION -->
+                <div id="mechanics" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-cog'></i> Game Mechanics</h2>
+                    
+                    <h3>Spray Patterns</h3>
+                    <p>Each weapon has a unique recoil pattern. Practice controlling the spray in the range.</p>
+                    
+                    <h3>Movement Mechanics</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>Counter-Strafing</h4>
+                            <p>Tap opposite direction key to stop faster and shoot accurately.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>Bunny Hopping</h4>
+                            <p>Jump while strafing to maintain momentum.</p>
+                        </div>
+                    </div>
+
+                    <h3>Ability Interactions</h3>
+                    <table class="ability-table">
+                        <thead>
+                            <tr>
+                                <th>Ability Type</th>
+                                <th>Description</th>
+                                <th>Counter</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Flashes</td>
+                                <td>Blind enemies temporarily</td>
+                                <td>Turn away, cover eyes</td>
+                            </tr>
+                            <tr>
+                                <td>Smokes</td>
+                                <td>Block vision</td>
+                                <td>Scan abilities, push through</td>
+                            </tr>
+                            <tr>
+                                <td>Molotovs</td>
+                                <td>Area denial</td>
+                                <td>Move away, heal through</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TIPS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Tips & Strategies</h2>
+                    
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-crosshair'></i> Crosshair Placement</h4>
+                            <p>Always aim at head level where enemies will appear. Never aim at the ground.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> Map Awareness</h4>
+                            <p>Check minimap constantly. Call out enemy positions immediately.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-radio'></i> Communication</h4>
+                            <p>Use voice chat and ping system. Give clear callouts.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-stopwatch'></i> Utility Usage</h4>
+                            <p>Don't waste utility. Use abilities to gather info or take space.</p>
+                        </div>
+                    </div>
+
+                    <h3>Ranked Tips</h3>
+                    <div class="tip-card">
+                        <h4>Climbing the Ladder</h4>
+                        <p>• Focus on 2-3 agents max<br>• Warm up in deathmatch<br>• Review your losses<br>• Play with consistent teammates</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+
+
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 85%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Updated for Episode 8 Act 3</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('agents'); return false;"><i class='bx bx-group'></i> Agents</a>
+                    <a href="#" class="quick-link" onclick="showSection('weapons'); return false;"><i class='bx bx-gun'></i> Weapons</a>
+                    <a href="#" class="quick-link" onclick="showSection('maps'); return false;"><i class='bx bx-map'></i> Maps</a>
+                    <a href="#" class="quick-link" onclick="showSection('economy'); return false;"><i class='bx bx-money'></i> Economy</a>
+                    <a href="#" class="quick-link" onclick="showSection('mechanics'); return false;"><i class='bx bx-cog'></i> Mechanics</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips'); return false;"><i class='bx bx-bulb'></i> Tips & Strategies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        // Check localStorage for sidebar state
+        const sidebarState = localStorage.getItem('valorantSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            pageContent.style.width = 'calc(100% - 20px)';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                pageContent.style.width = 'calc(100% - 20px)';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('valorantSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                pageContent.style.width = 'calc(100% - 250px)';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('valorantSidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = ['agents', 'weapons', 'maps', 'economy', 'mechanics', 'tips'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+            
+            // Show selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Find which tab was clicked
+            const tabIndex = sections.indexOf(sectionId);
+            if (tabIndex !== -1) {
+                tabs[tabIndex].classList.add('active');
+            }
+        }
+
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

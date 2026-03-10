@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Arc Raiders Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #b31919;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* Weapon image styling */
+.weapon-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #4a90e2;
+}
+
+.item-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.item-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+        /* --- MAP/LOCATION SECTION --- */
+        .map-container {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .map-image {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .map-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .map-location {
+            background: #1a1f2b;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .map-location h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .map-location p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- ITEMS/WEAPONS GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- WEAPON UPGRADE TABLE --- */
+        .upgrade-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .upgrade-table th {
+            background: #2a3456;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .upgrade-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a3456;
+            color: #e0e0e0;
+        }
+
+        .upgrade-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .upgrade-table td:first-child {
+            font-weight: 600;
+            color: white;
+        }
+
+        /* --- PUZZLE SECTION --- */
+        .puzzle-box {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-box h4 {
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        .puzzle-solution {
+            background: #2a3456;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #b31919;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #b31919;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 75%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .items-grid, .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid, .tips-grid, .map-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+
+        .map-container {
+    background: #14171e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.map-image {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.map-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.map-image img:hover {
+    transform: scale(1.02);
+}
+
+.map-legend {
+    background: #1a1f2b;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a0a5b1;
+    font-size: 13px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>The Arc Raiders Guide</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="Homepage.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>The Arc Raiders Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong>5 Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>2 days ago</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong>10 CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+<!-- VIDEO SECTION -->
+<div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Arc Raiders ULTIMATE Beginners Guide, Tips & Tricks!.mp4" type="video/mp4">
+            
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+<script>
+function loadVideo() {
+    const container = document.getElementById('videoContainer');
+    container.innerHTML = `
+<video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Arc Raiders ULTIMATE Beginners Guide, Tips & Tricks!.mp4>
+
+        </video>
+    `;
+}
+</script>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('walkthrough')">Walkthrough</button>
+            <button class="guide-tab" onclick="showSection('map')">Maps & Locations</button>
+            <button class="guide-tab" onclick="showSection('items')">Items & Weapons</button>
+            <button class="guide-tab" onclick="showSection('upgrades')">Weapon Upgrades</button>
+            <button class="guide-tab" onclick="showSection('puzzles')">Puzzles</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Tricks</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+              <!-- WALKTHROUGH SECTION -->
+<!-- WALKTHROUGH SECTION -->
+<div id="walkthrough" class="guide-section">
+    <h2><i class='bx bx-book-open'></i> Getting Started Guide</h2>
+    
+    <div class="chapter-list">
+        <div class="chapter-item">
+            <h3>Getting Started: The Basics</h3>
+            <p>ARC Raiders is a free-to-play third-person PvE shooter. You play as a Raider fighting against ARC, an invading robotic force.</p>
+            <div class="chapter-meta">
+                <span><i class='bx bx-time'></i> Beginner Guide</span>
+            </div>
+        </div>
+
+        <div class="chapter-item">
+            <h3>Your First Mission: Welcome to the Resistance</h3>
+            <p>Complete the tutorial missions to learn basic movement, shooting mechanics, and crafting system.</p>
+            <div class="chapter-meta">
+                <span><i class='bx bx-time'></i> 30 min</span>
+            </div>
+        </div>
+    </div>
+
+    <h3>Essential Weapons</h3>
+    <div class="items-grid">
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/assaultriffleessential.png" alt="Assault Rifle">
+            </div>
+            <h4>Assault Rifle</h4>
+            <p>Starter weapon. Balanced damage and fire rate.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Bobcat_Inspect.webp" alt="Bobcat SMG">
+            </div>
+            <h4>Bobcat SMG</h4>
+            <p>The Bobcat is a fully automatic submachine gun with high fire rate but low accuracy. Uses Light Ammo.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Vita_Spray.png" alt="Vita Spray">
+            </div>
+            <h4>Vita Spray</h4>
+            <p>A medical item that continuously restores health during use. Can be used on yourself or your allies.</p>
+        </div>
+    </div>
+
+    <h3>Beginner Tips</h3>
+    <div class="tips-grid">
+        <div class="tip-card">
+            <h4><i class='bx bx-group'></i> Stick Together</h4>
+            <p>ARC Raiders is team-based. Stay close to your squad.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-bolt'></i> Use Cover</h4>
+            <p>Enemies deal heavy damage. Always use cover.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-cog'></i> Upgrade Often</h4>
+            <p>Collect resources to upgrade weapons between missions.</p>
+        </div>
+    </div>
+</div> <!-- This closes the walkthrough section -->
+
+<!-- MAPS & LOCATIONS SECTION -->
+<div id="map" class="guide-section" style="display: none;">
+    <h2><i class='bx bx-map'></i> Dam Battlegrounds Map</h2>
+    
+    <div class="map-container">
+        <div class="map-image">
+            <img src="assets/images/arcraidermap.png" alt="ARC Raiders Dam Battlegrounds Map">
+        </div>
+        <h3>Dam Battlegrounds Overview</h3>
+        <p>The Dam Battlegrounds is a major combat zone featuring the massive dam structure, surrounding industrial areas, and multiple extraction points. Use the interactive map at <a href="https://mapgenie.io/arc-raiders/maps/dam-battlegrounds" target="_blank" style="color: #4a90e2;">Map Genie</a> for real-time navigation.</p>
+    </div>
+
+    <h3>Key Locations</h3>
+    <div class="map-grid">
+        <div class="map-location">
+            <h4><i class='bx bx-elevator'></i> Cargo Elevators</h4>
+            <p>• 2 Elevator Locations<br>• Used for vertical transport<br>• High traffic areas<br>• Watch for ambushes</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-cube'></i> Field Depots</h4>
+            <p>• Supply storage areas<br>• Contains resources<br>• Often guarded by ARC<br>• Check all containers</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-camp'></i> Raider Camps</h4>
+            <p>• Temporary safe zones<br>• Resupply points<br>• Team regrouping areas<br>• Limited cover</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-door-open'></i> Locked Doors</h4>
+            <p>• Require keycards<br>• Lead to bonus loot<br>• Mark on your map<br>• Return when key found</p>
+        </div>
+    </div>
+
+    <h3>Loot & Resources</h3>
+    <div class="map-grid">
+        <div class="map-location">
+            <h4><i class='bx bx-crate'></i> Containers</h4>
+            <p>• Field Crates<br>• Weapon Crates<br>• Ammo Boxes<br>• Medical Boxes</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-bot'></i> ARC Enemies</h4>
+            <p>• ARC Couriers (carry loot)<br>• ARC Husks (salvageable)<br>• Baron Husks (rare loot)<br>• Surveyors (scan area)</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-leaf'></i> Natural Resources</h4>
+            <p>• Agave (crafting)<br>• Apricot (consumable)<br>• Candleberries<br>• Great Mullein<br>• Moss<br>• Mushrooms<br>• Prickly Pear</p>
+        </div>
+        <div class="map-location">
+            <h4><i class='bx bx-lock'></i> Security Lockers</h4>
+            <p>• Require hacking<br>• Contain rare items<br>• Found in restricted areas<br>• Use scanner to locate</p>
+        </div>
+    </div>
+
+    <h3>Enemy Types</h3>
+    <div class="map-grid">
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Bastion</span></h4>
+            <p>Heavy armored unit. Slow but devastating. Aim for weak points on back.</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Leaper</span></h4>
+            <p>Agile melee unit. Jumps long distances. Keep moving and use shotguns.</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Queen</span></h4>
+            <p>Elite enemy. Spawns adds. Focus fire with team. Save ultimates.</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Rocketeer</span></h4>
+            <p>Long-range rocket attacks. Take cover and close distance quickly.</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Sentinel</span></h4>
+            <p>Patrol units. Alert others if not killed quickly. Use silenced weapons.</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #b31919;">Surveyor</span></h4>
+            <p>Scanner units. Reveals player positions. Priority target.</p>
+        </div>
+    </div>
+
+    <h3>Mission Objectives</h3>
+    <div class="map-container">
+        <p>Various mission objectives are scattered throughout the Dam Battlegrounds:</p>
+        <ul style="color: #a0a5b1; margin-left: 20px;">
+            <li>Primary Mission Objectives (story progression)</li>
+            <li>Secondary Objectives (bonus rewards)</li>
+            <li>Supply Call Stations (request supplies)</li>
+            <li>Raider Caches (hidden treasure)</li>
+            <li>Zipline Networks (fast travel)</li>
+        </ul>
+    </div>
+
+    <h3>Loot Zones</h3>
+    <div class="map-grid">
+        <div class="map-location">
+            <h4><span style="color: #4ade80;">High Loot Areas</span></h4>
+            <p>• Dam interior<br>• Command centers<br>• Boss rooms<br>• Locked vaults</p>
+        </div>
+        <div class="map-location">
+            <h4><span style="color: #4a90e2;">Medium Loot Areas</span></h4>
+            <p>• Industrial buildings<br>• Camps<br>• Depots<br>• Transport routes</p>
+        </div>
+    </div>
+
+    <div class="map-legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: #4ade80;"></div>
+            <span>Player Spawn</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #4a90e2;"></div>
+            <span>Loot Container</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #b31919;"></div>
+            <span>Enemy</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ffd700;"></div>
+            <span>Mission Objective</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #9333ea;"></div>
+            <span>Supply Station</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ecdb7c;"></div>
+            <span>Resource</span>
+        </div>
+    </div>
+
+    <div class="info-card" style="margin-top: 20px;">
+        <h4><i class='bx bx-map-alt'></i> Interactive Map Link</h4>
+        <p>For the full interactive experience with real-time markers and filters, visit:</p>
+        <a href="https://mapgenie.io/arc-raiders/maps/dam-battlegrounds" target="_blank" style="color: #4a90e2; word-break: break-all;">https://mapgenie.io/arc-raiders/maps/dam-battlegrounds</a>
+        <p style="margin-top: 10px; font-size: 13px; color: #a0a5b1;">Features: Distance measurement, sniping radius tool, filters for loot, enemies, and missions.</p>
+    </div>
+</div>
+
+
+                <!-- ITEMS & WEAPONS SECTION -->
+               <div id="items" class="guide-section" style="display: none;">
+    <h2><i class='bx bx-backpack'></i> Weapons & Items</h2>
+    
+    <div class="info-card" style="margin-bottom: 25px; background: #14171e;">
+        <p style="color: #e0e0e0; line-height: 1.7;">Weapons, or guns, are projectile- or energy-based implements that are used to inflict damage, destroy, or cause harm. They are primarily used by Raiders to attack ARC or other Raiders.</p>
+    </div>
+    
+    <h3>Weapon Classes</h3>
+    <div class="items-grid">
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Rattler-Level1.png.webp" alt="Rattler" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+                <i class=''></i>
+            </div>
+            <h4>Assault Rifles</h4>
+            <p>Balanced handling and shooting capabilities. Versatile for all situations.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-gun'></i>
+                 <img src="assets/images/Toro-Level1.png.webp" alt="Il Toro" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Shotguns</h4>
+            <p>High close-range damage. Effective against armored ARC units.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-gun'></i>
+                <img src="assets/images/Stitcher-Level1.png.webp" alt="Stitcher" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>SMGs</h4>
+            <p>High fire rate, low recoil. Perfect for quick engagements.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-flare'></i>
+                <img src="assets/images/Hairpin-Level1.png.webp" alt="Hairpin" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Pistols</h4>
+            <p>versatile, lightweight sidearms designed for close-to-mid-range combat.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-flare'></i>
+                 <img src="assets/images/Anvil-Level1.png.webp" alt="Anvil" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Hand Cannons</h4>
+            <p>a specific category of high-damage weapons designed for heavy, precise damage against armored ARC enemies and for bursting down player shields.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-flare'></i>
+                 <img src="assets/images/Osprey-Level1.png.webp" alt="Osprey" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Sniper Rifles</h4>
+            <p>high-damage, long-range weapons primarily used for picking off targets.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-flare'></i>
+                <img src="assets/images/Torrente-Level1.png" alt="Torrente" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>LMGs</h4>
+            <p> A single, distinct weapon: the Torrente. It is designed for sustained fire and suppression rather than stealth or high mobility. .</p>
+        </div>
+    </div>
+
+    <h3>Weapon Rarity & Upgrades</h3>
+    <div class="info-card" style="background: #14171e; margin-bottom: 25px;">
+        <p>Each weapon is loaded with a single type of ammo that dictates how well it penetrates ARC armor. Most weapons can be upgraded, or leveled up, at the <strong>Gunsmith</strong> to permanently improve how well they handle.</p>
+        <div style="display: flex; gap: 20px; margin-top: 15px; flex-wrap: wrap;">
+            <span style="background: #2a3456; color: white; padding: 5px 15px; border-radius: 20px;">Level I - Basic</span>
+            <span style="background: #2a3456; color: white; padding: 5px 15px; border-radius: 20px;">Level II - Improved</span>
+            <span style="background: #2a3456; color: white; padding: 5px 15px; border-radius: 20px;">Level III - Advanced</span>
+            <span style="background: #2a3456; color: white; padding: 5px 15px; border-radius: 20px;">Level IV - Master</span>
+        </div>
+        <p style="color: #b31919; margin-top: 15px;"><i class='bx bx-star'></i> Legendary rarity weapons cannot be upgraded.</p>
+    </div>
+
+    <h3>ARC Raiders Weapons</h3>
+    <div class="items-grid">
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Rattler-Level1.png.webp" alt="Rattler" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+            </div>
+            <h4>Rattler</h4>
+            <p>The Rattler is a fully-automatic Assault Rifle that uses Medium Ammo. It is an inexpensive but solid weapon that offers good damage output and accuracy at close- to medium-range.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Arpeggio-Level1.png.webp" alt="Arpeggio" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+            </div>
+            <h4>Arpeggio</h4>
+            <p>The Arpeggio is an Assault Rifle that uses Medium Ammo. It shoots three bullets per pull of the trigger.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Tempest-Level1.png.webp" alt="Tempest" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+            </div>
+            <h4>Tempest</h4>
+            <p>The Tempest is a fully-automatic Assault Rifle that uses Medium Ammo.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Bettina.png.webp" alt="Bettina" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+            </div>
+            <h4>Bettina</h4>
+            <p>The Bettina is a fully-automatic Assault Rifle that uses Heavy Ammo.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Ferro-Level1.png.webp" alt="Ferro" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-gun\'></i>';">
+            </div>
+            <h4>Ferro</h4>
+            <p>The Ferro is a break-action Battle Rifle that uses Heavy Ammo. It is an inexpensive but effective option for taking engagements at medium- to long-range, but its lengthy reload speed can make it a liability when fights get close.</p>
+        </div>
+        
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Renegade-Level1.png.webp" alt="Renegade" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Renegade</h4>
+            <p>The Renegade is a lever-action Battle Rifle that uses Medium Ammo. When fully upgraded, it is a powerful weapon in the hands of a skilled marksman.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Aphelion.png.webp" alt="Aphelion" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Aphelion</h4>
+            <p>The Aphelion is a Battle Rifle that uses Energy Clips to fire energy-based projectiles. It cannot be upgraded.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Stitcher-Level1.png.webp" alt="Stitcher" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Stitcher</h4>
+            <p>The Stitcher is a fully-automatic Submachine Gun (SMG) that uses Light Ammo.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Bobcat-Level1.png.webp" alt="Bobcat" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Bobcat</h4>
+            <p>The Bobcat is a fully-automatic Submachine Gun (SMG) that uses Light Ammo.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Toro-Level1.png.webp" alt="Il Toro" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Il Toro</h4>
+            <p>The Il Toro is a pump-action Shotgun that uses Shotgun Ammo. Its high damage output makes it capable of downing most Raiders at close range with only two or three body shots. Ammo is reloaded one-by-one.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Vulcano-Level1.png.webp" alt="Vulcano" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Vulcano</h4>
+            <p>The Vulcano is a semi-automatic Shotgun that uses Shotgun Ammo.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Hairpin-Level1.png.webp" alt="Hairpin" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Hairpin</h4>
+            <p>The Hairpin is a single-action Pistol that uses Light Ammo. It has a built-in silencer.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Burletta-Level1.png.webp" alt="Burletta" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Burletta</h4>
+            <p>The Burletta is a semi-automatic Pistol that uses Light Ammo.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Venator-Level1.png" alt="Venator" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Venator</h4>
+            <p>The Venator is a semi-automatic Pistol that uses Medium Ammo. It is a fairly fast-firing pistol that shoots two projectiles at a time. It is particularly effective at close- to medium-range combat. Despite firing two bullets per shot, only one unit of ammo is removed from the magazine when the trigger is pulled.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Anvil-Level1.png.webp" alt="Anvil" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Anvil</h4>
+            <p>The Anvil is a single-action Hand Cannon that uses Heavy Ammo. It is a versatile hand cannon that excels at hitting targets at medium-range, but its slow firing speed can make the Anvil feel clunky at close-range. Raiders who choose this weapon will often be rewarded if their aim is true.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Torrente-Level1.png" alt="Torrente" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Torrente</h4>
+            <p>The Torrente is a fully-automatic Light Machine Gun (LMGs) that uses Medium Ammo.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Osprey-Level1.png.webp" alt="Osprey" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Osprey</h4>
+            <p>The Osprey is a bolt-action Sniper Rifle that uses Medium Ammo. It excels at hitting long-range targets with the help of its scope.</p>
+        </div>
+
+        <div class="item-card">
+            <div class="item-icon">
+                <img src="assets/images/Jupiter.png.webp" alt="Jupiter" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Jupiter</h4>
+            <p>The Jupiter is a bolt-action Sniper Rifle that uses Energy Clips. It cannot be upgraded.</p>
+        </div>
+    </div>
+
+    <h3><i class='bx bx-cog'></i> Weapon Mods</h3>
+    <div class="info-card" style="background: #14171e; margin-bottom: 25px;">
+        <p><strong>Weapon mods</strong>, also known as modifications or attachments, are items that are used to adjust weapon properties. Each weapon has a limited number of special slots that can accept mods. Unlike upgrades, weapon mods can be freely added and removed.</p>
+        <p style="margin-top: 10px; color: #4a90e2;">It's recommended for Raiders to try different weapon mods in the Practice Range to learn what combinations work best.</p>
+    </div>
+
+    <div class="items-grid">
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-crosshair'></i>
+            </div>
+            <h4>Scopes</h4>
+            <p>Red dot, holographic, 2x, 4x, 8x magnification options.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-cylinder'></i>
+            </div>
+            <h4>Barrels</h4>
+            <p>Suppressors, compensators, extended barrels.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-package'></i>
+            </div>
+            <h4>Magazines</h4>
+            <p>Extended mags, quick reload, drum mags.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                <i class='bx bx-handicap'></i>
+            </div>
+            <h4>Grips</h4>
+            <p>Vertical grip, angled grip, laser sight.</p>
+        </div>
+    </div>
+
+    <h3>Ammo Types</h3>
+    <div class="items-grid">
+        <div class="item-card">
+            <div class="item-icon">
+                <i class=''></i>
+               <img src="assets/images/Medium_Ammo.webp" alt="Jupiter" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Standard Rounds</h4>
+            <p>Basic ammo. Effective against unarmored targets.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                 <img src="assets/images/Heavy_Ammo.webp" alt="Jupiter" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Armor-Piercing</h4>
+            <p>Increased penetration. Best against heavy ARC units.</p>
+        </div>
+        <div class="item-card">
+            <div class="item-icon">
+                 <img src="assets/images/Energy_Clip.png" alt="Jupiter" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'bx bx-star\'></i>';">
+            </div>
+            <h4>Energy Cells</h4>
+            <p>Ammo used for energy weapons. One clip will fully charge a single weapon.</p>
+        </div>
+    </div>
+</div>
+
+                <!-- WEAPON UPGRADES SECTION -->
+<div id="upgrades" class="guide-section" style="display: none;">
+    <h2><i class='bx bx-upgrade'></i> Gunsmith & Weapon Upgrades</h2>
+    
+    <div class="info-card" style="background: #14171e; margin-bottom: 25px;">
+        <p>The Gunsmith in Speranza allows you to permanently upgrade your weapons. Each weapon can be upgraded through 4 levels, with each level unlocking new stat bonuses and mod slots.</p>
+    </div>
+
+    <h3>Weapon Level Progression</h3>
+    <table class="upgrade-table">
+        <thead>
+            <tr>
+                <th>Level</th>
+                <th>Materials Required</th>
+                <th>Unlocks</th>
+                <th>Cost (Credits)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Level I → II</td>
+                <td>Scrap Metal x50, Basic Circuits x10</td>
+                <td>+5% Damage, +1 Mod Slot</td>
+                <td>2,000</td>
+            </tr>
+            <tr>
+                <td>Level II → III</td>
+                <td>Alloy Plates x30, Power Cells x15</td>
+                <td>+8% Fire Rate, -5% Recoil</td>
+                <td>5,000</td>
+            </tr>
+            <tr>
+                <td>Level III → IV</td>
+                <td>Advanced Components x20, Rare Alloys x10</td>
+                <td>+12% Damage, +2 Mod Slots</td>
+                <td>10,000</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 30px;">Weapon-Specific Upgrades</h3>
+    
+    <h4>Assault Rifles</h4>
+    <table class="upgrade-table">
+        <thead>
+            <tr>
+                <th>Weapon</th>
+                <th>Level II Bonus</th>
+                <th>Level III Bonus</th>
+                <th>Level IV Bonus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Rattler</td>
+                <td>+10 Stability</td>
+                <td>+15% Reload Speed</td>
+                <td>+20% Magazine Size</td>
+            </tr>
+            <tr>
+                <td>Arpeggio</td>
+                <td>Tighter Burst Spread</td>
+                <td>+2 Burst Rounds</td>
+                <td>+25% Fire Rate</td>
+            </tr>
+            <tr>
+                <td>Tempest</td>
+                <td>+8% Damage</td>
+                <td>Armor Penetration +15%</td>
+                <td>+30 Round Mag</td>
+            </tr>
+            <tr>
+                <td>Bettina</td>
+                <td>+10% Heavy Damage</td>
+                <td>Reduced Recoil</td>
+                <td>+2 Penetration</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Submachine Guns</h4>
+    <table class="upgrade-table">
+        <thead>
+            <tr>
+                <th>Weapon</th>
+                <th>Level II Bonus</th>
+                <th>Level III Bonus</th>
+                <th>Level IV Bonus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Stitcher</td>
+                <td>+15% Fire Rate</td>
+                <td>+12 Round Mag</td>
+                <td>Hip Fire Accuracy +20%</td>
+            </tr>
+            <tr>
+                <td>Bobcat</td>
+                <td>Integrated Silencer</td>
+                <td>+10% Crit Chance</td>
+                <td>+25% Movement Speed</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Shotguns</h4>
+    <table class="upgrade-table">
+        <thead>
+            <tr>
+                <th>Weapon</th>
+                <th>Level II Bonus</th>
+                <th>Level III Bonus</th>
+                <th>Level IV Bonus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Il Toro</td>
+                <td>+1 Pellet</td>
+                <td>+20% Reload Speed</td>
+                <td>+15% Range</td>
+            </tr>
+            <tr>
+                <td>Vulcano</td>
+                <td>+2 Round Mag</td>
+                <td>+10% Fire Rate</td>
+                <td>+25% Damage</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="note" style="color: #a0a5b1; margin-top: 15px;">Resources are earned by completing missions, looting containers, and dismantling unwanted weapons at the Gunsmith.</p>
+</div>
+
+                <!-- PUZZLES SECTION -->
+<div id="puzzles" class="guide-section" style="display: none;">
+    <h2><i class='bx bx-puzzle'></i> Environmental Puzzles & Secrets</h2>
+    
+    <div class="puzzle-box">
+        <h4><i class='bx bx-power-off'></i> Power Relay Puzzles</h4>
+        <p>Found in Industrial Ruins and The Foundry. You need to redirect power to open doors or activate machinery.</p>
+        <div class="puzzle-solution">
+            <strong>Solution:</strong> Follow the cables from the power source. Rotate relays to connect the path. Green lights indicate correct connection. Red means blocked.
+        </div>
+    </div>
+
+    <div class="puzzle-box">
+        <h4><i class='bx bx-code-alt'></i> Security Terminal Hacks</h4>
+        <p>Found in ARC Command zones. Terminals require code breaking to disable security or access loot rooms.</p>
+        <div class="puzzle-solution">
+            <strong>Solution:</strong> Match the symbols in the correct sequence. The pattern is shown briefly at the start. Watch carefully!
+        </div>
+    </div>
+
+    <div class="puzzle-box">
+        <h4><i class='bx bx-grid'></i> Laser Grid Navigation</h4>
+        <p>Found in high-security areas. Moving laser grids block paths to valuable loot.</p>
+        <div class="puzzle-solution">
+            <strong>Solution:</strong> Look for floor panels that temporarily disable sections. Time your movement between sweeps. Using the Scanner mod reveals safe timing windows.
+        </div>
+    </div>
+
+    <div class="puzzle-box">
+        <h4><i class='bx bx-cube'></i> Resource Cache Puzzles</h4>
+        <p>Hidden caches throughout all zones require simple puzzles to open.</p>
+        <div class="puzzle-solution">
+            <strong>Solution Types:</strong><br>
+            • Pressure Plates: Stand on all plates simultaneously (use squad)<br>
+            • Sequence Buttons: Press in correct order (follow wall markings)<br>
+            • Resonator Puzzles: Match frequency by adjusting dials<br>
+            • Light Reflectors: Aim your weapon's flashlight at sensors
+        </div>
+    </div>
+
+    <div class="puzzle-box">
+        <h4><i class='bx bx-bolt'></i> Emergency Shutdown Sequence</h4>
+        <p>Found in The Foundry boss area. Must shut down safety protocols before the boss fight.</p>
+        <div class="puzzle-solution">
+            <strong>Solution:</strong> Three terminals around the arena must be activated within 30 seconds of each other. Coordinate with your squad and communicate!
+        </div>
+    </div>
+</div>
+
+                <!-- TIPS & TRICKS SECTION -->
+<div id="tips" class="guide-section" style="display: none;">
+    <h2><i class='bx bx-bulb'></i> ARC Raiders Tips & Strategies</h2>
+    
+    <div class="tips-grid">
+        <div class="tip-card">
+            <h4><i class='bx bx-group'></i> Squad Composition</h4>
+            <p>Always run a balanced squad: 1 Assault (Rattler/Tempest), 1 Support (Stitcher/Repair Tool), 1 Sniper (Osprey/Renegade). This covers all combat situations.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-bolt'></i> Weak Points</h4>
+            <p>All ARC units have glowing weak points. Shoot these for 3x damage. Scout Drones: Power core on back. Brutes: Exposed coolant tanks.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-cog'></i> Upgrade Priority</h4>
+            <p>Upgrade your primary weapon to Level II first. Then save for mod slots. Damage upgrades > Fire rate > Reload speed for most weapons.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-health'></i> Healing & Revival</h4>
+            <p>Carry at least 2 Medkits. When reviving teammates, deploy smoke cover first. The Repair Tool can heal from range.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-map'></i> Resource Farming</h4>
+            <p>Best scrap farming: Zone 1 speed runs (5-7 min). Best rare materials: Zone 3 boss runs. Always loot every container.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-target-lock'></i> Enemy Priority</h4>
+            <p>Kill order: Shieldbearers (disable shields) > Grenadiers (explosive) > Stalkers (flanking) > Brutes (last, they're slow).</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top: 30px;">Boss Strategies</h3>
+    
+    <div class="tip-card" style="margin-top: 15px;">
+        <h4><i class='bx bx-sitemap'></i> Zone 3 Boss: The Juggernaut</h4>
+        <p><strong>Phase 1:</strong> Shoot leg joints to slow it down. Avoid the ground slam attack (red circle indicator).</p>
+        <p><strong>Phase 2:</strong> Back armor opens revealing core. One player distracts while others damage core.</p>
+        <p><strong>Phase 3:</strong> Enraged mode. Use the environment for cover. Save ultimate abilities for this phase.</p>
+    </div>
+
+    <div class="tip-card" style="margin-top: 15px;">
+        <h4><i class='bx bx-sitemap'></i> Zone 4 Boss: ARC Commander</h4>
+        <p><strong>Phase 1:</strong> Shielded by drones. Kill drones first (4 total).</p>
+        <p><strong>Phase 2:</strong> Commander attacks with energy blades. Maintain distance, shoot when it overextends.</p>
+        <p><strong>Phase 3:</strong> Calls reinforcements. Focus Commander while support players handle adds.</p>
+        <p style="color: #ecdb7c; margin-top: 10px;"><i class='bx bx-star'></i> Pro Tip: Save your best weapon mods and consumables for this fight.</p>
+    </div>
+
+    <h3 style="margin-top: 30px;">Pro Tips</h3>
+    <div class="tips-grid">
+        <div class="tip-card">
+            <h4><i class='bx bx-radio'></i> Ping System</h4>
+            <p>Use the ping system constantly. Mark enemies, loot, and danger. Communication wins games.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-run'></i> Tactical Retreat</h4>
+            <p>If a mission goes bad, retreat to previous area. Enemies won't follow through loading zones.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-time'></i> Daily Missions</h4>
+            <p>Always complete daily missions for bonus credits and rare materials. Resets every 24 hours.</p>
+        </div>
+        <div class="tip-card">
+            <h4><i class='bx bx-gift'></i> Free Rewards</h4>
+            <p>Check the shop daily for free item bundles. Sometimes contains weapon mods and consumables.</p>
+        </div>
+    </div>
+</div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Completion Progress</h3>
+                    <p>Guide Completion: 75%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Last updated: Chapter 5 added</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('walkthrough')"><i class='bx bx-book-open'></i> Main Walkthrough</a>
+                    <a href="#" class="quick-link" onclick="showSection('map')"><i class='bx bx-map'></i> All Maps</a>
+                    <a href="#" class="quick-link" onclick="showSection('items')"><i class='bx bx-backpack'></i> Weapons & Items</a>
+                    <a href="#" class="quick-link" onclick="showSection('upgrades')"><i class='bx bx-upgrade'></i> Upgrade Guide</a>
+                    <a href="#" class="quick-link" onclick="showSection('puzzles')"><i class='bx bx-puzzle'></i> Puzzle Solutions</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Tips & Tricks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('walkthrough').style.display = 'none';
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('items').style.display = 'none';
+            document.getElementById('upgrades').style.display = 'none';
+            document.getElementById('puzzles').style.display = 'none';
+            document.getElementById('tips').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Find which tab was clicked (based on text or we can set data attributes)
+            const tabTexts = ['walkthrough', 'map', 'items', 'upgrades', 'puzzles', 'tips'];
+            const index = tabTexts.indexOf(sectionId);
+            if (index !== -1) {
+                tabs[index].classList.add('active');
+            }
+        }
+
+        // Video placeholder click
+        function playVideo() {
+            // In a real implementation, this would load a YouTube embed
+            alert('Video would play here - In production, embed YouTube or your video player');
+            // Example of embedding YouTube:
+            // window.location.href = 'https://www.youtube.com/watch?v=VIDEO_ID';
+        }
+
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

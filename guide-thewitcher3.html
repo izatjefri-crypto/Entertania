@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Witcher 3: Wild Hunt Complete Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #b31919;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #ff6f7e;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- GAME MODE CARDS --- */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .mode-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .mode-card h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .mode-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .mode-tag {
+            display: inline-block;
+            background: #2a3456;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+
+        /* --- ITEMS/WEAPONS GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- BESTIARY GRID --- */
+        .bestiary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .bestiary-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .bestiary-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bestiary-card h4 i {
+            color: #b31919;
+        }
+
+        .bestiary-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .weakness-tag {
+            background: #2a3456;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #b31919;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #b31919;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 95%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- DLC SECTION --- */
+        .dlc-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .dlc-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .dlc-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .dlc-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .dlc-badge {
+            background: #b31919;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .items-grid, .tips-grid, .mode-grid, .bestiary-grid, .dlc-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid, .tips-grid, .mode-grid, .bestiary-grid, .dlc-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>The Witcher 3: Wild Hunt Guide</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>The Witcher 3: Wild Hunt Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong> Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong> CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION -->
+        <div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/The Witcher 3 The ULTIMATE Beginners Guide (2025).mp4" type="video/mp4">
+            
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('start')">Getting Started</button>
+            <button class="guide-tab" onclick="showSection('walkthrough')">Walkthrough</button>
+            <button class="guide-tab" onclick="showSection('combat')">Combat & Signs</button>
+            <button class="guide-tab" onclick="showSection('crafting')">Crafting & Alchemy</button>
+            <button class="guide-tab" onclick="showSection('bestiary')">Bestiary</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Secrets</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- GETTING STARTED SECTION -->
+                <div id="start" class="guide-section">
+                    <h2><i class='bx bx-flag'></i> Getting Started</h2>
+                    
+                    <h3>Game Modes Explained [citation:1]</h3>
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <h4>Fresh Start</h4>
+                            <p>Default mode. Start from the beginning with Lv1 Geralt. Best for first-time players.</p>
+                            <span class="mode-tag">100% Complete</span>
+                            <span class="mode-tag">Story from scratch</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>New Game+</h4>
+                            <p>Keep your level, gear and money. Start story over with scaled enemies.</p>
+                            <span class="mode-tag">Retain progress</span>
+                            <span class="mode-tag">Harder difficulty</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Hearts of Stone Only</h4>
+                            <p>Start at Lv32 with relic gear, 20,000 gold and 42 skill points. Main quest completed.</p>
+                            <span class="mode-tag">Lv32 Start</span>
+                            <span class="mode-tag">DLC Focus</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Blood and Wine Only</h4>
+                            <p>Start at Lv34 with relic gear, 20,000 gold and 44 skill points. Better Gwent cards.</p>
+                            <span class="mode-tag">Lv34 Start</span>
+                            <span class="mode-tag">Toussaint Ready</span>
+                        </div>
+                    </div>
+
+                    <h3>Difficulty Levels</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-smile'></i></div>
+                            <h4>Just the Story</h4>
+                            <p>Easy difficulty. Focus on narrative. Enemies deal less damage.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-meh'></i></div>
+                            <h4>Story and Sword</h4>
+                            <p>Normal difficulty. Balanced combat. Recommended for first playthrough.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-angry'></i></div>
+                            <h4>Blood and Broken Bones</h4>
+                            <p>Hard difficulty. Enemies hit harder. Better loot drops.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-skull'></i></div>
+                            <h4>Death March</h4>
+                            <p>Hardest difficulty. Enemies have more health. Trophy for completion.</p>
+                        </div>
+                    </div>
+
+                    <h3>Essential Early Tips [citation:3][citation:6]</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> Explore Everything</h4>
+                            <p>Check notice boards for contracts and side quests. Discover ? marks on map for loot and XP.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-food-menu'></i> Eat Food</h4>
+                            <p>Always carry food for health regeneration. Bread, water, and meat are essential early game.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-dumbbell'></i> Practice Dodging</h4>
+                            <p>Learn to dodge and roll. Blocking doesn't work against monsters. Timing is everything.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-diamond'></i> Loot Everything</h4>
+                            <p>Loot all containers but avoid guards in cities. Sell junk to merchants for coin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WALKTHROUGH SECTION -->
+                <div id="walkthrough" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-book-open'></i> Main Story Walkthrough</h2>
+                    
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Prologue: Kaer Morhen</h3>
+                            <p>Tutorial section. Learn combat basics, follow Vesemir, fight ghouls, find Vesemir's crystal skull. Choose to run the walls for movement tutorial. [citation:8]</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 30 min</span>
+                                <span><i class='bx bx-trophy'></i> 250 XP</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>The Nilfgaardian Connection</h3>
+                            <p>Travel to White Orchard, meet the innkeeper, learn Gwent basics, interrogate patrons. First introduction to the world.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 45 min</span>
+                                <span><i class='bx bx-card'></i> Gwent Cards</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Wandering in the Dark [citation:5]</h3>
+                            <p>Follow Keira Metz into elven ruins. Navigate through portals, fight drowners and rats, destroy rat nests with Igni. Defeat the golem and Nithral of the Wild Hunt.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 90 min</span>
+                                <span><i class='bx bx-trophy'></i> 650+ XP</span>
+                                <span><i class='bx bx-gem'></i> Eye of Nehaleni</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>The Battle of Kaer Morhen [citation:2]</h3>
+                            <p>Defend the keep from the Wild Hunt. Close portals using dimeritium bombs or Yrden. Protect Lambert, help Triss fight warriors, retreat to the main gate.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 60 min</span>
+                                <span><i class='bx bx-trophy'></i> Critical Story Point</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Blood on the Battlefield</h3>
+                            <p>Aftermath of the battle. Deal with the consequences and prepare for the final confrontation.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 45 min</span>
+                                <span><i class='bx bx-star'></i> Branching Choices</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMBAT & SIGNS SECTION -->
+                <div id="combat" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-shield'></i> Combat & Signs Guide</h2>
+                    
+                    <h3>Witcher Signs</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Quen</h4>
+                            <p>Protective shield. Absorbs damage. Essential for Death March difficulty.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-fire'></i></div>
+                            <h4>Igni</h4>
+                            <p>Fire stream. Sets enemies ablaze. Good for destroy nests and crowd control.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-wind'></i></div>
+                            <h4>Aard</h4>
+                            <p>Telekinetic blast. Knocks back enemies. Can destroy walls and stalagmites.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-message'></i></div>
+                            <h4>Axii</h4>
+                            <p>Mind control. Turns enemies into allies. Opens dialogue options.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-traffic-cone'></i></div>
+                            <h4>Yrden</h4>
+                            <p>Magic trap. Slows enemies. Essential for wraiths and closing portals.</p>
+                        </div>
+                    </div>
+
+                    <h3>Combat Tips</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-dodge'></i> Dodge vs Roll</h4>
+                            <p>Dodge for short movement to stay close. Roll to create distance from groups.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-sword'></i> Parry Humans</h4>
+                            <p>Parry works against humans, not monsters. Time it right for counter attacks.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-target-lock'></i> Target Weakness</h4>
+                            <p>Use bestiary to learn enemy weaknesses. Apply correct oils and signs.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-upgrade'></i> Upgrade Signs</h4>
+                            <p>Invest skill points in sign upgrades. Alternate sign modes are powerful.</p>
+                        </div>
+                    </div>
+
+                    <h3>Best Early Game Skills [citation:4]</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-heart'></i></div>
+                            <h4>Gourmet</h4>
+                            <p>Food regeneration lasts 20 minutes. Best early game survivability skill.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Exploding Shield</h4>
+                            <p>Quen shield knocks back enemies when broken. Great for crowd control.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-dumbbell'></i></div>
+                            <h4>Strength Training</h4>
+                            <p>Increases attack power with swords. Core damage skill.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CRAFTING & ALCHEMY SECTION -->
+                <div id="crafting" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-flask'></i> Crafting & Alchemy</h2>
+                    
+                    <h3>Witcher Gear Schools [citation:6][citation:9]</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Ursine School</h4>
+                            <p>Heavy armor. High protection, slow stamina regen. Found in Skellige.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-run'></i></div>
+                            <h4>Feline School</h4>
+                            <p>Light armor. High attack power, critical hits. Found in Novigrad/Velen.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-water'></i></div>
+                            <h4>Griffin School</h4>
+                            <p>Medium armor. Sign intensity boost. Found in Velen.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-wolf'></i></div>
+                            <h4>Wolven School</h4>
+                            <p>Balanced stats. Added in Blood and Wine DLC.</p>
+                        </div>
+                    </div>
+
+                    <h3>Essential Potions [citation:3]</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-heart'></i></div>
+                            <h4>Swallow</h4>
+                            <p>Basic healing potion. Regenerates vitality over time.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-bolt'></i></div>
+                            <h4>Thunderbolt</h4>
+                            <p>Increases attack power. Best for boss fights.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Maribor Forest</h4>
+                            <p>Increases adrenaline gain. Helps with sign casting.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-crown'></i></div>
+                            <h4>White Raffard's Decoction</h4>
+                            <p>Instant healing. Emergency potion.</p>
+                        </div>
+                    </div>
+
+                    <h3>Alchemy Tips</h3>
+                    <div class="tip-card">
+                        <h4><i class='bx bx-beer'></i> Toxicity Management</h4>
+                        <p>Max toxicity increases with alchemy skills. Use decoctions wisely - they last longer but use more toxicity.</p>
+                    </div>
+                    <div class="tip-card" style="margin-top: 15px;">
+                        <h4><i class='bx bx-refresh'></i> Meditation Refills</h4>
+                        <p>Meditating with any alcohol in inventory refills all potions, bombs, and blade oils. Strong alcohol works best.</p>
+                    </div>
+                </div>
+
+                <!-- BESTIARY SECTION -->
+                <div id="bestiary" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-spider'></i> Bestiary & Monster Guide [citation:3][citation:6]</h2>
+                    
+                    <div class="bestiary-grid">
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-spider'></i> Wraiths</h4>
+                            <p>Ethereal spirits. Immune to physical damage while ethereal.</p>
+                            <span class="weakness-tag">Yrden</span>
+                            <span class="weakness-tag">Specter Oil</span>
+                            <span class="weakness-tag">Moon Dust</span>
+                        </div>
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-skull'></i> Ghouls</h4>
+                            <p>Common monsters. Attack in groups. Feed on corpses.</p>
+                            <span class="weakness-tag">Cursed Oil</span>
+                            <span class="weakness-tag">Axii</span>
+                            <span class="weakness-tag">Fire</span>
+                        </div>
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-shield'></i> Golems</h4>
+                            <p>Magical constructs. Slow but hard-hitting. Elemental type.</p>
+                            <span class="weakness-tag">Elementa Oil</span>
+                            <span class="weakness-tag">Quen</span>
+                            <span class="weakness-tag">Aard</span>
+                        </div>
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-sad'></i> Leshen</h4>
+                            <p>Ancient forest spirits. Summon wolves. Very dangerous.</p>
+                            <span class="weakness-tag">Relict Oil</span>
+                            <span class="weakness-tag">Igni</span>
+                            <span class="weakness-tag">Devil's Puffball</span>
+                        </div>
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-dragon'></i> Draconids</h4>
+                            <p>Cockatrice, Wyvern, Forktail. Flying enemies.</p>
+                            <span class="weakness-tag">Draconid Oil</span>
+                            <span class="weakness-tag">Aard</span>
+                            <span class="weakness-tag">Crossbow</span>
+                        </div>
+                        <div class="bestiary-card">
+                            <h4><i class='bx bx-vampire'></i> Vampires</h4>
+                            <p>Ekimmara, Katakan, Bruxa. Fast and deadly.</p>
+                            <span class="weakness-tag">Vampire Oil</span>
+                            <span class="weakness-tag">Black Blood</span>
+                            <span class="weakness-tag">Moon Dust</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIPS & SECRETS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Tips, Tricks & Secrets</h2>
+                    
+                    <h3>Money Making Guide [citation:4]</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-gem'></i> Loot and Sell</h4>
+                            <p>Loot everything, sell weapons to blacksmiths, armor to armorers. Best prices in Novigrad.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> ? Marks</h4>
+                            <p>Clear all question marks on map. Hidden treasures often contain valuable gear.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-card'></i> Gwent Cards</h4>
+                            <p>Play Gwent early, buy all cards from innkeepers. Some cards are missable.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-crown'></i> Witcher Contracts</h4>
+                            <p>Always negotiate higher pay. Complete contracts for best coin and XP.</p>
+                        </div>
+                    </div>
+
+                    <h3>Gwent Guide [citation:4]</h3>
+                    <div class="tip-card">
+                        <h4><i class='bx bx-card'></i> Gwent: Playing Thaler</h4>
+                        <p>Complete "A Deadly Plot" then find Thaler at the Seven Cats Inn. He plays Scoia'tael deck with Muster units. Use Biting Frost to counter. [citation:4]</p>
+                    </div>
+                    <div class="tip-card" style="margin-top: 15px;">
+                        <h4><i class='bx bx-trophy'></i> Missable Cards</h4>
+                        <p>Some Gwent cards are missable. Play everyone, buy all cards, complete all Gwent quests before finishing the game.</p>
+                    </div>
+
+                    <h3>Place of Power Locations [citation:4]</h3>
+                    <div class="tip-card">
+                        <p>Places of Power grant one free ability point when activated. Found throughout all regions. Use them early for skill boosts.</p>
+                    </div>
+
+                    <h3>DLC Expansions [citation:7]</h3>
+                    <div class="dlc-grid">
+                        <div class="dlc-card">
+                            <h4>Hearts of Stone</h4>
+                            <p>Follows Olgierd von Everec and Gaunter O'Dimm. Introduces Shani. Recommended Level 30+.</p>
+                            <span class="dlc-badge">10+ hours</span>
+                        </div>
+                        <div class="dlc-card">
+                            <h4>Blood and Wine</h4>
+                            <p>Travel to Toussaint. New region, new mutations, new Gwent cards. Recommended Level 35+.</p>
+                            <span class="dlc-badge">20+ hours</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+                <div class="info-card">
+                    <h3><i class='bx bx-group'></i> Top Contributors</h3>
+                    <div class="contributor-list">
+                        <div class="contributor-item">
+                            <div class="contributor-avatar"></div>
+                            <div class="contributor-info">
+                                <h4>xLetalis</h4>
+                                <p>Lore Expert • 15k edits</p>
+                            </div>
+                        </div>
+                        <div class="contributor-item">
+                            <div class="contributor-avatar"></div>
+                            <div class="contributor-info">
+                                <h4>Phoenix</h4>
+                                <p>Combat Specialist • 12k edits</p>
+                            </div>
+                        </div>
+                        <div class="contributor-item">
+                            <div class="contributor-avatar"></div>
+                            <div class="contributor-info">
+                                <h4>GwentMaster</h4>
+                                <p>Card Collector • 9k edits</p>
+                            </div>
+                        </div>
+                        <div class="contributor-item">
+                            <div class="contributor-avatar"></div>
+                            <div class="contributor-info">
+                                <h4>WitcherFan</h4>
+                                <p>Lore Keeper • 7k edits</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 95%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Updated for Next-Gen Update</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('start')"><i class='bx bx-flag'></i> Getting Started</a>
+                    <a href="#" class="quick-link" onclick="showSection('walkthrough')"><i class='bx bx-book-open'></i> Walkthrough</a>
+                    <a href="#" class="quick-link" onclick="showSection('combat')"><i class='bx bx-shield'></i> Combat & Signs</a>
+                    <a href="#" class="quick-link" onclick="showSection('crafting')"><i class='bx bx-flask'></i> Crafting & Alchemy</a>
+                    <a href="#" class="quick-link" onclick="showSection('bestiary')"><i class='bx bx-spider'></i> Bestiary</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Tips & Secrets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('witcher3SidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('witcher3SidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('witcher3SidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('walkthrough').style.display = 'none';
+            document.getElementById('combat').style.display = 'none';
+            document.getElementById('crafting').style.display = 'none';
+            document.getElementById('bestiary').style.display = 'none';
+            document.getElementById('tips').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const tabTexts = ['start', 'walkthrough', 'combat', 'crafting', 'bestiary', 'tips'];
+            const index = tabTexts.indexOf(sectionId);
+            if (index !== -1) {
+                tabs[index].classList.add('active');
+            }
+        }
+
+        // Check login status
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const sidebarFooter = document.querySelector('.sidebar__footer');
+            const navActions = document.getElementById('navActions');
+            
+            if (currentUser && currentUser.loggedIn) {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="user-profile" onclick="window.location.href='profile.html'">
+                            <img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=32'}" alt="Profile">
+                            <span>${currentUser.username}</span>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom: 10px;">
+                            <i class='bx bx-user-circle'></i> ${currentUser.username}
+                        </button>
+                        <button class="logout-btn" onclick="logout()" style="width: 100%; background: transparent; border: 1px solid #b31919; color: #b31919; padding: 8px; border-radius: 20px; cursor: pointer;">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
+                    `;
+                }
+            } else {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="login-prompt">
+                            <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                            <button onclick="window.location.href='login.html'">Log In</button>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <a href="login.html" style="text-decoration: none; display: block;">
+                            <button class="btn-login">
+                                <i class='bx bx-user-circle'></i> Sign up or log in
+                            </button>
+                        </a>
+                    `;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+
+        // Add logout button CSS
+        const logoutStyle = document.createElement('style');
+        logoutStyle.textContent = `
+            .logout-btn {
+                width: 100%;
+                background: transparent;
+                border: 1px solid #b31919;
+                color: #b31919;
+                padding: 10px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .logout-btn:hover {
+                background: #b31919;
+                color: white;
+            }
+            
+            .login-prompt {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .login-prompt button {
+                background: transparent;
+                border: 1px solid #4a90e2;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+            
+            .login-prompt .signup-btn {
+                background: linear-gradient(135deg, #4a90e2, #3570b2);
+                border: none;
+            }
+            
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: rgba(255,255,255,0.1);
+                padding: 6px 12px;
+                border-radius: 25px;
+                cursor: pointer;
+            }
+            
+            .user-profile img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        `;
+        document.head.appendChild(logoutStyle);
+
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

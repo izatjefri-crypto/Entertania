@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #4a90e2;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- PROFILE HEADER --- */
+        .profile-header {
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #2a3456;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(90deg, #4a90e2, #3570b2, #1e4b8a);
+            opacity: 0.3;
+        }
+
+        .profile-info {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #4a90e2;
+            object-fit: cover;
+            background: #2a3456;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name-large {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-badge {
+            background: #4a90e2;
+            color: white;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .profile-username-large {
+            color: #4a90e2;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a90e2;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #a0a5b1;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .edit-profile-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .edit-profile-btn:hover {
+            background: #3570b2;
+            transform: translateY(-2px);
+        }
+
+        /* --- PROFILE TABS --- */
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #2a3456;
+            padding-bottom: 10px;
+        }
+
+        .profile-tab {
+            padding: 10px 25px;
+            background: transparent;
+            border: none;
+            color: #a0a5b1;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .profile-tab:hover {
+            color: white;
+        }
+
+        .profile-tab.active {
+            color: white;
+        }
+
+        .profile-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #4a90e2;
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* --- PROFILE CONTENT GRID --- */
+        .profile-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- ACTIVITY CARDS --- */
+        .activity-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #2a3456;
+        }
+
+        .activity-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-card h3 i {
+            color: #4a90e2;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateX(5px);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 0 -10px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-icon i {
+            font-size: 20px;
+            color: #4a90e2;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .activity-meta i {
+            margin-right: 3px;
+            color: #4a90e2;
+        }
+
+        /* --- WISHLIST GRID --- */
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .wishlist-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .wishlist-item:hover {
+            transform: translateY(-5px);
+            border: 1px solid #4a90e2;
+        }
+
+        .wishlist-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .wishlist-item h4 {
+            font-size: 14px;
+        }
+
+        .wishlist-price {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .current-price {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        .old-price {
+            color: #a0a5b1;
+            text-decoration: line-through;
+        }
+
+        .price-drop {
+            color: #b31919;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* --- SETTINGS CARD --- */
+        .settings-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #2a3456;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item .label {
+            color: #a0a5b1;
+        }
+
+        .settings-item .value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: #2a3456;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: #4a90e2;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            left: 28px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .profile-actions {
+                margin-left: 0;
+            }
+            
+            .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <i class='bx bx-user-circle'></i>
+                    <span>My Profile</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- PROFILE HEADER -->
+        <div class="profile-header">
+            <div class="profile-cover"></div>
+            <div class="profile-info">
+                <img src="" alt="Profile" class="profile-avatar-large" id="profileAvatar">
+                <div class="profile-details">
+                    <div class="profile-name-large">
+                        <span id="profileFullName">Loading...</span>
+                        <span class="profile-badge" id="profileBadge">Member</span>
+                    </div>
+                    <div class="profile-username-large" id="profileUsername">@username</div>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="profilePosts">0</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileReviews">0</div>
+                            <div class="stat-label">Reviews</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileFollowers">0</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="profileFollowing">0</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <button class="edit-profile-btn" onclick="editProfile()">
+                        <i class='bx bx-edit'></i> Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE TABS -->
+        <div class="profile-tabs">
+            <button class="profile-tab active" onclick="switchTab('activity')">Activity</button>
+            <button class="profile-tab" onclick="switchTab('wishlist')">Wishlist</button>
+            <button class="profile-tab" onclick="switchTab('reviews')">Reviews</button>
+            <button class="profile-tab" onclick="switchTab('settings')">Settings</button>
+        </div>
+
+        <!-- PROFILE CONTENT -->
+        <div class="profile-content" id="profileContent">
+            <!-- Activity Feed (Default) -->
+            <div class="profile-main" id="activitySection">
+                <div class="activity-card">
+                    <h3><i class='bx bx-time'></i> Recent Activity</h3>
+                    
+                    <div class="activity-item" onclick="window.location.href='thread-detail.html?id=1'">
+                        <div class="activity-icon"><i class='bx bx-message-detail'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Posted in Elden Ring Discussion</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-time'></i> 2 hours ago</span>
+                                <span><i class='bx bx-message'></i> 24 replies</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item" onclick="window.location.href='review-resident-evil.html'">
+                        <div class="activity-icon"><i class='bx bx-star'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Reviewed Resident Evil Requiem</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-time'></i> 1 day ago</span>
+                                <span><i class='bx bx-heart'></i> 12 likes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item" onclick="window.location.href='price-tracker.html'">
+                        <div class="activity-icon"><i class='bx bx-line-chart'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Added price alert for Baldur's Gate 3</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-time'></i> 3 days ago</span>
+                                <span><i class='bx bx-purchase-tag'></i> Target: RM150</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card">
+                    <h3><i class='bx bx-bookmark'></i> Saved Guides</h3>
+                    
+                    <div class="activity-item" onclick="window.location.href='residentevilrequiemguides.html'">
+                        <div class="activity-icon"><i class='bx bx-compass'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Resident Evil Requiem - Complete Guide</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-group'></i> 5 contributors</span>
+                                <span><i class='bx bx-time'></i> Saved 2 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item" onclick="window.location.href='guide-elden-ring.html'">
+                        <div class="activity-icon"><i class='bx bx-compass'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Elden Ring - Boss Guide</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-group'></i> 12 contributors</span>
+                                <span><i class='bx bx-time'></i> Saved 1 week ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wishlist Section (Hidden by default) -->
+            <div class="profile-main" id="wishlistSection" style="display: none;">
+                <div class="activity-card">
+                    <h3><i class='bx bx-heart'></i> My Wishlist <span style="color: #4a90e2; font-size: 14px; margin-left: 10px;" id="wishlistCount">(3 items)</span></h3>
+                    
+                    <div class="wishlist-grid" id="wishlistContainer">
+                        <!-- Wishlist items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section (Hidden by default) -->
+            <div class="profile-main" id="reviewsSection" style="display: none;">
+                <div class="activity-card">
+                    <h3><i class='bx bx-star'></i> My Reviews</h3>
+                    
+                    <div class="activity-item" onclick="window.location.href='review-resident-evil.html'">
+                        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <div class="activity-content">
+                            <div class="activity-title">Resident Evil Requiem Review</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-star'></i> 8.5/10</span>
+                                <span><i class='bx bx-message'></i> 24 comments</span>
+                                <span><i class='bx bx-heart'></i> 45 likes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item" onclick="window.location.href='review-elden-ring.html'">
+                        <img src="assets/images/Eldenring.jpeg" alt="Elden Ring" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <div class="activity-content">
+                            <div class="activity-title">Elden Ring: Shadow of the Erdtree Review</div>
+                            <div class="activity-meta">
+                                <span><i class='bx bx-star'></i> 9.5/10</span>
+                                <span><i class='bx bx-message'></i> 156 comments</span>
+                                <span><i class='bx bx-heart'></i> 234 likes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section (Hidden by default) -->
+            <div class="profile-main" id="settingsSection" style="display: none;">
+                <div class="settings-card">
+                    <h3 style="margin-bottom: 20px;"><i class='bx bx-cog'></i> Account Settings</h3>
+                    
+                    <div class="settings-item">
+                        <span class="label">Email Notifications</span>
+                        <div class="toggle-switch active" onclick="toggleSetting(this, 'email')"></div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <span class="label">Price Drop Alerts</span>
+                        <div class="toggle-switch active" onclick="toggleSetting(this, 'price')"></div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <span class="label">Newsletter Subscription</span>
+                        <div class="toggle-switch" onclick="toggleSetting(this, 'newsletter')"></div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <span class="label">Public Profile</span>
+                        <div class="toggle-switch active" onclick="toggleSetting(this, 'public')"></div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <span class="label">Member Since</span>
+                        <span class="value" id="memberSince">March 15, 2026</span>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <span class="label">Account Type</span>
+                        <span class="value" id="accountType">Free Member</span>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button class="edit-profile-btn" onclick="changePassword()" style="background: transparent; border: 1px solid #4a90e2;">
+                            <i class='bx bx-lock'></i> Change Password
+                        </button>
+                        <button class="edit-profile-btn" onclick="logout()" style="background: transparent; border: 1px solid #b31919; color: #b31919;">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="profile-side">
+                <div class="activity-card">
+                    <h3><i class='bx bx-trophy'></i> Achievements</h3>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class='bx bx-message'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">First Post</div>
+                            <div class="activity-meta">Posted your first discussion</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class='bx bx-star'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Reviewer</div>
+                            <div class="activity-meta">Wrote 5 game reviews</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-icon"><i class='bx bx-purchase-tag'></i></div>
+                        <div class="activity-content">
+                            <div class="activity-title">Deal Hunter</div>
+                            <div class="activity-meta">Saved RM500+ on games</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-card">
+                    <h3><i class='bx bx-group'></i> Following</h3>
+                    
+                    <div class="activity-item">
+                        <img src="https://ui-avatars.com/api/?name=FalconX&background=4a90e2&color=fff&size=40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div class="activity-content">
+                            <div class="activity-title">FalconX</div>
+                            <div class="activity-meta">Game Reviewer</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <img src="https://ui-avatars.com/api/?name=FrostMage&background=4a90e2&color=fff&size=40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div class="activity-content">
+                            <div class="activity-title">FrostMage</div>
+                            <div class="activity-meta">Strategy Expert</div>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <img src="https://ui-avatars.com/api/?name=DragonSlayer&background=4a90e2&color=fff&size=40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div class="activity-content">
+                            <div class="activity-title">DragonSlayer</div>
+                            <div class="activity-meta">Lore Master</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('profileSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('profileSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('profileSidebarState', 'open');
+            }
+        });
+
+        // Load user data
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        
+        if (!currentUser || !currentUser.loggedIn) {
+            window.location.href = 'login.html';
+        } else {
+            // Display user info
+            document.getElementById('profileAvatar').src = currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=128';
+            document.getElementById('profileFullName').textContent = currentUser.name || currentUser.username;
+            document.getElementById('profileUsername').textContent = '@' + currentUser.username;
+            
+            // Random stats for demo
+            document.getElementById('profilePosts').textContent = Math.floor(Math.random() * 50) + 10;
+            document.getElementById('profileReviews').textContent = Math.floor(Math.random() * 20) + 5;
+            document.getElementById('profileFollowers').textContent = Math.floor(Math.random() * 100) + 50;
+            document.getElementById('profileFollowing').textContent = Math.floor(Math.random() * 30) + 10;
+            document.getElementById('memberSince').textContent = currentUser.joinDate || 'March 2026';
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            // Hide all sections
+            document.getElementById('activitySection').style.display = 'none';
+            document.getElementById('wishlistSection').style.display = 'none';
+            document.getElementById('reviewsSection').style.display = 'none';
+            document.getElementById('settingsSection').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(tab + 'Section').style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.profile-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tab === 'activity') tabs[0].classList.add('active');
+            else if (tab === 'wishlist') tabs[1].classList.add('active');
+            else if (tab === 'reviews') tabs[2].classList.add('active');
+            else if (tab === 'settings') tabs[3].classList.add('active');
+
+            // Load wishlist if tab is wishlist
+            if (tab === 'wishlist') {
+                loadWishlist();
+            }
+        }
+
+        function loadWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const container = document.getElementById('wishlistContainer');
+            const games = [
+                { id: 0, name: "Baldur's Gate 3", image: "assets/images/Baldur.jpeg", price: 175.20 },
+                { id: 1, name: "Cyberpunk 2077", image: "assets/images/Cyberpunk.jpeg", price: 109.50 },
+                { id: 2, name: "Elden Ring", image: "assets/images/Eldenring.jpeg", price: 169.15 }
+            ];
+            
+            let html = '';
+            wishlist.forEach(item => {
+                const game = games[item.gameId] || games[0];
+                html += `
+                    <div class="wishlist-item" onclick="window.location.href='price-tracker.html'">
+                        <img src="${game.image}" alt="${game.name}">
+                        <h4>${game.name}</h4>
+                        <div class="wishlist-price">
+                            <span class="current-price">RM${game.price.toFixed(2)}</span>
+                            <span class="old-price">Target: RM${item.targetPrice}</span>
+                        </div>
+                        ${game.price <= item.targetPrice ? '<span class="price-drop">🔥 Price Drop!</span>' : ''}
+                    </div>
+                `;
+            });
+            
+            if (html === '') {
+                html = '<p style="color: #a0a5b1; text-align: center; padding: 20px;">Your wishlist is empty</p>';
+            }
+            
+            container.innerHTML = html;
+            document.getElementById('wishlistCount').textContent = `(${wishlist.length} items)`;
+        }
+
+        function editProfile() {
+            alert('Edit profile feature coming soon!');
+        }
+
+        function changePassword() {
+            alert('Change password feature coming soon!');
+        }
+
+        function toggleSetting(element, setting) {
+            element.classList.toggle('active');
+            const status = element.classList.contains('active') ? 'enabled' : 'disabled';
+            alert(`${setting} notifications ${status}`);
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        // Check login status for navbar
+        function checkLoginStatus() {
+            const navActions = document.getElementById('navActions');
+            const sidebarFooter = document.querySelector('.sidebar__footer');
+            
+            if (currentUser && currentUser.loggedIn) {
+                navActions.innerHTML = `
+                    <div class="user-profile" onclick="window.location.href='profile.html'">
+                        <img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=32'}" alt="Profile">
+                        <span>${currentUser.username}</span>
+                    </div>
+                `;
+                
+                sidebarFooter.innerHTML = `
+                    <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom: 10px;">
+                        <i class='bx bx-user-circle'></i> ${currentUser.username}
+                    </button>
+                    <button class="logout-btn" onclick="logout()" style="width: 100%; background: transparent; border: 1px solid #b31919; color: #b31919; padding: 8px; border-radius: 20px; cursor: pointer;">
+                        <i class='bx bx-log-out'></i> Logout
+                    </button>
+                `;
+            }
+        }
+
+        checkLoginStatus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<meta charset="UTF-8">
+<title>Crimson Desert | Entertania</title>
+<!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+
+<style>
+
+:root {
+    --sidebar-width: 250px;
+}
+
+/* Main page wrapper */
+.page-content {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s ease;
+    padding: 30px;
+}
+
+/* When sidebar closed */
+.sidebar.closed ~ .page-content {
+    margin-left: 0;
+}
+
+/* --- SIDEBAR FIX (Disatukan) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+             border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+           width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        /* --- TOGGLE BUTTON (ANAK PANAH) --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px; /* Kedudukan asal di hujung sidebar */
+            top: 25px;
+            width: 30px;
+            height: 30px;
+            background: #2d3446;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000; /* Paling atas sekali */
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- CONTENT FIX --- */
+        .content {
+            margin-left: 250px; /* match your sidebar width */
+            padding: 40px;
+            padding-top: 80px;
+            min-height: calc(100vh - 120px); /* content pushes footer to bottom */
+        }
+
+        .content.expanded {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        /* Search Bar */
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .btn-login:active {
+    transform: scale(0.95); /* Kesan butang ditekan */
+    background-color: #e0e0e0;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #14171e;
+    color: white;
+}
+
+/* Header */
+.header {
+    background-color: #001242;
+    padding: 15px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+/* Hero Section */
+.hero-section { display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 40px 0; }
+.hero-content { text-align: center; max-width: 900px; }
+.hero-content h1 { font-size: 36px; font-weight: 900; color: #fff; margin: 0 0 10px 0; }
+.hero-content p { font-size: 16px; color: #ccc; margin: 0; }
+.hero-image img { width: 100%; max-width: 900px; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+/* Main Container */
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* Game Top Section */
+.game-top {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+/* Poster */
+.game-poster img {
+    width: 300px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+/* Info */
+.game-info {
+    flex: 1;
+}
+
+.game-info h2 {
+    margin-top: 0;
+}
+
+
+.about-top {
+    background: #1a1f2b;
+    border: 2px solid #2d3446;
+    border-left: 5px solid #b31919;
+    border-radius: 12px;
+
+    /* Padding dalam kotak */
+    padding: 25px 30px;
+
+    /* 👉 Margin atas & bawah (boleh ubah ikut taste) */
+    margin-top: 40px;      /* Jarak dari atas */
+    margin-bottom: 50px;   /* Jarak ke bawah (ke trailer) */
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.about-top h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 24px;
+}
+
+.about-top p {
+    margin: 0;
+    line-height: 1.7;
+    color: #ddd;
+}
+
+
+/* Details Table */
+.details {
+    margin-top: 15px;
+}
+
+.details p {
+    margin: 6px 0;
+    color: #ccc;
+}
+
+/* Video Section */
+.video-section {
+    margin-top: 40px;
+    margin-bottom: 60px; /* adds a nice gap below "About the Game" */
+}
+
+.video-section p {
+    font-size: 18px;      /* Bigger paragraph text */
+    line-height: 1.8;     /* Comfortable spacing */
+    color: #ddd;          /* Slightly lighter for readability */
+    max-width: 900px;     /* Keeps it neat */
+    margin: 0 auto 25px auto;  /* Center the text */
+}
+
+.video-section h3 {
+    margin-bottom: 30px;
+}
+
+.video-section h3 {
+    font-size: 26px;
+    color: #ffffff;
+    padding-left: 12px;
+}
+
+
+iframe {
+    width: 100%;
+    height: 450px;
+    border-radius: 10px;
+    border: none;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* This keeps it perfectly widescreen on all devices */
+    background-color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #000;
+    border-radius: 12px;
+    overflow: hidden; /* Ini akan memotong bahagian logo YouTube yang terkeluar */
+    border: 3px solid #8B0000;
+    box-shadow: 0 0 25px rgba(179, 25, 25, 0.5);
+}
+
+.video-wrapper video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: -8%;
+    left: -8%;
+    width: 116%;
+    height: 116%;
+    border: none;
+}
+
+
+/* Menghalang interaksi dengan elemen atas YouTube (Tajuk) */
+.video-overlay-blocker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Lindung bahagian tajuk atas */
+    z-index: 5;
+    background: transparent;
+}
+
+.video-wrapper:hover .video-poster::after {
+    transform: scale(1.1);
+    background: #8B0000;
+}
+
+/* Description */
+.description {
+    margin: 60px auto;
+    max-width: 850px;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+
+
+.description h3 {
+    font-size: 26px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #2d3446;
+    padding-bottom: 10px;
+}
+
+.description p {
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+
+/* Gaya untuk Gameplay Wrapper Baru */
+.gameplay-wrapper {
+    max-width: 900px;   /* Sama dengan video */
+    margin: 80px auto;  /* Center whole section */
+    padding: 0 20px;
+}
+
+.section-title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+
+.section-subtitle {
+    color: #a0a5b1;
+    margin-bottom: 25px;
+}
+
+.gameplay-video-box {
+    max-width: 900px;
+
+}
+
+.gameplay-video-box video{
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+}
+
+.gameplay-info {
+    text-align: center;
+    margin-top: 20px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+/* YouTube Custom Preview */
+
+.yt-player {
+    position: relative;
+    cursor: pointer;
+}
+
+.video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Game Bottom Section */
+.game-bottom { margin: 80px auto; max-width: 1100px; padding: 0 20px; }
+.game-bottom-wrapper { display: flex; gap: 30px; flex-wrap: wrap; align-items: flex-start; justify-content: center; background: #1a1f2b; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); }
+.game-bottom .game-poster img { width: 300px; border-radius: 12px; border: 1px solid #333; }
+.game-bottom .game-info { flex: 1; min-width: 250px; }
+.game-bottom .game-info h2 { margin-top: 0; font-size: 28px; color: #fff; margin-bottom: 15px; }
+.game-bottom .details p { margin: 6px 0; color: #ccc; }
+
+.play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    color: white;
+    background: rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.play-btn:hover {
+    background: rgba(179,25,25,0.6);
+}
+
+
+/* Back Button */
+.back-btn {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.back-btn a {
+    background-color: white;
+    color: black;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.back-btn a:hover {
+    background-color: #ddd;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #aaa;
+}
+
+/* Lightbox Zoom */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20000;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(255,255,255,0.2);
+    animation: zoomIn 0.3s ease;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Zoom Animation */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Entertania</h1>
+</div>
+
+<div class="main-container">
+
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+<aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html">
+                <img src="assets/images/Entertanialogo.jpeg" alt="Entertania">
+            </a>
+        </div>
+
+        <ul class="sidebar__list">
+             <li>
+        <a href="index.html" class="sidebar__item active">
+            <i class='bx  bx-home-alt-2'></i> Homepage
+        </a>
+    </li>
+            
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx  bx-search'></i> 
+                    <input type="text" placeholder="Search games..." id="gameSearch">
+                </div>
+            </li>
+
+         <li>
+            <a href="Forum-discussion.html" class="sidebar__item">
+            <i class='bx bx-message-detail'></i>  Forum discussion
+         </a>
+
+         </li>
+
+            <li>
+        <a href="game-reviews.html" class="sidebar__item">
+            <i class='bx  bx-star'></i>  Game Reviews
+        </a>
+    </li>
+             <li>
+        <a href="game-reviews.html" class="sidebar__item">
+            <i class='bx  bx-compass'></i> Guide
+        </a>
+    </li>
+        </ul>
+
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <div class="page-content">
+
+
+    <!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>THE NEW CRIMSON DESERT GAMEPLAY LOOKS ABSOLUTELY INSANE!!</h1>
+        <p>Watch the latest gameplay showcase and see the action unfold!</p>
+    </div>
+    <div class="hero-image">
+        <img src="assets/images/Cd.jpeg" alt="Crimson Desert">
+    </div>
+</div>
+
+
+<!-- Main Content -->
+<div class="container">
+
+
+    <!-- Video Section -->
+
+    <div class="video-section">
+
+    <p>
+       The headline “THE NEW CRIMSON DESERT GAMEPLAY LOOKS ABSOLUTELY INSANE!!” immediately captures the excitement and anticipation surrounding the latest gameplay reveal of Crimson Desert. It conveys that players are about to experience something extraordinary, with breathtaking visuals, detailed character models, and a vast, immersive world that pushes the boundaries of single-player action-adventure games. The phrase “absolutely insane” emphasizes the scale, intensity, and ambition of the game, promising epic battles, high-octane combat, and a dynamic environment filled with surprises at every turn.
+    </p>
+
+    <p>
+        Beyond just its visuals, the gameplay itself reflects meticulous design and innovation. Players can expect fluid combat systems, strategic encounters, and a variety of activities such as horseback riding, crafting, and exploring hidden corners of the open world. Every element—from environmental effects and realistic animations to interactive NPCs—works together to create a living, breathing world where players feel fully immersed in the story and challenges. The headline captures this sense of awe and excitement, hinting that Crimson Desert offers both depth and spectacle in equal measure.
+    </p>
+
+    <p>
+        Ultimately, this statement serves as a promise to gamers: the experience is larger, more engaging, and more visually stunning than anything seen in prior announcements or trailers. It teases the game’s epic narrative, strategic gameplay, and cinematic sequences, inviting players to dive into a world filled with adventure, danger, and mystery. By emphasizing how “insane” the gameplay looks, the headline positions Crimson Desert as not just another game release but a landmark moment in modern action-adventure gaming that will leave players stunned and eager for more.
+    </p>
+
+ </div>
+
+
+    <h3>Game Trailer</h3>
+
+   <div class="video-wrapper">
+    <video controls poster="assets/images/crimsondesert2.jpeg">
+        <source src="assets/videos/Crimson Desert - Release Date Reveal Trailer.mp4" type="video/mp4">
+    </video>
+</div>
+    </div>
+
+
+    <!-- Description -->
+    <div class="description">
+
+        <h3>Game details</h3>
+
+        <p>
+      Crimson Desert is set in the open-world fictional continent of Pywel, a medieval fantasy world affected by multiple conflicts and mysterious forces. Players control Kliff, a member of the Greymanes, as he navigates a world populated by rival factions, mythical creatures, and arcane forces. The game features a dynamic combat system powered by the proprietary BlackSpace Engine, combining melee sequences, combo attacks, and strategic gameplay. Players can engage in horseback combat, face large-scale bosses such as mechanical dragons, and utilize a wide array of weapons and abilities enhanced with elemental effects. In addition to combat, the game offers a variety of activities including fishing, cooking, crafting, and hunting, allowing players to engage with the world beyond battles. The open-world of Pywel is designed to be seamless and immersive, encouraging exploration and interaction with its inhabitants and environments
+        </p>
+
+        <p>
+       The narrative of Crimson Desert follows Kliff and his fellow Greymanes—Oongka, Yann, and Naira—during a period of conflict on the continent of Pywel. The fragile balance is disrupted by a devastating attack on the Greymanes by their sworn enemies and rival faction, the Black Bears. During the ensuing conflict, many members of the Greymanes are killed, and Kliff, along with the surviving members, are scattered. The story focuses on Kliff's journey to reunite with his comrades, rebuild the fallen Greymanes, and confront the Black Bears' leader, Myurdin.
+        </p>
+
+        <p>
+       The game was originally planned as a prequel to Black Desert Online; during development, however, Pearl Abyss's vision for the game gradually shifted to a single-player experience set in the same universe. The game has since been marketed as single-player only with no plans for multiplayer integration.[6]
+
+       In December 2020, after the release of the trailer at the Game Awards, Pearl Abyss released commentary videos to explain the development of the game and their vision for it.[7] The game uses an upgraded version of Black Desert Online proprietary game engine called BlackSpace Engine
+        </p>
+
+    </div>
+
+   <div class="gameplay-wrapper">
+
+    <h3 class="section-title">Gameplay full details</h3>
+
+    <div class="gameplay-video-box">
+
+        <div class="video-wrapper">
+            <video controls poster="assets/images/crimsondesert2.jpeg">
+                <source src="assets/videos/Crimson Desert Gameplay Looks INSANE - Dragon Combat & Open World Details.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="gameplay-info">
+            Extended gameplay footage showing combat and exploration.
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Game Bottom Section -->
+ <div class="game-bottom">
+        <div class="game-bottom-wrapper">
+            <div class="game-poster">
+                <img src="assets/images/Cd.jpeg" alt="Crimson Desert">
+            </div>
+            <div class="game-info">
+                <h2>Crimson Desert</h2>
+                <div class="details">
+                    <p><strong>Genre:</strong> Open World Action-Adventure</p>
+                    <p><strong>Developer:</strong> Pearl Abyss</p>
+                    <p><strong>Platform:</strong> PS5, Xbox Series X, PC</p>
+                    <p><strong>Release Date:</strong> 2026</p>
+                    <p><strong>Mode:</strong> Single Player RPG</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="back-btn">
+        <a href="index.html"class="game detail.html2">← Back to Homepage</a>
+    </div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<footer>
+    © 2026 Entertania Gamer Website
+</footer>
+
+<script>
+const sidebar = document.getElementById('mySidebar');
+const toggleBtn = document.getElementById('sidebarToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+
+toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('closed');
+    toggleBtn.classList.toggle('moved');
+
+    if (sidebar.classList.contains('closed')) {
+        toggleIcon.innerText = '❯';
+    } else {
+        toggleIcon.innerText = '❮';
+    }
+});
+
+document.querySelectorAll('.yt-player').forEach(player => {
+    player.addEventListener('click', function () {
+
+        const videoId = this.dataset.id;
+
+        const iframe = document.createElement('iframe');
+
+        iframe.src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&modestbranding=1`;
+
+        iframe.allow =
+        "autoplay; encrypted-media; fullscreen";
+
+        iframe.allowFullscreen = true;
+
+        this.innerHTML = "";
+        this.appendChild(iframe);
+
+    });
+});
+
+// Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+
+</script>
+</body>
+</html>

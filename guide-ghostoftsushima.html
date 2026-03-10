@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghost of Tsushima Complete Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #6aaef5;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #b31919;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- STANCE GRID --- */
+        .stance-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stance-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .stance-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stance-card h4 i {
+            color: #4a90e2;
+        }
+
+        .stance-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stance-tag {
+            display: inline-block;
+            background: #2a3456;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+
+        /* --- ARMOR GRID --- */
+        .armor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .armor-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .armor-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .armor-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .armor-bonus {
+            background: #2a3456;
+            color: #4a90e2;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* --- ENEMY GRID --- */
+        .enemy-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .enemy-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .enemy-card h4 {
+            color: white;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .enemy-card h4 i {
+            color: #4a90e2;
+        }
+
+        .enemy-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .counter-tag {
+            background: #2a3456;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* --- ITEMS/WEAPONS GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- MYTHIC TALES GRID --- */
+        .mythic-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .mythic-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .mythic-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .mythic-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .reward-tag {
+            background: #4a90e2;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #4a90e2;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 92%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- IKI ISLAND SECTION --- */
+        .iki-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .iki-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #4a90e2;
+        }
+
+        .iki-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .iki-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+        }
+
+        .shrine-tag {
+            background: #4a90e2;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* --- WARNING CARD --- */
+        .warning-card {
+            background: #14171e;
+            border-left: 4px solid #b31919;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .items-grid, .tips-grid, .stance-grid, .armor-grid, .enemy-grid, .mythic-grid, .iki-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid, .tips-grid, .stance-grid, .armor-grid, .enemy-grid, .mythic-grid, .iki-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Ghost of Tsushima Guide</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>Ghost of Tsushima Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong> Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong> CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION -->
+         <div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Ghost of Tsushima - Starter Guide - Everything You NEED to Know.mp4" type="video/mp4">
+            
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('start')">Getting Started</button>
+            <button class="guide-tab" onclick="showSection('combat')">Combat & Stances</button>
+            <button class="guide-tab" onclick="showSection('armor')">Armor & Gear</button>
+            <button class="guide-tab" onclick="showSection('enemies')">Enemy Guide</button>
+            <button class="guide-tab" onclick="showSection('mythic')">Mythic Tales</button>
+            <button class="guide-tab" onclick="showSection('iki')">Iki Island DLC</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- GETTING STARTED SECTION -->
+                <div id="start" class="guide-section">
+                    <h2><i class='bx bx-flag'></i> Getting Started</h2>
+                    
+                    <h3>Before You Begin</h3>
+                    <p>From the start, you can choose to play Ghost of Tsushima in English, or in Japanese with English subtitles for a more authentic samurai cinema-style experience. You'll also have the option to play in Kurosawa Mode, inspired by the legendary filmmaker, which changes the world to black and white, cranks up the wind, and makes subtle changes to visuals and sound. You can enable this option at any time in the menu.</p>
+
+                    <h3>Let the Island Guide You</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-wind'></i> Follow the Wind</h4>
+                            <p>Watch your surroundings for clues like smoke on the horizon or mysterious trees. Call the Guiding Wind to help navigate towards your current objective. You can pick any point on the map and follow the wind to find it.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-paw'></i> Animal Guides</h4>
+                            <p>Pay attention to animals like golden birds or foxes, which can lead you to special landmarks or activities. Fox dens lead to Inari shrines for charm slots.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-music'></i> Musical Moments</h4>
+                            <p>Try climbing as high as you can and getting a good look at the island, then play Jin's flute. A break for a nice song may have unexpected effects.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> Explore the Map</h4>
+                            <p>While you'll need to explore to find new parts of Tsushima initially, once you've discovered an area, you'll be able to return to it with Fast Travel.</p>
+                        </div>
+                    </div>
+
+                    <h3>Essential Early Upgrades</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-heart'></i></div>
+                            <h4>Perfect Healing Parry</h4>
+                            <p>Helps offset early misses as you learn to time your blocks and attacks.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Deflect Arrows</h4>
+                            <p>Helps you avoid threats from afar while taking on closer enemies.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-plus'></i></div>
+                            <h4>Iron Will</h4>
+                            <p>Spend two points of your Resolve meter after defeat to jump back into the fight.</p>
+                        </div>
+                    </div>
+
+                    <h3>First Things To Do</h3>
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>1. Acquire Traveler's Attire</h3>
+                            <p>Visit any merchant (like in Hiyoshi Springs) to get the Traveler's Attire for free. While wearing it, the map uncovers in a larger area, and the controller vibrates near artifacts.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>2. Get Charm of Okuninushi</h3>
+                            <p>Visit Mending Rock Shrine (east of starting position). This charm heals you while not in combat, making the game much easier.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>3. Visit Golden Temple</h3>
+                            <p>Located in central Izuhara, this serves as your base of operations with a Gift Altar, Bowyer, Swordsmith, and Armorer all in one place.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>4. Get Charm of Inari</h3>
+                            <p>Find Arrow Peak Shrine (south of Golden Temple). This charm doubles resources gained and increases enemy loot drops.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMBAT & STANCES SECTION -->
+                <div id="combat" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-shield'></i> Combat & Stances Guide</h2>
+                    
+                    <h3>The Four Combat Stances</h3>
+                    <p>Each stance helps you eliminate certain types of opponents. You can switch between them on the fly by holding R2. Unlock new stances by observing and killing enemy leaders.</p>
+                    
+                    <div class="stance-grid">
+                        <div class="stance-card">
+                            <h4><i class='bx bx-stone'></i> Stone Stance</h4>
+                            <p>Best for attacking enemies that use swords and katanas. Starting stance. Effective against swordsmen.</p>
+                            <span class="stance-tag">vs Swordsmen</span>
+                        </div>
+                        <div class="stance-card">
+                            <h4><i class='bx bx-water'></i> Water Stance</h4>
+                            <p>Best for attacking enemies that use shields. Breaks through shield defense with surging strikes.</p>
+                            <span class="stance-tag">vs Shieldmen</span>
+                        </div>
+                        <div class="stance-card">
+                            <h4><i class='bx bx-wind'></i> Wind Stance</h4>
+                            <p>Best for attacking enemies that use spears. Includes sweeping kicks that can interrupt spear attacks.</p>
+                            <span class="stance-tag">vs Spearmen</span>
+                        </div>
+                        <div class="stance-card">
+                            <h4><i class='bx bx-moon'></i> Moon Stance</h4>
+                            <p>Best for strong, larger enemies (Brutes). Features heavy punishing strikes that can launch enemies.</p>
+                            <span class="stance-tag">vs Brutes</span>
+                        </div>
+                    </div>
+
+                    <h3>Combat Mechanics</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-shield'></i> Blocking & Parrying</h4>
+                            <p>Hold L1 to block most attacks. Tap L1 just before an enemy strike to perform a parry, allowing a brutal counterattack. Perfect Parry unlocks stronger counters.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-run'></i> Dodging</h4>
+                            <p>Press Circle to dodge. Jin cannot block red attacks (unblockable) - you must dodge or roll. Perfect Dodge slows time for a follow-up attack.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-target-lock'></i> Standoff</h4>
+                            <p>Press Up on D-pad before enemies spot you. Hold Triangle and release when the enemy attacks. With upgrades, you can chain up to 3 kills. Sakai Armor extends this further.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-ghost'></i> Ghost Stance</h4>
+                            <p>Unlocked in Act 2. Get 5 kills without taking damage (or 7 normally) to enter Ghost Stance, allowing instant kills on multiple enemies. Combine with Sakai Armor for 5 standoff kills, then switch to Ghost Armor.</p>
+                        </div>
+                    </div>
+
+                    <h3>Ranged Combat</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-bow'></i></div>
+                            <h4>Short Bow</h4>
+                            <p>Best suited for rapid shots. Good for unarmored enemies.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-bow'></i></div>
+                            <h4>Long Bow</h4>
+                            <p>Good for attacking armored enemies. Higher chance to kill with headshots.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-time'></i></div>
+                            <h4>Concentration</h4>
+                            <p>Press L3 to activate slow-motion while aiming, making it easier to hit moving targets.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ARMOR & GEAR SECTION -->
+                <div id="armor" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-shield'></i> Armor & Gear Guide</h2>
+                    
+                    <h3>Essential Armor Sets</h3>
+                    <p>Each armor offers unique stats and advantages. Consider the right attire for any given moment. You can upgrade armor to strengthen effects or purchase dyes to change appearance.</p>
+                    
+                    <div class="armor-grid">
+                        <div class="armor-card">
+                            <h4>Traveler's Attire</h4>
+                            <p>Uncover the map in a larger area. Controller vibrates near artifacts. Set Guiding Wind to find collectibles.</p>
+                            <div class="armor-bonus">+ Exploration</div>
+                        </div>
+                        <div class="armor-card">
+                            <h4>Samurai Clan Armor</h4>
+                            <p>Reduces damage, increases health, restores more resolve. Good early-game combat armor.</p>
+                            <div class="armor-bonus">+ Defense + Health</div>
+                        </div>
+                        <div class="armor-card">
+                            <h4>Sakai Clan Armor</h4>
+                            <p>Increases melee damage, more health, extends standoff kills. Fully upgraded allows 5 standoff kills.</p>
+                            <div class="armor-bonus">+ Melee Damage + Standoff</div>
+                        </div>
+                        <div class="armor-card">
+                            <h4>Ghost Armor</h4>
+                            <p>Reduces Ghost Stance requirement from 7 to 5 kills without damage. Terrifies nearby enemies on assassination.</p>
+                            <div class="armor-bonus">+ Ghost Stance + Terror</div>
+                        </div>
+                        <div class="armor-card">
+                            <h4>Tadayori's Armor</h4>
+                            <p>Combined with Longbow and right charms, this is the most broken thing in the game. Spam longbow heavy arrows from safe distance.</p>
+                            <div class="armor-bonus">+ Bow Damage</div>
+                        </div>
+                        <div class="armor-card">
+                            <h4>Gosaku's Armor</h4>
+                            <p>Great for duels or open combat. Increases stagger damage.</p>
+                            <div class="armor-bonus">+ Stagger Damage</div>
+                        </div>
+                    </div>
+
+                    <h3>Ghost Weapons</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-knife'></i></div>
+                            <h4>Kunai</h4>
+                            <p>Stun opponents, reducing need for stance advantage. Upgraded throws multiple daggers.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-bomb'></i></div>
+                            <h4>Powder Bombs</h4>
+                            <p>Can weaken, stun, or kill enemies. Best for stationary targets.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-smoke'></i></div>
+                            <h4>Smoke Bombs</h4>
+                            <p>Blind enemies, allowing escapes or chain assassinations.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-flask'></i></div>
+                            <h4>Sticky Bomb</h4>
+                            <p>Excellent for weakening and stunning Brutes.</p>
+                        </div>
+                    </div>
+
+                    <h3>Charms to Prioritize</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-heart'></i></div>
+                            <h4>Charm of Okuninushi</h4>
+                            <p>Heals you while not in combat. Start every encounter fully healed.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-leaf'></i></div>
+                            <h4>Charm of Inari</h4>
+                            <p>Doubles resources gained from all sources. Essential for upgrades.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ENEMY GUIDE SECTION -->
+                <div id="enemies" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-spider'></i> Enemy Guide</h2>
+                    
+                    <h3>Enemy Difficulty Tiers</h3>
+                    <p>Enemies appear in different colors indicating difficulty and equipment level. The frequency changes as you progress through chapters.</p>
+                    
+                    <div class="enemy-grid">
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-circle'></i> Grey Tier</h4>
+                            <p>Basic enemies with simple patterns. Appears only in prologue and Chapter 1.</p>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-square' style="color:#b02e2e;"></i> Red Tier</h4>
+                            <p>Light armored. Higher stun resistance, throw kunai at distance. Appears from mid Chapter 1.</p>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-square' style="color:#4a90e2;"></i> Blue Tier</h4>
+                            <p>Medium armored. Helmet prevents headshots. May shoot bows in succession.</p>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-square' style="color:#ffd700;"></i> Yellow Tier</h4>
+                            <p>Heavily armored. Use fire weapons, higher damage. Appears in Chapter 2.</p>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-square' style="color:#9333ea;"></i> Purple Tier</h4>
+                            <p>Elite troops. Highest damage and stun resistance. Iki Island only.</p>
+                        </div>
+                    </div>
+
+                    <h3>Enemy Types & Counters</h3>
+                    <div class="enemy-grid">
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-sword'></i> Swordsmen</h4>
+                            <p>Basic sword users. Dual-wield variants have very short attack windows - requires consecutive parries. Greatsword users have slow but sweeping attacks.</p>
+                            <span class="counter-tag">Stone Stance</span>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-shield'></i> Shieldmen</h4>
+                            <p>Carry shields that block arrows from front. Thorn shields have shield-bash attacks. Fire swords can light Jin on fire.</p>
+                            <span class="counter-tag">Water Stance</span>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-git-compare'></i> Spearmen</h4>
+                            <p>Long attack range. Elite spearmen have very fast thrusts and carry small shields to block headshots.</p>
+                            <span class="counter-tag">Wind Stance</span>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-dumbbell'></i> Brutes</h4>
+                            <p>Large enemies with heavy weapons. Mace, Shield, Ax, and Fire Spear variants. Fire Spear has devastating wide area fire attack.</p>
+                            <span class="counter-tag">Moon Stance</span>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-target-lock'></i> Archers</h4>
+                            <p>Call out before firing. Elite archers shoot 2-3 arrows. Fire arrows set you ablaze. Poison arrows (late game) blur vision.</p>
+                            <span class="counter-tag">Deflect Arrows</span>
+                        </div>
+                        <div class="enemy-card">
+                            <h4><i class='bx bx-bomb'></i> Engineers</h4>
+                            <p>Throw bombs from distance. Flash bombs blind entire screen. Prioritize elimination.</p>
+                            <span class="counter-tag">Kunai</span>
+                        </div>
+                    </div>
+
+                    <h3>Animal Enemies</h3>
+                    <div class="tip-card">
+                        <p>Dogs and bears use red attacks frequently. Try to eliminate them before they get close. After dodging, attack once and prepare to dodge again.</p>
+                    </div>
+                </div>
+
+                <!-- MYTHIC TALES SECTION -->
+                <div id="mythic" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-star'></i> Mythic Tales Guide</h2>
+                    
+                    <div class="mythic-grid">
+                        <div class="mythic-card">
+                            <h4>The Curse of Uchitsune</h4>
+                            <p>Unlock the Longbow. Complete the archery challenges and defeat the tengu demon.</p>
+                            <span class="reward-tag">Reward: Longbow</span>
+                        </div>
+                        <div class="mythic-card">
+                            <h4>The Legend of Tadayori</h4>
+                            <p>Honor the legendary archer. Complete horseback archery challenges.</p>
+                            <span class="reward-tag">Reward: Tadayori's Armor</span>
+                        </div>
+                        <div class="mythic-card">
+                            <h4>The Heavenly Strike</h4>
+                            <p>Learn the legendary technique from a master swordsman. Defeat six Kojiro students.</p>
+                            <span class="reward-tag">Reward: Heavenly Strike</span>
+                        </div>
+                        <div class="mythic-card">
+                            <h4>The Six Blades of Kojiro</h4>
+                            <p>Track down and defeat six master swordsmen across Tsushima.</p>
+                            <span class="reward-tag">Reward: Kensei Armor</span>
+                        </div>
+                        <div class="mythic-card">
+                            <h4>The Flaming Blade of Kojiro</h4>
+                            <p>Unlock the power of fire. Complete platforming challenges and defeat the fire spirit.</p>
+                            <span class="reward-tag">Reward: Dance of Wrath</span>
+                        </div>
+                        <div class="mythic-card">
+                            <h4>The Undying Flame</h4>
+                            <p>Channel the power of fire into your sword. Defeat the fire spirit in the cursed temple.</p>
+                            <span class="reward-tag">Reward: Way of the Flame</span>
+                        </div>
+                    </div>
+
+                    <h3>Dance of Wrath</h3>
+                    <div class="tip-card">
+                        <p>This Mythic Technique allows Jin to strike three enemies in quick succession. Extremely powerful when surrounded. Can be upgraded to strike additional enemies.</p>
+                    </div>
+                </div>
+
+                <!-- IKI ISLAND DLC SECTION -->
+                <div id="iki" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-island'></i> Iki Island DLC Guide</h2>
+                    
+                    <h3>How to Start Iki Island</h3>
+                    <p>Complete Act 1 of the main story to unlock the "Journey into the Past" tale. Track it in the "Tales of Iki" section. Investigate the settlement at Drowned Man's Shore in southern Toyotama. After the cutscene and combat, speak to the boat captain to sail to Iki.</p>
+                    
+                    <div class="warning-card">
+                        <p><strong>⚠️ IMPORTANT:</strong> You will be unable to return to Tsushima until completing the Iki Island main story. Complete any unfinished business before departing.</p>
+                    </div>
+
+                    <h3>Forbidden Shrines (PlayStation Easter Eggs)</h3>
+                    <p>The Director's Cut includes three special shrines honoring PlayStation classics. Each requires specific equipment and actions to unlock exclusive cosmetic rewards.</p>
+                    
+                    <div class="iki-grid">
+                        <div class="iki-card">
+                            <h4>Forbidden Shrine</h4>
+                            <p><strong>Location:</strong> Senjo Gorge (Southwest Iki). Red leaves, dark atmosphere.</p>
+                            <p><strong>Solution:</strong> Wear Kensei Armor, take damage, heal (D-pad down), stand still.</p>
+                            <span class="shrine-tag">Reward: Yharnam Helm + Vestments (Bloodborne)</span>
+                        </div>
+                        <div class="iki-card">
+                            <h4>Shrine of Ash</h4>
+                            <p><strong>Location:</strong> Eastern Iki, north of Tatsu's Ladder.</p>
+                            <p><strong>Solution:</strong> Wear Sakai Clan Armor, perform heavy attack (Triangle) near statue.</p>
+                            <span class="shrine-tag">Reward: Spartan Helm + Ghost of Sparta Vestments (God of War)</span>
+                        </div>
+                        <div class="iki-card">
+                            <h4>Shrine in Shadow</h4>
+                            <p><strong>Location:</strong> North-central Iki, southwest of Sakai Fortress.</p>
+                            <p><strong>Solution:</strong> Wear Ghost Armor, crouch and slowly approach statue, remain still.</p>
+                            <span class="shrine-tag">Reward: Mask of the Wanderer + Colossus Vestments (Shadow of the Colossus)</span>
+                        </div>
+                    </div>
+
+                    <h3>Iki Island Tips</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-skull'></i> Higher Difficulty</h4>
+                            <p>Iki Island enemies are significantly tougher. Purple-tier enemies have unique abilities and higher damage. Recommended level: After completing main story or at least Act 3.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-horse'></i> New Horse</h4>
+                            <p>If your horse didn't survive the shipwreck, you'll find a new companion on Iki.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-shield'></i> Sarugami Armor</h4>
+                            <p>Found on Iki. Greatly increases perfect parry and perfect dodge windows. Excellent for duels.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-target-lock'></i> Horse Charge</h4>
+                            <p>New technique allows charging through enemies on horseback.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 92%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Updated for Director's Cut</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('start')"><i class='bx bx-flag'></i> Getting Started</a>
+                    <a href="#" class="quick-link" onclick="showSection('combat')"><i class='bx bx-shield'></i> Combat & Stances</a>
+                    <a href="#" class="quick-link" onclick="showSection('armor')"><i class='bx bx-shield'></i> Armor & Gear</a>
+                    <a href="#" class="quick-link" onclick="showSection('enemies')"><i class='bx bx-spider'></i> Enemy Guide</a>
+                    <a href="#" class="quick-link" onclick="showSection('mythic')"><i class='bx bx-star'></i> Mythic Tales</a>
+                    <a href="#" class="quick-link" onclick="showSection('iki')"><i class='bx bx-island'></i> Iki Island DLC</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('ghostSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('ghostSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('ghostSidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('combat').style.display = 'none';
+            document.getElementById('armor').style.display = 'none';
+            document.getElementById('enemies').style.display = 'none';
+            document.getElementById('mythic').style.display = 'none';
+            document.getElementById('iki').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const tabTexts = ['start', 'combat', 'armor', 'enemies', 'mythic', 'iki'];
+            const index = tabTexts.indexOf(sectionId);
+            if (index !== -1) {
+                tabs[index].classList.add('active');
+            }
+        }
+
+        // Check login status
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const sidebarFooter = document.querySelector('.sidebar__footer');
+            const navActions = document.getElementById('navActions');
+            
+            if (currentUser && currentUser.loggedIn) {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="user-profile" onclick="window.location.href='profile.html'">
+                            <img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=32'}" alt="Profile">
+                            <span>${currentUser.username}</span>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom: 10px;">
+                            <i class='bx bx-user-circle'></i> ${currentUser.username}
+                        </button>
+                        <button class="logout-btn" onclick="logout()" style="width: 100%; background: transparent; border: 1px solid #b31919; color: #b31919; padding: 8px; border-radius: 20px; cursor: pointer;">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
+                    `;
+                }
+            } else {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="login-prompt">
+                            <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                            <button onclick="window.location.href='login.html'">Log In</button>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <a href="login.html" style="text-decoration: none; display: block;">
+                            <button class="btn-login">
+                                <i class='bx bx-user-circle'></i> Sign up or log in
+                            </button>
+                        </a>
+                    `;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+
+        // Add logout button CSS
+        const logoutStyle = document.createElement('style');
+        logoutStyle.textContent = `
+            .logout-btn {
+                width: 100%;
+                background: transparent;
+                border: 1px solid #b31919;
+                color: #b31919;
+                padding: 10px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .logout-btn:hover {
+                background: #b31919;
+                color: white;
+            }
+            
+            .login-prompt {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .login-prompt button {
+                background: transparent;
+                border: 1px solid #4a90e2;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+            
+            .login-prompt .signup-btn {
+                background: linear-gradient(135deg, #4a90e2, #3570b2);
+                border: none;
+            }
+            
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: rgba(255,255,255,0.1);
+                padding: 6px 12px;
+                border-radius: 25px;
+                cursor: pointer;
+            }
+            
+            .user-profile img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        `;
+        document.head.appendChild(logoutStyle);
+
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

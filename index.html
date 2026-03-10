@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Entertania</title>
+    <link rel="website icon" type="jpeg" href="assets/images/Entertanialogo.jpeg">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+    
+    <style>
+        /* Reset Dasar */
+       body {
+            background-color: #14171e;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar Atas */
+        .navbar {
+            background-color: #001242; 
+            padding: 15px 0; 
+            width: 100%;
+            position: absolute; /* Supaya tidak menolak sidebar */
+            top: 0;
+            z-index: 500;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0; 
+            margin: 0;  
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            font-size: 35px;
+            font-weight: 900;
+            color: #e5eeee; 
+        }
+
+        /* Container Utama */
+        .main-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR FIX (Disatukan) --- */
+        .sidebar {
+            width: 250px;
+            background-color: #121620;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #2d3446;
+            z-index: 9999;
+            transition: transform 0.3s ease, visibility 0.3s;
+        }
+
+        /* Bila ditutup */
+        .sidebar.closed {
+            transform: translateX(-250px);
+            visibility: hidden;
+        }
+
+        /* Logo */
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        /* List Menu */
+        .sidebar__list {
+            margin: 0;
+            padding: 0 10px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar__item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #a0a5b1;
+        text-decoration: none;
+        border-radius: 10px;
+        margin: 5px 10px;
+        transition: all 0.3s ease;
+       }
+
+       
+        .sidebar__item i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .sidebar__item:hover, .sidebar__item.active {
+            background-color: #353b4b;
+            color: white;
+            transform: translateX(5px)
+        }
+
+/* THE LIGHT UP EFFECT (When class 'active' is present) */
+.sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+/* The Glowing Icon */
+.sidebar__item.active i {
+    color: #ffffff !important;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9)); /* This is the glow */
+}
+
+        /* --- TOGGLE BUTTON (ANAK PANAH) --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px; /* Kedudukan asal di hujung sidebar */
+            top: 25px;
+            width: 30px;
+            height: 30px;
+            background: #2d3446;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000; /* Paling atas sekali */
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- CONTENT FIX --- */
+        .content {
+       margin-left: 250px;
+       padding: 40px;
+       padding-top: 80px;
+       transition: margin-left 0.3s ease;
+       min-height: calc(100vh - 120px);
+       }
+
+      /* When sidebar closed */
+     .content.shifted {
+      margin-left: 0;
+      }
+
+        /* Search Bar */
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+       .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+
+      /* Footer Sidebar */
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #333;
+            margin-top: auto;
+        }
+
+       .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        .btn-login:active {
+    transform: scale(0.95); /* Kesan butang ditekan */
+    background-color: #e0e0e0;
+}
+.game-grid {
+    display: grid;
+    /* Gunakan repeat(4, 1fr) untuk paksa 4 lajur pada skrin besar */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; /* Kurangkan gap supaya lebih banyak ruang untuk kad */
+    padding: 20px 0;
+    align-items: start;
+}
+
+         .game-grid .game-card:hover {
+        transform: scale(1.1);
+}
+
+        .game-card {
+           background-color: #1e2330;
+           border-radius: 8px;
+           display: flex;
+           flex-direction: column;
+           border: 1px solid #333;
+           transition: none; /* Kad tidak akan bergerak/mengangkat */
+        }
+
+        .game-card:not(.trending) .game-poster {
+          width: 100%;
+          height: 350px; /* Tambahkan baris ini (laraskan nilai ikut kesukaan) */
+          aspect-ratio: 3 / 4;
+          overflow: hidden;
+        }
+
+        .game-poster img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s;
+        }
+
+        .card-link {
+        text-decoration: none; /* Removes the underline */
+        color: inherit;        /* Keeps your white/grey text colors */
+        display: block;        /* Makes sure the whole card area is clickable */
+        }   
+
+        .game-grid .game-card:hover .game-poster img {
+        transform: scale(1.15);
+        }
+
+.game-info {
+    padding: 15px;
+    height: 160px; /* Kunci ketinggian supaya semua kad sama tinggi */
+    overflow: hidden;
+}
+
+/* Limit title to 3 lines */
+.game-info h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+
+    display: -webkit-box;      
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+        /* CSS untuk Pop-up (Modal) */
+.modal {
+    display: none; /* Sembunyi secara asal */
+    position: fixed;
+    z-index: 10001; /* Supaya dia duduk paling depan */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Latar belakang gelap */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #1e2330;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+        .Resident-red { background-color: #b31919 !important; }
+        .crimson-brown { background-color: #5c3d2e !important; }
+        .Wolverine-yellow { background-color: #c1c149 !important; }
+        .Gta6-blue { background-color: #233088 !important; }
+
+        .game-info h3 { margin: 0; font-size: 16px; font-weight: bold; }
+        .game-info p { margin: 5px 0 0; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+
+       /* 1. Susunan Grid: 4 Gambar dalam 1 baris */
+/* Trending Games Grid Update - Thinner Style */
+.trending-container.square-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    padding: 20px 0;
+}
+
+.trending-container.square-row .game-card {
+    height: auto !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.trending-container.square-row .game-card:hover {
+    transform: translateY(-3px);
+}
+
+.trending-container.square-row .game-card .game-poster {
+    width: 100%;
+    aspect-ratio: 2/3 !important; /* Changed to 3:4 for thinner look */
+    height: auto !important;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #1e2330;
+}
+
+.trending-container.square-row .game-card.trending .game-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.trending-container.square-row .game-card:hover .game-poster img {
+    opacity: 1;
+}
+
+.trending-container.square-row .game-card .game-info {
+    background-color: transparent !important;
+    padding: 6px 0 0 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    text-align: center;
+}
+
+.trending-container.square-row .game-card.trending .game-info h3 {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .trending-container.square-row {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .trending-container.square-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .trending-container.square-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.game-card-link {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.game-card-link:hover {
+    transform: translateY(-10px); /* Kad akan naik sikit bila mouse lalu */
+}
+
+.game-card {
+    cursor: pointer;
+}
+
+
+</style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; max-width: 1200px; margin: 0 auto;">
+            <div style="font-size: 35px; font-weight: 900; color: #e5eeee;">Entertania</div>
+            
+        </div>
+    </nav>
+</header>
+
+<div class="main-container">
+
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html">
+                <img src="assets/images/Entertanialogo.jpeg" alt="Entertania">
+            </a>
+        </div>
+
+        <ul class="sidebar__list">
+             <li>
+        <a href="index.html" class="sidebar__item active">
+            <i class='bx  bx-home-alt-2'></i> Homepage
+        </a>
+    </li>
+            
+            <li class="sidebar-search-container">
+    <form action="search.php" method="GET" style="width: 100%;">
+        <div class="sidebar-search">
+            <i class='bx bx-search'></i> 
+            <input type="text" name="q" placeholder="Search games..." id="gameSearch">
+        </div>
+    </form>
+</li>
+
+         <li>
+            <a href="Forum-discussion.html" class="sidebar__item">
+            <i class='bx bx-message-detail'></i>  Forum discussion
+         </a>
+
+         </li>
+
+           <li>
+    <a href="game-reviews.html" class="sidebar__item">
+        <i class='bx bx-star'></i> Game Reviews
+    </a>
+      </li>
+      <li>
+    <a href="guides.html" class="sidebar__item">
+        <i class='bx bx-compass'></i> Guide
+    </a>
+</li>
+
+    
+
+    <li>
+          <a href="price-tracker.html" class="sidebar__item">
+         <i class='bx bx-line-chart'></i> Price Tracker
+                    </a>
+                </li>
+        </ul>
+
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <main class="content">
+        <section class="welcome">
+            <h2>Welcome to Entertania</h2>
+        </section>
+
+  <section class="game-grid">
+    <div class="game-card">
+        <a href="game-detail.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/evilrqm.jpeg" alt="Resident">
+        </div>
+        <div class="game-info Resident-red">
+            <h3>THINGS ABOUT RESIDENT EVIL REQUIEM NEED TO KNOW BEFORE PLAY IT</h3>
+            <p>1st/3rd-person survival horror game following FBI analyst Grace Ashcroft and Leon S. Kennedy.</p>
+        </div>
+        </a>
+     </div>
+
+    <div class="game-card">
+        <a href="game-detail2.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Cd.jpeg" alt="Crimson">
+        </div>
+        <div class="game-info crimson-brown">
+            <h3>THE NEW CRIMSON DESSERT GAMEPLAY LOOKS ABSOLUTELY INSANE!!</h3>
+            <p>Experience the vast world of pywel in this upcoming action-adventure RPG</p>
+        </div>
+        </a>
+     </div>
+
+    <div class="game-card">
+        <a href="game-detail3.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Marvel Wolverine.jpeg" alt="Wolverine">
+        </div>
+        <div class="game-info Wolverine-yellow">
+            <h3>TOP UPCOMING MARVEL GAMES IN 2026</h3>
+            <p>Superhero/Fantasy - Coming exclusively to PS5.</p>
+        </div>
+        </a>
+     </div>
+
+    <div class="game-card">
+        <a href="game-detail4.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Gta6.jpeg" alt="Gta6">
+        </div>
+        <div class="game-info Gta6-blue">
+            <h3>GRAND THEFT AUTO VI IS INCOMING ON NOVEMBER 19,2026</h3>
+            <p>open world game</p>
+        </div>
+     </div>
+     </a>
+</section>
+
+<h2 style="color: white; margin-left: 20px; font-size: 28px; margin-bottom: 20px;">Trending Games</h2>
+
+<div class="trending-container square-row" style="grid-template-columns: repeat(5, 1fr); gap: 12px;">
+    <div class="game-card trending">
+        <a href="trending-game-fortnite.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/fortnite.jpg" alt="Fortnite">
+        </div>
+        <div class="game-info">
+            <h3>Fortnite</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-lol.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/lol.jpg" alt="LoL">
+        </div>
+        <div class="game-info">
+            <h3>League Of Legends</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-minecraft.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Mine.jpeg" alt="Minecraft">
+        </div>
+        <div class="game-info">
+            <h3>Minecraft</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-cs2.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/coun.jpeg" alt="Counter Strike 2">
+        </div>
+        <div class="game-info">
+            <h3>Counter Strike 2</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-valorant.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Valo.jpeg" alt="Valorant">
+        </div>
+        <div class="game-info">
+            <h3>Valorant</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-warhammer40k.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Warhammer.jpeg" alt="Warhammar 40,000">
+        </div>
+        <div class="game-info">
+            <h3>Warhammar 40,000</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-helldivers2.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Helldivers.jpeg" alt="Helldivers 2">
+        </div>
+        <div class="game-info">
+            <h3>Helldivers 2</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-ghostoftsushima.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/ghostofthusima.jpg" alt="Ghost-Of-Tsushima">
+        </div>
+        <div class="game-info">
+            <h3>Ghost of Tsushima</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-arcraiders.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Arc.jpeg" alt="Arc Riders">
+        </div>
+        <div class="game-info">
+            <h3>Arc Riders</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-baldursgate3.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Baldur.jpeg" alt="Baldur's Gate">
+        </div>
+        <div class="game-info">
+            <h3>Baldur's Gate 3</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-forzahorizon5.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/Forza5.jpeg" alt="Forza Horizon 5">
+        </div>
+        <div class="game-info">
+            <h3>Forza Horizon 5</h3>
+        </div>
+        </a>
+    </div>
+
+    <div class="game-card trending">
+         <a href="trending-game-supermarket.html" class="card-link">
+        <div class="game-poster">
+            <img src="assets/images/supermarket.jpeg" alt="Supermarket Simulator">
+        </div>
+        <div class="game-info">
+            <h3>Supermarket Simulator</h3>
+        </div>
+    </div>
+    </div>
+
+
+
+</div>
+
+<footer>
+    <p style="text-align: center; padding: 20px;">© 2026 Entertania Gamer Website</p>
+</footer>
+
+<script src="assets/js/search.js"></script>
+</body>
+</html

@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Evil Requiem Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #b31919;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- MAP/LOCATION SECTION --- */
+        .map-container {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .map-image {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .map-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .map-location {
+            background: #1a1f2b;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .map-location h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .map-location p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- ITEMS/WEAPONS GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- WEAPON UPGRADE TABLE --- */
+        .upgrade-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .upgrade-table th {
+            background: #2a3456;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .upgrade-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a3456;
+            color: #e0e0e0;
+        }
+
+        .upgrade-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .upgrade-table td:first-child {
+            font-weight: 600;
+            color: white;
+        }
+
+        /* --- PUZZLE SECTION --- */
+        .puzzle-box {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .puzzle-box h4 {
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        .puzzle-solution {
+            background: #2a3456;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #b31919;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #b31919;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 75%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .items-grid, .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid, .tips-grid, .map-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+
+        .map-container {
+    background: #14171e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.map-image {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.map-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.map-image img:hover {
+    transform: scale(1.02);
+}
+
+.map-legend {
+    background: #1a1f2b;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a0a5b1;
+    font-size: 13px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-color.safe { background: #4ade80; }
+.legend-color.enemy { background: #b31919; }
+.legend-color.item { background: #4a90e2; }
+.legend-color.puzzle { background: #ffd700; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Resident Evil Requiem Guide</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>Resident Evil Requiem Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong> Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>2 days ago</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+<!-- VIDEO SECTION -->
+<div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Resident Evil Requiem - 24 Things I Wish I Knew.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+<script>
+function loadVideo() {
+    const container = document.getElementById('videoContainer');
+    container.innerHTML = `
+<video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Resident Evil Requiem - 24 Things I Wish I Knew.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    `;
+}
+</script>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('walkthrough')">Walkthrough</button>
+            <button class="guide-tab" onclick="showSection('map')">Maps & Locations</button>
+            <button class="guide-tab" onclick="showSection('items')">Items & Weapons</button>
+            <button class="guide-tab" onclick="showSection('upgrades')">Weapon Upgrades</button>
+            <button class="guide-tab" onclick="showSection('puzzles')">Puzzles</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Tricks</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- WALKTHROUGH SECTION -->
+                <div id="walkthrough" class="guide-section">
+                    <h2><i class='bx bx-book-open'></i> Main Story Walkthrough</h2>
+                    
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Chapter 1: The Village Awakens</h3>
+                            <p>Grace Ashcroft arrives at the remote Eastern European village after receiving a distress signal. Explore the abandoned houses, learn basic controls, and find your first weapon.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 45 min</span>
+                                <span><i class='bx bx-collection'></i> 3 Collectibles</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Chapter 2: Leon's Return</h3>
+                            <p>Switch to Leon S. Kennedy as he investigates a separate incident connected to the village. Face your first major enemy encounter and discover the underground facility.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 60 min</span>
+                                <span><i class='bx bx-collection'></i> 5 Collectibles</span>
+                                <span><i class='bx bx-sitemap'></i> 1 Boss Fight</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Chapter 3: The Old Church</h3>
+                            <p>Grace investigates the village church where strange rituals have taken place. Solve the altar puzzle to access the catacombs below.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 40 min</span>
+                                <span><i class='bx bx-collection'></i> 2 Collectibles</span>
+                                <span><i class='bx bx-puzzle'></i> 1 Puzzle</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Chapter 4: Underground Laboratory</h3>
+                            <p>Both characters' paths converge in the secret Umbrella laboratory. Find keycards, avoid security systems, and discover the truth about the outbreak.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 75 min</span>
+                                <span><i class='bx bx-collection'></i> 6 Collectibles</span>
+                                <span><i class='bx bx-sitemap'></i> 2 Boss Fights</span>
+                            </div>
+                        </div>
+
+                        <div class="chapter-item">
+                            <h3>Chapter 5: The Final Experiment</h3>
+                            <p>Confront the mastermind behind the outbreak. Prepare for the ultimate battle and choose between multiple endings based on your actions.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-time'></i> 50 min</span>
+                                <span><i class='bx bx-collection'></i> 2 Collectibles</span>
+                                <span><i class='bx bx-sitemap'></i> Final Boss</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAPS & LOCATIONS SECTION -->
+                <div id="map" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-map'></i> Maps & Locations</h2>
+                    
+                    <div class="map-container">
+                        <div class="map-image">
+                            <img src="assets/images/residentevilrequiemmap.png" alt="Village Map">
+                        </div>
+                        <h3>Village Overview</h3>
+                        <p>The village is divided into 4 main areas: Residential Zone, Church District, Industrial Area, and Underground Laboratory. Each area contains key items and story progression points.</p>
+                    </div>
+
+                    <div class="map-grid">
+                        <div class="map-location">
+                            <h4>Residential Zone</h4>
+                            <p>• Safe House (Save Room)<br>• Merchant Location<br>• 3 Locked Doors<br>• 5 Item Boxes</p>
+                        </div>
+                        <div class="map-location">
+                            <h4>Church District</h4>
+                            <p>• Altar Puzzle<br>• Catacombs Entrance<br>• 2 Boss Encounters<br>• 4 Collectibles</p>
+                        </div>
+                        <div class="map-location">
+                            <h4>Industrial Area</h4>
+                            <p>• Factory Floor<br>• Crane Controls<br>• 3 Enemy Spawns<br>• Weapon Parts</p>
+                        </div>
+                        <div class="map-location">
+                            <h4>Underground Lab</h4>
+                            <p>• Security Room<br>• B.O.W. Storage<br>• Final Boss Arena<br>• 6 Keycards</p>
+                        </div>
+                    </div>
+
+                    
+                <div class="map-legend">
+    <div class="legend-item">
+        <div class="legend-color safe"></div>
+        <span>Safe Room</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color enemy"></div>
+        <span>Enemy/Boss</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color item"></div>
+        <span>Item/Weapon</span>
+    </div>
+    <div class="legend-item">
+        <div class="legend-color puzzle"></div>
+        <span>Puzzle</span>
+    </div>
+</div>
+                </div>
+
+                <!-- ITEMS & WEAPONS SECTION -->
+                <div id="items" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-backpack'></i> Items & Weapons</h2>
+                    
+                    <h3>Weapons</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-gun'></i>
+                            </div>
+                            <h4>Matilda</h4>
+                            <p>Standard pistol. High rate of fire. Found in Chapter 1.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-gun'></i>
+                            </div>
+                            <h4>W-870</h4>
+                            <p>Pump shotgun. High damage at close range. Chapter 2.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-gun'></i>
+                            </div>
+                            <h4>Lightning Hawk</h4>
+                            <p>Magnum. Extreme damage. Limited ammo. Chapter 4.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-gun'></i>
+                            </div>
+                            <h4>LE 5</h4>
+                            <p>Submachine gun. High capacity. Chapter 3.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-gun'></i>
+                            </div>
+                            <h4>Rocket Launcher</h4>
+                            <p>One-hit kill on most enemies. New Game+ only.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-shield'></i>
+                            </div>
+                            <h4>Combat Knife</h4>
+                            <p>Infinite durability. Parry attacks. Starting weapon.</p>
+                        </div>
+                    </div>
+
+                    <h3>Key Items</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-key'></i>
+                            </div>
+                            <h4>Old Key</h4>
+                            <p>Opens residential doors. Chapter 1.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-key'></i>
+                            </div>
+                            <h4>Lab Keycard</h4>
+                            <p>Access laboratory. Chapter 4.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon">
+                                <i class='bx bx-crown'></i>
+                            </div>
+                            <h4>Emblem</h4>
+                            <p>Church puzzle item. Chapter 3.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WEAPON UPGRADES SECTION -->
+                <div id="upgrades" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-upgrade'></i> Weapon Upgrades</h2>
+                    
+                    <table class="upgrade-table">
+                        <thead>
+                            <tr>
+                                <th>Weapon</th>
+                                <th>Upgrade</th>
+                                <th>Cost</th>
+                                <th>Effect</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Matilda</td>
+                                <td>High-Capacity Mag</td>
+                                <td>3,000 CP</td>
+                                <td>+6 rounds per mag</td>
+                            </tr>
+                            <tr>
+                                <td>Matilda</td>
+                                <td>Stock</td>
+                                <td>2,500 CP</td>
+                                <td>Reduced recoil</td>
+                            </tr>
+                            <tr>
+                                <td>W-870</td>
+                                <td>Long Barrel</td>
+                                <td>4,000 CP</td>
+                                <td>Increased range</td>
+                            </tr>
+                            <tr>
+                                <td>W-870</td>
+                                <td>Stock</td>
+                                <td>3,000 CP</td>
+                                <td>Faster reload</td>
+                            </tr>
+                            <tr>
+                                <td>Lightning Hawk</td>
+                                <td>Scope</td>
+                                <td>6,000 CP</td>
+                                <td>2x zoom</td>
+                            </tr>
+                            <tr>
+                                <td>LE 5</td>
+                                <td>Suppressor</td>
+                                <td>3,500 CP</td>
+                                <td>Silent shots</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="note" style="color: #a0a5b1; margin-top: 15px;">CP (Completion Points) are earned by completing chapters, finding collectibles, and defeating bosses.</p>
+                </div>
+
+                <!-- PUZZLES SECTION -->
+                <div id="puzzles" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-puzzle'></i> Puzzle Solutions</h2>
+                    
+                    <div class="puzzle-box">
+                        <h4>Church Altar Puzzle (Chapter 3)</h4>
+                        <p>You need to place 3 emblems in the correct order: Lion, Eagle, Snake.</p>
+                        <div class="puzzle-solution">
+                            Solution: Lion (left), Eagle (center), Snake (right)
+                        </div>
+                    </div>
+
+                    <div class="puzzle-box">
+                        <h4>Laboratory Security Lock (Chapter 4)</h4>
+                        <p>Find the 3 keycards with color codes: Red, Blue, Green.</p>
+                        <div class="puzzle-solution">
+                            Solution: Insert in order found: Blue → Red → Green
+                        </div>
+                    </div>
+
+                    <div class="puzzle-box">
+                        <h4>Clock Tower Puzzle (Chapter 4)</h4>
+                        <p>Set the clock to the time shown in the note (3:15).</p>
+                        <div class="puzzle-solution">
+                            Solution: Hour hand to 3, Minute hand to 15
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIPS & TRICKS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Tips & Tricks</h2>
+                    
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-save'></i> Save Often</h4>
+                            <p>Use typewriters whenever you see them. Ink ribbons are plentiful, so don't hoard them.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-knife'></i> Parry Mastery</h4>
+                            <p>Time your knife parry just as an enemy attacks to stagger them and create an opening.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> Explore Everything</h4>
+                            <p>Hidden rooms often contain weapon parts and collectibles. Check your map for unexplored areas.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-health'></i> Green Herbs</h4>
+                            <p>Mix Green+Green for better healing. Green+Red creates a powerful healing item.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-target-lock'></i> Aim for Heads</h4>
+                            <p>Headshots deal extra damage and can stagger enemies. Save ammo by aiming carefully.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-run'></i> Know When to Run</h4>
+                            <p>Not every enemy needs to be killed. Save resources by avoiding unnecessary fights.</p>
+                        </div>
+                    </div>
+
+                    <h3>Boss Strategies</h3>
+                    <div class="tip-card" style="margin-top: 15px;">
+                        <h4><i class='bx bx-sitemap'></i> Final Boss Strategy</h4>
+                        <p>Phase 1: Shoot the glowing weak point. Phase 2: Use the environment to stun the boss. Phase 3: Switch to magnum and unload all shots. Save your rocket launcher for the final phase.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+               
+
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Completion Progress</h3>
+                    <p>Guide Completion: 75%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Last updated: Chapter 5 added</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('walkthrough')"><i class='bx bx-book-open'></i> Main Walkthrough</a>
+                    <a href="#" class="quick-link" onclick="showSection('map')"><i class='bx bx-map'></i> All Maps</a>
+                    <a href="#" class="quick-link" onclick="showSection('items')"><i class='bx bx-backpack'></i> Weapons & Items</a>
+                    <a href="#" class="quick-link" onclick="showSection('upgrades')"><i class='bx bx-upgrade'></i> Upgrade Guide</a>
+                    <a href="#" class="quick-link" onclick="showSection('puzzles')"><i class='bx bx-puzzle'></i> Puzzle Solutions</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Tips & Tricks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('walkthrough').style.display = 'none';
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('items').style.display = 'none';
+            document.getElementById('upgrades').style.display = 'none';
+            document.getElementById('puzzles').style.display = 'none';
+            document.getElementById('tips').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Find which tab was clicked (based on text or we can set data attributes)
+            const tabTexts = ['walkthrough', 'map', 'items', 'upgrades', 'puzzles', 'tips'];
+            const index = tabTexts.indexOf(sectionId);
+            if (index !== -1) {
+                tabs[index].classList.add('active');
+            }
+        }
+
+        // Video placeholder click
+        function playVideo() {
+            // In a real implementation, this would load a YouTube embed
+            alert('Video would play here - In production, embed YouTube or your video player');
+            // Example of embedding YouTube:
+            // window.location.href = 'https://www.youtube.com/watch?v=VIDEO_ID';
+        }
+
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

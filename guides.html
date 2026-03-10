@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Game Guides</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<!-- Guides specific SEO -->
+<meta name="description" content="Step-by-step game guides, walkthroughs, cheats and FAQs for popular games. Beginner tips to expert strategies.">
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .user-profile span {
+            font-weight: 500;
+        }
+
+        .login-prompt {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-prompt button {
+            background: transparent;
+            border: 1px solid #4a90e2;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-prompt .signup-btn {
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            border: none;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDES HEADER --- */
+        .guides-header {
+            margin-bottom: 30px;
+        }
+
+        .guides-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guides-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        /* --- MY GUIDES SECTION (from first image) --- */
+        .my-guides-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header h2 i {
+            color: #4a90e2;
+            font-size: 24px;
+        }
+
+        .section-header a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .empty-guides {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .empty-guides p {
+            color: #a0a5b1;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .empty-guides button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- POPULAR GUIDES SECTION (from both images) --- */
+        .popular-guides {
+            margin-bottom: 50px;
+        }
+
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .popular-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .popular-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .popular-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .popular-content {
+            padding: 20px;
+        }
+
+        .popular-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .contributor-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .contributor-info i {
+            color: #4a90e2;
+        }
+
+        .guide-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .guide-tag {
+            background: #2a3456;
+            color: #a0a5b1;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+        }
+
+        .open-guide-btn {
+            background: transparent;
+            border: 1px solid #4a90e2;
+            color: #4a90e2;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* --- ALL GUIDES SECTION --- */
+        .all-guides {
+            margin-bottom: 40px;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .guide-item {
+            background: #1a1f2b;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .guide-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .guide-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .guide-item-content {
+            flex: 1;
+        }
+
+        .guide-item-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .guide-item-content .contributors {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .guide-item-content .contributors i {
+            color: #4a90e2;
+            font-size: 14px;
+        }
+
+        .guide-item-content .contributor-count {
+            color: #4a90e2;
+            font-weight: 600;
+        }
+
+        /* --- FEATURED GAME GUIDE (ONE GAME TO SEE GUIDANCE) --- */
+        .featured-guide {
+            margin-bottom: 40px;
+        }
+
+        .featured-guide-card {
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .featured-guide-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .featured-guide-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-guide-content {
+            flex: 1;
+        }
+
+        .featured-guide-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .featured-guide-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .featured-guide-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #a0a5b1;
+        }
+
+        .featured-guide-meta i {
+            color: #4a90e2;
+        }
+
+        .featured-guide-content p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .featured-guide-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .popular-grid, .guides-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .featured-guide-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .featured-guide-meta {
+                justify-content: center;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .popular-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .guides-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .featured-guide-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .featured-guide-content h3 {
+                font-size: 22px;
+            }
+            
+            .featured-guide-meta {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .popular-grid, .guides-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- MY GUIDES SECTION (FUNCTIONAL) --- */
+.my-guides-section {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header h2 i {
+    color: #4a90e2;
+    font-size: 24px;
+}
+
+.section-header a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+/* My Guides Grid */
+.my-guides-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.my-guide-card {
+    background: #1a1f2b;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.my-guide-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.my-guide-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.my-guide-content {
+    flex: 1;
+}
+
+.my-guide-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.my-guide-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a0a5b1;
+    font-size: 12px;
+}
+
+.progress-bar {
+    width: 60px;
+    height: 4px;
+    background: #2a3456;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4a90e2;
+    border-radius: 2px;
+}
+
+.remove-guide {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #a0a5b1;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.remove-guide:hover {
+    color: #b31919;
+}
+
+.empty-guides {
+    background: #1a1f2b;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+.empty-guides p {
+    color: #a0a5b1;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.empty-guides button {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Add Game Modal */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 11000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #1a1f2b;
+    padding: 30px;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 16px;
+}
+
+.modal-content h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-content h3 i {
+    color: #4a90e2;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #14171e;
+    border: 1px solid #2a3456;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 15px;
+    outline: none;
+}
+
+.modal-content input:focus {
+    border-color: #4a90e2;
+}
+
+.game-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.game-list-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.game-list-item:hover {
+    background: #2a3456;
+}
+
+.game-list-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.game-list-item span {
+    color: white;
+    font-weight: 500;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.modal-buttons .cancel-btn {
+    background: #2a3456;
+    color: white;
+}
+
+.modal-buttons .add-btn {
+    background: #4a90e2;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Game Guides</span>
+                </div>
+                
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- GUIDES HEADER -->
+        <div class="guides-header">
+            <h1>Guides</h1>
+            <p>Guides, Step-by-Step Walkthroughs, Cheats, FAQs and more</p>
+        </div>
+
+                <!-- MY GUIDES SECTION (FUNCTIONAL) -->
+        <div class="my-guides-section">
+            <div class="section-header">
+                <h2>
+                    <i class='bx bx-bookmark'></i>
+                    My Guides
+                </h2>
+                <a onclick="showAddGameModal()" style="cursor: pointer;">See all <i class='bx bx-chevron-right'></i></a>
+            </div>
+            
+            <!-- My Guides Grid (initially empty) -->
+            <div id="myGuidesContainer">
+                <div class="empty-guides" id="emptyGuides">
+                    <p>Guides from the games you're playing</p>
+                    <button onclick="showAddGameModal()">
+                        <i class='bx bx-plus'></i>
+                        Add a game
+                    </button>
+                </div>
+                
+                <!-- Guides grid will be populated here -->
+                <div id="myGuidesGrid" class="my-guides-grid" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- ADD GAME MODAL -->
+        <div id="addGameModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>
+                    <i class='bx bx-game'></i>
+                    Add Game to My Guides
+                </h3>
+                
+                <input type="text" id="searchGameInput" placeholder="Search games..." onkeyup="filterGames()">
+                
+                <div class="game-list" id="gameList">
+                    <!-- Game list will be populated by JavaScript -->
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="cancel-btn" onclick="closeAddGameModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEATURED GAME GUIDE (ONE GAME TO SEE GUIDANCE) -->
+       <div class="featured-guide-card" onclick="window.location.href='residentevilrequiemguides.html'">
+    <div class="featured-guide-image">
+        <a href="residentevilrequiemguides.html" class="card-link">
+        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil Requiem">
+        </a>
+    </div>
+    <div class="featured-guide-content">
+        <h3>Resident Evil: Requiem Complete Guide</h3>
+        <div class="featured-guide-meta">
+            <span><i class='bx bx-group'></i> 0 CONTRIBUTORS</span>
+            <span><i class='bx bx-time'></i> Last updated: 2 days ago</span>
+            <span><i class='bx bx-message'></i> 10 CC</span>
+        </div>
+        <p>Everything you need to survive the horror. Complete walkthrough, all collectibles, boss strategies, and secret endings. Includes detailed maps and item locations for all chapters.</p>
+        <button class="featured-guide-btn" onclick="event.stopPropagation(); window.location.href='residentevilrequiemguides.html'">
+            Open Guide <i class='bx bx-right-arrow-alt'></i>
+        </button>
+    </div>
+</div>
+
+        <!-- POPULAR GUIDES SECTION (from first image) -->
+        <div class="popular-guides">
+            <div class="section-header">
+                <h2>
+                    <i class='bx bx-fire'></i>
+                    Popular in Guides
+                </h2>
+                <a href="#">See all <i class='bx bx-chevron-right'></i></a>
+            </div>
+            
+            <div class="popular-grid">
+                <!-- Resident Evil: Requiem Guide 1 -->
+                <div class="popular-card" onclick="window.location.href='residentevilrequiemguides.html'">
+                    <div class="popular-image">
+                        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil">
+                    </div>
+                    <div class="popular-content">
+                        <h3>Resident Evil: Requiem</h3>
+                        <div class="contributor-info">
+                            <i class='bx bx-group'></i>
+                            <span>0 CONTRIBUTORS</span>
+                            <span style="margin-left: auto;">10 CC</span>
+                        </div>
+                        <div class="guide-tags">
+                            <span class="guide-tag">Walkthrough</span>
+                            <span class="guide-tag">Bosses</span>
+                        </div>
+                        <div class="open-guide-btn">Open Guide</div>
+                    </div>
+                </div>
+
+                <!-- Resident Evil: Requiem Guide 2 -->
+                <div class="popular-card" onclick="window.location.href='residentevilrequiemguides.html'">
+                    <div class="popular-image">
+                        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil">
+                    </div>
+                    <div class="popular-content">
+                        <h3>Resident Evil: Requiem</h3>
+                        <div class="contributor-info">
+                            <i class='bx bx-group'></i>
+                            <span>0 CONTRIBUTORS</span>
+                            <span style="margin-left: auto;">10 CC</span>
+                        </div>
+                        <div class="guide-tags">
+                            <span class="guide-tag">Collectibles</span>
+                            <span class="guide-tag">Secrets</span>
+                        </div>
+                        <div class="open-guide-btn">Open Guide</div>
+                    </div>
+                </div>
+
+                <!-- Resident Evil: Requiem Guide 3 -->
+                <div class="popular-card" onclick="window.location.href='residentevilrequiemguides.html'">
+                    <div class="popular-image">
+                        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil">
+                    </div>
+                    <div class="popular-content">
+                        <h3>Resident Evil: Requiem</h3>
+                        <div class="contributor-info">
+                            <i class='bx bx-group'></i>
+                            <span>0 CONTRIBUTORS</span>
+                            <span style="margin-left: auto;">10 CC</span>
+                        </div>
+                        <div class="guide-tags">
+                            <span class="guide-tag">Achievements</span>
+                            <span class="guide-tag">100%</span>
+                        </div>
+                        <div class="open-guide-btn">Open Guide</div>
+                    </div>
+                </div>
+
+                <!-- ARC Raiders Guide -->
+                <div class="popular-card" onclick="window.location.href='arcraiderguides.html'">
+                    <div class="popular-image">
+                        <img src="assets/images/Arc.jpeg" alt="ARC Raiders">
+                    </div>
+                    <div class="popular-content">
+                        <h3>ARC Raiders</h3>
+                        <div class="contributor-info">
+                            <i class='bx bx-group'></i>
+                            <span>0 CONTRIBUTORS</span>
+                        </div>
+                        <div class="guide-tags">
+                            <span class="guide-tag">Beginner</span>
+                            <span class="guide-tag">Tips</span>
+                        </div>
+                        <div class="open-guide-btn">Open Guide</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALL GUIDES SECTION (from second image) -->
+        <div class="all-guides">
+            <div class="section-header">
+                <h2>
+                    <i class='bx bx-list-ul'></i>
+                    All Guides
+                </h2>
+            </div>
+            
+            <div class="guides-grid">
+                <!-- Resident Evil: Requiem -->
+                <div class="guide-item" onclick="window.location.href='residentevilrequiemguides.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Resident Evil: Requiem</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ARC Raiders -->
+                <div class="guide-item" onclick="window.location.href='arcraiderguides.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Arc.jpeg" alt="ARC Raiders">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>ARC Raiders</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minecraft -->
+                <div class="guide-item" onclick="window.location.href='guide-minecraft.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Mine.jpeg" alt="Minecraft">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Minecraft</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valorant -->
+                <div class="guide-item" onclick="window.location.href='valorant-guide-page.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Valo.jpeg" alt="Valorant">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Valorant</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dress To Impress -->
+                <div class="guide-item" onclick="window.location.href='guide-thewitcher3.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/thewitcher3.jpeg" alt="The Witcher 3">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>The Witcher 3 Wild Hunt</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Heartopia -->
+                <div class="guide-item" onclick="window.location.href='guide-ghostoftsushima.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/ghostofthusima.jpg" alt="ghostofthusima">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Ghost Of Tsushima</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GTA 5 -->
+                <div class="guide-item" onclick="window.location.href='guide-gta5.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/gta5.jpeg" alt="GTA 5">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>GTA 5</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fortnite -->
+                <div class="guide-item" onclick="window.location.href='guide-fortnite.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/fortnite.jpg" alt="Fortnite">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Fortnite</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resident Evil 2 Remake -->
+                <div class="guide-item" onclick="window.location.href='guide-re2.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Resident Evil 2 - E3 Cover, Riccardo Minervino.jpg" alt="Resident Evil 2">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Resident Evil 2 Remake</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Red Dead Redemption 2 -->
+                <div class="guide-item" onclick="window.location.href='guide-rdr2.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/rdr2.jpeg" alt="RDR2">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Red Dead Redemption 2</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+                 <!-- League Of Legend -->
+                 <div class="guide-item" onclick="window.location.href='guide-leagueoflegend.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/lol.jpg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>League of Legends</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-item" onclick="window.location.href='guide-counterstrike.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/coun.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Counter Strike</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="guide-item" onclick="window.location.href='guide-warhammer40000.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Warhammer.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Warhammer 40,000</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="guide-item" onclick="window.location.href='guide-helldivers2.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Helldivers.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>HellDivers 2</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="guide-item" onclick="window.location.href='guide-forzahorizon5.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Forza5.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Forza Horizon 5</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="guide-item" onclick="window.location.href='guide-baldursgate3.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/Baldur.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Baldur's Gate 3</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="guide-item" onclick="window.location.href='guide-supermarketsimulator.html'">
+                    <div class="guide-item-image">
+                        <img src="assets/images/supermarket.jpeg" alt="lol">
+                    </div>
+                    <div class="guide-item-content">
+                        <h4>Supermarket Simulator</h4>
+                        <div class="contributors">
+                            <i class='bx bx-group'></i>
+                            <span class="contributor-count">0</span> CONTRIBUTORS
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 11000; backdrop-filter: blur(5px);">
+        <div style="background: linear-gradient(145deg, #1e2330, #252b3a); padding: 35px; width: 500px; max-width: 90%; border-radius: 20px;">
+            <h2 style="margin-bottom: 25px; color: white; display: flex; align-items: center; gap: 10px;">
+                <i class='bx bx-log-in' style="color: #4a90e2;"></i>
+                Login Required
+            </h2>
+            
+            <p style="color: #a0a5b1; margin-bottom: 20px;">Please sign in or create an account to save guides and contribute.</p>
+            
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button style="background: #2a3456; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="window.location.href='login.html'">Create Account</button>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px;">
+                <a href="#" onclick="closeLoginModal()" style="color: #4a90e2; text-decoration: none;">Close</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // ===== AUTHENTICATION (SINGLE SYSTEM) =====
+    // Check login status from currentUser (new system)
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    // Update UI based on login status
+    function updateLoginUI() {
+        const navActions = document.getElementById('navActions');
+        const sidebarFooter = document.querySelector('.sidebar__footer');
+        
+        if (currentUser && currentUser.loggedIn) {
+            // User is logged in - show profile with logout button
+            if (navActions) {
+                navActions.innerHTML = `
+                    <div class="user-profile" onclick="viewProfile()">
+                        <img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=32'}" alt="Profile">
+                        <span>${currentUser.username}</span>
+                    </div>
+                `;
+            }
+            
+            if (sidebarFooter) {
+                sidebarFooter.innerHTML = `
+                    <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px; width: 100%;">
+                        <i class='bx bx-user-circle'></i> ${currentUser.username}
+                    </button>
+                    <button class="logout-btn" onclick="logout()" style="width: 100%;">
+                        <i class='bx bx-log-out'></i> Logout
+                    </button>
+                `;
+            }
+        } else {
+            // User is not logged in - show login buttons
+            if (navActions) {
+                navActions.innerHTML = `
+                    <div class="login-prompt">
+                        <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                        <button onclick="window.location.href='login.html'">Log In</button>
+                    </div>
+                `;
+            }
+            
+            if (sidebarFooter) {
+                sidebarFooter.innerHTML = `
+                    <a href="login.html" style="text-decoration: none; display: block;">
+                        <button class="btn-login">
+                            <i class='bx bx-user-circle'></i> Sign up or log in
+                        </button>
+                    </a>
+                `;
+            }
+        }
+    }
+
+    function viewProfile() {
+        window.location.href = 'profile.html';
+    }
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        window.location.reload();
+    }
+
+    // Add logout button CSS
+    const logoutStyle = document.createElement('style');
+    logoutStyle.textContent = `
+        .logout-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #b31919;
+            color: #b31919;
+            padding: 10px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background: #b31919;
+            color: white;
+        }
+        
+        .login-prompt {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .login-prompt button {
+            background: transparent;
+            border: 1px solid #4a90e2;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .login-prompt .signup-btn {
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            border: none;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+        
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4a90e2;
+        }
+        
+        .user-profile span {
+            font-weight: 500;
+            color: white;
+        }
+    `;
+    document.head.appendChild(logoutStyle);
+
+    // ===== MY GUIDES FUNCTIONALITY =====
+    let myGuides = JSON.parse(localStorage.getItem('myGuides')) || [];
+
+    // Available games to add
+    const availableGames = [
+        { id: 1, name: 'Resident Evil: Requiem', image: 'Leongamereview.jpeg', contributors: 5 },
+        { id: 2, name: 'ARC Raiders', image: 'Arc.jpeg', contributors: 13 },
+        { id: 3, name: 'Minecraft', image: 'Mine.jpeg', contributors: 39900 },
+        { id: 4, name: 'Valorant', image: 'Valo.jpeg', contributors: 15 },
+        { id: 5, name: 'GTA 5', image: 'Gta6.jpeg', contributors: 151400 },
+        { id: 6, name: 'Fortnite', image: 'fortnite.jpg', contributors: 1600 },
+        { id: 7, name: 'Red Dead Redemption 2', image: 'rdr2.jpeg', contributors: 1800 },
+        { id: 8, name: 'Cyberpunk 2077', image: 'Cyberpunk.jpeg', contributors: 850 },
+        { id: 9, name: 'God of War 2018', image: 'gow2018.jpeg', contributors: 1200 },
+        { id: 10, name: 'The Witcher 3', image: 'thewitcher3.jpeg', contributors: 25000 },
+        { id: 11, name: 'Ghost of Tsushima', image: 'ghostofthusima.jpg', contributors: 18000 },
+        { id: 12, name: 'Resident Evil 2 Remake', image: 'Resident Evil 2 - E3 Cover, Riccardo Minervino.jpg', contributors: 91 }
+    ];
+
+    // Display My Guides
+    function displayMyGuides() {
+        const emptyGuides = document.getElementById('emptyGuides');
+        const myGuidesGrid = document.getElementById('myGuidesGrid');
+        
+        if (myGuides.length === 0) {
+            emptyGuides.style.display = 'block';
+            myGuidesGrid.style.display = 'none';
+        } else {
+            emptyGuides.style.display = 'none';
+            myGuidesGrid.style.display = 'grid';
+            
+            let html = '';
+            myGuides.forEach((guide, index) => {
+                const progress = Math.floor(Math.random() * 100);
+                html += `
+                    <div class="my-guide-card">
+                        <div class="my-guide-image">
+                            <img src="assets/images/${guide.image}" alt="${guide.name}">
+                        </div>
+                        <div class="my-guide-content">
+                            <h4>${guide.name}</h4>
+                            <div class="my-guide-progress">
+                                <span>${progress}%</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${progress}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="remove-guide" onclick="removeGuide(${index})">
+                            <i class='bx bx-x'></i>
+                        </div>
+                    </div>
+                `;
+            });
+            myGuidesGrid.innerHTML = html;
+        }
+    }
+
+    // Show Add Game Modal
+    function showAddGameModal() {
+        // Check if user is logged in using currentUser
+        if (!currentUser || !currentUser.loggedIn) {
+            showLoginModal();
+            return;
+        }
+        populateGameList();
+        document.getElementById('addGameModal').style.display = 'flex';
+    }
+
+    // Close Add Game Modal
+    function closeAddGameModal() {
+        document.getElementById('addGameModal').style.display = 'none';
+        document.getElementById('searchGameInput').value = '';
+    }
+
+    // Populate game list in modal
+    function populateGameList(searchTerm = '') {
+        const gameList = document.getElementById('gameList');
+        const filteredGames = availableGames.filter(game => 
+            game.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        let html = '';
+        filteredGames.forEach(game => {
+            // Check if game already added
+            const alreadyAdded = myGuides.some(g => g.id === game.id);
+            if (!alreadyAdded) {
+                html += `
+                    <div class="game-list-item" onclick="addGuide(${game.id}, '${game.name}', '${game.image}')">
+                        <img src="assets/images/${game.image}" alt="${game.name}">
+                        <span>${game.name}</span>
+                    </div>
+                `;
+            }
+        });
+        
+        if (html === '') {
+            html = '<p style="color: #a0a5b1; text-align: center; padding: 20px;">No games available to add</p>';
+        }
+        
+        gameList.innerHTML = html;
+    }
+
+    // Filter games in modal
+    function filterGames() {
+        const searchTerm = document.getElementById('searchGameInput').value;
+        populateGameList(searchTerm);
+    }
+
+    // Add guide to My Guides
+    function addGuide(id, name, image) {
+        const game = availableGames.find(g => g.id === id);
+        myGuides.push(game);
+        localStorage.setItem('myGuides', JSON.stringify(myGuides));
+        displayMyGuides();
+        closeAddGameModal();
+    }
+
+    // Remove guide from My Guides
+    function removeGuide(index) {
+        myGuides.splice(index, 1);
+        localStorage.setItem('myGuides', JSON.stringify(myGuides));
+        displayMyGuides();
+    }
+
+    // Modal functions
+    function showLoginModal() {
+        document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    function closeLoginModal() {
+        document.getElementById('loginModal').style.display = 'none';
+    }
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('mySidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const pageContent = document.querySelector('.page-content');
+    const navbar = document.querySelector('.navbar');
+
+    const sidebarState = localStorage.getItem('guidesSidebarState');
+    if (sidebarState === 'closed') {
+        sidebar.classList.add('closed');
+        toggleBtn.classList.add('moved');
+        toggleIcon.innerText = '❯';
+        pageContent.style.marginLeft = '20px';
+        if (navbar) navbar.style.left = '0';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        toggleBtn.classList.toggle('moved');
+
+        const isClosed = sidebar.classList.contains('closed');
+        toggleIcon.innerText = isClosed ? '❯' : '❮';
+        
+        if (isClosed) {
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+            localStorage.setItem('guidesSidebarState', 'closed');
+        } else {
+            pageContent.style.marginLeft = '250px';
+            if (navbar) navbar.style.left = '250px';
+            localStorage.setItem('guidesSidebarState', 'open');
+        }
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const loginModal = document.getElementById('loginModal');
+        const addGameModal = document.getElementById('addGameModal');
+        if (event.target === loginModal) {
+            closeLoginModal();
+        }
+        if (event.target === addGameModal) {
+            closeAddGameModal();
+        }
+    }
+
+    // Call on page load
+    displayMyGuides();
+    updateLoginUI();
+</script>
+</body>
+</html>

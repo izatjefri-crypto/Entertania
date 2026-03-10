@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Marvel's Spider-Man 2 Review</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-reviews {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- REVIEW HEADER --- */
+        .review-header {
+            margin-bottom: 30px;
+        }
+
+        .review-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .review-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .review-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .review-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .review-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- REVIEW SCORE BANNER --- */
+        .score-banner {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: #1a1f2b;
+            padding: 25px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 170px;
+            height: 100px;
+            border-radius: 50%;
+            background: #b31919;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .score-circle .score {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-circle .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .score-info h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .score-info p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .score-info .reviewer-name {
+            color: #4a90e2;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* --- REVIEW CONTENT LAYOUT --- */
+        .review-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- MAIN REVIEW CONTENT --- */
+        .review-main {
+            width: 100%;
+        }
+
+        .review-hero-image {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .review-hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .review-article h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 30px 0 20px 0;
+            color: white;
+        }
+
+        .review-article h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .review-article p {
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .review-article .quote {
+            background: #1a1f2b;
+            padding: 25px;
+            border-left: 4px solid #4a90e2;
+            margin: 30px 0;
+            font-style: italic;
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .review-article .verdict {
+            background: #1a1f2b;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .review-article .verdict h3 {
+            margin-top: 0;
+            color: #b31919;
+        }
+
+        .review-article .verdict p {
+            margin-bottom: 0;
+            font-size: 18px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .pros h4, .cons h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .pros ul, .cons ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .pros li, .cons li {
+            padding: 8px 0;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pros li i {
+            color: #4ade80;
+        }
+
+        .cons li i {
+            color: #b31919;
+        }
+
+        /* --- RIGHT SIDEBAR (REVIEW INFO) --- */
+        .review-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item .label {
+            color: #a0a5b1;
+        }
+
+        .info-item .value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .platform-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .platform-icons i {
+            font-size: 24px;
+            color: #a0a5b1;
+        }
+
+        .similar-review-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+            cursor: pointer;
+        }
+
+        .similar-review-item:last-child {
+            border-bottom: none;
+        }
+
+        .similar-review-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .similar-review-item .meta {
+            display: flex;
+            gap: 15px;
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .similar-review-item .score-small {
+            color: #b31919;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* --- COMMENTS SECTION --- */
+        .comments-section {
+            margin-top: 50px;
+        }
+
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .comments-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comments-title i {
+            color: #4a90e2;
+        }
+
+        .comments-title span {
+            color: #4a90e2;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        .comments-sort select {
+            background: #1a1f2b;
+            color: white;
+            border: 1px solid #2a3456;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        /* Comment Thread */
+        .comment-thread {
+            margin-bottom: 30px;
+        }
+
+        .comment-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .comment-main {
+            display: flex;
+            gap: 15px;
+        }
+
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comment-author-name {
+            font-weight: 600;
+            color: white;
+            font-size: 16px;
+        }
+
+        .comment-author-badge {
+            color: #4a90e2;
+            font-size: 12px;
+            background: rgba(74, 144, 226, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .comment-time {
+            color: #a0a5b1;
+            font-size: 13px;
+        }
+
+        .comment-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .comment-action-btn {
+            background: transparent;
+            border: none;
+            color: #a0a5b1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .comment-action-btn i {
+            font-size: 18px;
+        }
+
+        /* Reply Thread */
+        .reply-thread {
+            margin-left: 65px;
+            margin-top: 15px;
+        }
+
+        .reply-card {
+            background: #14171e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        .reply-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .reply-main {
+            display: flex;
+            gap: 15px;
+        }
+
+        .reply-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .reply-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reply-content {
+            flex: 1;
+        }
+
+        .reply-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .reply-author-name {
+            font-weight: 600;
+            color: white;
+            font-size: 14px;
+        }
+
+        .reply-author-badge {
+            background: #4a90e2;
+            color: white;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .reply-time {
+            color: #a0a5b1;
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+        .reply-text {
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .reply-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .reply-action-btn {
+            background: transparent;
+            border: none;
+            color: #a0a5b1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .reply-action-btn i {
+            font-size: 16px;
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin: 40px 0 20px 0;
+        }
+
+        .load-more-btn {
+            background: transparent;
+            border: 1px solid #4a90e2;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .load-more-btn:hover {
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        /* Comment Form */
+        .comment-form {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .comment-form h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            background: #14171e;
+            border: 1px solid #2a3456;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            min-height: 100px;
+            margin-bottom: 15px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .comment-form textarea:focus {
+            border-color: #4a90e2;
+        }
+
+        .comment-form-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .comment-submit-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .comment-submit-btn i {
+            font-size: 18px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .review-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .score-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+            
+            .review-header h1 {
+                font-size: 32px;
+            }
+            
+            .comments-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .reply-thread {
+                margin-left: 20px;
+            }
+            
+            .comment-main, .reply-main {
+                flex-direction: column;
+            }
+            
+            .comment-avatar, .reply-avatar {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Marvel's Spider-Man 2 Review</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item active"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="game-reviews.html" class="back-to-reviews">
+                <i class='bx bx-arrow-back'></i>
+                Back to Reviews
+            </a>
+        </div>
+
+        <!-- REVIEW HEADER -->
+        <div class="review-header">
+            <h1>Marvel's Spider-Man 2 Review</h1>
+            <div class="review-meta">
+                <div class="review-meta-item">
+                    <i class='bx bx-calendar'></i>
+                    <span>Reviewed: <strong>October 20, 2023</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-user'></i>
+                    <span>By <strong>JONATHAN DORNBUSH</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Posted: <strong>1 month ago</strong></span>
+                </div>
+                <div class="review-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong>23</strong> comments</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCORE BANNER -->
+        <div class="score-banner">
+            <div class="score-circle">
+                <span class="score">9.0</span>
+                <span class="score-label">Amazing</span>
+            </div>
+            <div class="score-info">
+                <h2>Insomniac swings for the fences and hits a home run</h2>
+                <p>Marvel's Spider-Man 2 is everything a sequel should be. With two playable Spider-Men, a darker, more mature story, and web-swinging that's better than ever, Insomniac has delivered another masterpiece. The symbiote suit changes everything.</p>
+                <p class="reviewer-name">— Jonathan Dornbush</p>
+            </div>
+        </div>
+
+        <!-- REVIEW LAYOUT -->
+        <div class="review-layout">
+            <!-- MAIN REVIEW CONTENT -->
+            <div class="review-main">
+                <!-- HERO IMAGE -->
+                <div class="review-hero-image">
+                    <img src="assets/images/marvelspiderman2.jpg" alt="Marvel's Spider-Man 2" onerror="this.src='https://via.placeholder.com/1200x600?text=Spider-Man+2'">
+                </div>
+
+                <!-- REVIEW ARTICLE -->
+                <div class="review-article">
+                    <h2>Introduction</h2>
+                    <p>Five years after the first game and three years after Miles Morales, Insomniac Games has finally released the sequel fans have been waiting for. Marvel's Spider-Man 2 is a triumph on almost every level, delivering a darker, more personal story while expanding the gameplay in meaningful ways. With both Peter Parker and Miles Morales playable, and the introduction of the symbiote suit and Venom, this is the most ambitious Spider-Man game yet.</p>
+                    
+                    <p>The story picks up some time after the events of Miles Morales. Peter is struggling to balance his life as Spider-Man with his responsibilities, while Miles is growing into his own as a hero. When Kraven the Hunter arrives in New York, targeting the city's most dangerous criminals, and the symbiote attaches itself to Peter, everything changes.</p>
+
+                    <div class="quote">
+                        "Spider-Man 2 is Insomniac at their best - a superhero epic that balances blockbuster spectacle with intimate character moments, all while perfecting the web-swinging fantasy."
+                    </div>
+
+                    <h2>Two Spider-Men, One Story</h2>
+                    <p>The dual-protagonist system is handled brilliantly. You can switch between Peter and Miles at almost any time during free roam, and certain missions are designed specifically for one character or the other. Both feel distinct - Peter with his symbiote abilities and mechanical arms, Miles with his venom powers and invisibility. Their banter when swinging together is a highlight, capturing the mentor-mentee relationship perfectly.</p>
+
+                    <p>The symbiote suit completely changes Peter's gameplay. He becomes faster, stronger, and more aggressive, with new abilities that reflect the suit's corrupting influence. The way Insomniac handles Peter's transformation is masterful, and you'll feel the difference in how he moves and fights.</p>
+
+                    <h2>Kraven and Venom</h2>
+                    <p>Kraven the Hunter is a phenomenal antagonist. Voiced by the legendary Jim Pirri, he's not just a villain - he's a force of nature. His arrival in New York sets the entire plot in motion, and his hunting of the city's supervillains creates some of the game's most intense moments. He respects strength above all else, and his dynamic with both Spider-Men and Venom is fascinating.</p>
+
+                    <p>And then there's Venom. Tony Todd's performance as the iconic symbiote is absolutely chilling. His voice alone will send shivers down your spine. The symbiote's influence on Peter drives the story, and when Venom fully emerges... let's just say it's worth the wait. The final act of the game is some of the best superhero storytelling in any medium.</p>
+
+                    <h2>Web-Swinging and Traversal</h2>
+                    <p>The web-swinging has been perfected. It's faster, more fluid, and more fun than ever. New additions like the web wings let you glide across the city, and you can now launch yourself from water and use wind tunnels to gain speed. Traversal feels effortless and exhilarating, and you'll never get tired of just swinging around New York.</p>
+
+                    <p>The map has been expanded to include Brooklyn and Queens, doubling the size of the playable area. Each borough feels distinct, from the industrial areas of Queens to the vibrant streets of Brooklyn. Fast travel is nearly instantaneous thanks to the PS5's SSD, but you'll rarely want to use it when swinging is this good.</p>
+
+                    <h2>Combat Evolution</h2>
+                    <p>Combat builds on the foundation of the first games while adding meaningful depth. Both Spider-Men have unique skill trees and abilities. Peter's symbiote powers let him unleash devastating attacks, while Miles' venom powers have been expanded with new techniques. Parrying has been added, and it's essential for tougher enemies and boss fights.</p>
+
+                    <p>The gadget system returns with new toys to play with, and the ability to chain abilities and gadgets together creates a flow that's incredibly satisfying. Enemy variety is excellent, with Kraken's hunters providing a new challenge alongside returning foes.</p>
+
+                    <h2>Pros and Cons</h2>
+                    <div class="pros-cons">
+                        <div class="pros">
+                            <h4>Pros</h4>
+                            <ul>
+                                <li><i class='bx bx-check'></i> Two playable Spider-Men with distinct abilities</li>
+                                <li><i class='bx bx-check'></i> Tony Todd's Venom is terrifying and incredible</li>
+                                <li><i class='bx bx-check'></i> Kraven is one of gaming's best villains</li>
+                                <li><i class='bx bx-check'></i> Web-swinging has never been better</li>
+                                <li><i class='bx bx-check'></i> Brooklyn and Queens double the map size</li>
+                                <li><i class='bx bx-check'></i> Symbiote gameplay is a game-changer</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4>Cons</h4>
+                            <ul>
+                                <li><i class='bx bx-x'></i> Some side activities feel repetitive</li>
+                                <li><i class='bx bx-x'></i> Main story is relatively short (15-18 hours)</li>
+                                <li><i class='bx bx-x'></i> MJ stealth sections return (though improved)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2>Visual and Audio Design</h2>
+                    <p>This is one of the best-looking games on PS5. The level of detail in character models, especially during cutscenes, is astonishing. Peter's symbiote transformation is rendered beautifully, with the suit shifting and moving in real-time. The ray-traced reflections in the city's skyscrapers add incredible depth.</p>
+
+                    <p>The soundtrack by John Paesano returns and is better than ever, with new themes for Venom and Kraven that perfectly capture their menace. The voice acting across the board is superb, with Yuri Lowenthal delivering his best performance yet as Peter, and Nadji Jeter continuing to shine as Miles.</p>
+
+                    <h2>Side Content</h2>
+                    <p>The side missions in Spider-Man 2 are a mixed bag, but when they're good, they're great. Missions featuring Howard the Pigeon Lady are heartwarming, and Brooklyn Visions Academy side stories add depth to Miles' world. The Mysterio missions are a highlight, offering unique combat challenges and a fun narrative.</p>
+
+                    <p>The game also includes a photo mode that's incredibly robust, letting you capture stunning shots of your favorite moments. The EMF experiments and Hunter blinds can feel a bit repetitive, but they're worth completing for the rewards and story bits.</p>
+
+                    <!-- VERDICT -->
+                    <div class="verdict">
+                        <h3>Verdict</h3>
+                        <p>Marvel's Spider-Man 2 is Insomniac Games at the peak of their powers. It's a sequel that improves on every aspect of its predecessors while delivering a story that's darker, more emotional, and ultimately more satisfying. The symbiote arc is handled with care, Venom is a terrifying presence, and Kraven joins the ranks of gaming's greatest villains. With two Spider-Men to play as, a bigger map, and traversal that's pure joy, this is essential for any superhero fan. A spectacular 9/10.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR - REVIEW INFO -->
+            <div class="review-side">
+                <!-- GAME INFO CARD -->
+                <div class="info-card">
+                    <h3>Game Information</h3>
+                    <div class="info-item">
+                        <span class="label">Platform</span>
+                        <span class="value">PS5</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Developer</span>
+                        <span class="value">Insomniac Games</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Publisher</span>
+                        <span class="value">Sony Interactive</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Release Date</span>
+                        <span class="value">October 20, 2023</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Genre</span>
+                        <span class="value">Action-Adventure, Open World</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Playtime</span>
+                        <span class="value">15-25 hours</span>
+                    </div>
+                    <div class="platform-icons">
+                        <i class='bx bxl-play-store'></i>
+                    </div>
+                </div>
+
+                <!-- SCORE BREAKDOWN CARD -->
+                <div class="info-card">
+                    <h3>Score Breakdown</h3>
+                    <div class="info-item">
+                        <span class="label">Story</span>
+                        <span class="value">9.5</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Gameplay</span>
+                        <span class="value">9.0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Graphics</span>
+                        <span class="value">10</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Sound</span>
+                        <span class="value">9.5</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Traversal</span>
+                        <span class="value">10</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="label">Value</span>
+                        <span class="value">9.0</span>
+                    </div>
+                </div>
+
+                <!-- SIMILAR REVIEWS CARD -->
+                <div class="info-card">
+                    <h3>Similar Reviews</h3>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='residentevilrequiemreview.html'">
+                        <h4>Resident Evil Requiem</h4>
+                        <div class="meta">
+                            <span>1d ago</span>
+                            <span class="score-small">8.5</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='godofwar-sons-of-sparta-review.html'">
+                        <h4>God of War: Sons of Sparta</h4>
+                        <div class="meta">
+                            <span>7d ago</span>
+                            <span class="score-small">9.0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='rdr2-review.html'">
+                        <h4>Red Dead Redemption 2</h4>
+                        <div class="meta">
+                            <span>2w ago</span>
+                            <span class="score-small">10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="similar-review-item" onclick="window.location.href='cyberpunk-phantom-liberty-review.html'">
+                        <h4>Cyberpunk 2077: Phantom Liberty</h4>
+                        <div class="meta">
+                            <span>3w ago</span>
+                            <span class="score-small">9.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAGS CARD -->
+                <div class="info-card">
+                    <h3>Tags</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Marvel</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Spider-Man</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Insomniac</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">PS5 Exclusive</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Venom</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Open World</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Miles Morales</span>
+                        <span style="background: #2a3456; color: #a0a5b1; padding: 5px 12px; border-radius: 20px; font-size: 12px;">Kraven</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMENTS SECTION -->
+        <div class="comments-section">
+            <div class="comments-header">
+                <h3 class="comments-title">
+                    <i class='bx bx-message'></i>
+                    Comments <span>(23)</span>
+                </h3>
+                <div class="comments-sort">
+                    <select>
+                        <option>Newest First</option>
+                        <option>Oldest First</option>
+                        <option>Most Liked</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- COMMENT 1 - User about Venom -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">SymbioteLover</span>
+                                    <span class="comment-author-badge">Fan</span>
+                                </div>
+                                <span class="comment-time">1 month ago</span>
+                            </div>
+                            <p class="comment-text">Tony Todd as Venom is absolute perfection. That voice is ICONIC. Every time he spoke I got chills. Best Venom portrayal since the 90s cartoon. Insomniac nailed it.</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 2.8K
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 2 - User about gameplay -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">WebHead</span>
+                                    <span class="comment-author-badge">Veteran</span>
+                                </div>
+                                <span class="comment-time">1 month ago</span>
+                            </div>
+                            <p class="comment-text">The web-swinging in this game is absolutely perfect. I spent hours just swinging around Brooklyn and Queens. The wind tunnels and web wings make traversal so much fun. Best movement in any open world game, period.</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 1.9K
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPLY to COMMENT 2 -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">Spider-Fan</span>
+                                        <span class="reply-time">4 weeks ago</span>
+                                    </div>
+                                    <p class="reply-text">The fast travel is literally instant but I never use it because swinging is so fun. That's the mark of a great traversal system!</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 345
+                                        </button>
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-reply'></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 3 - User about Kraven -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">HunterFan</span>
+                                    <span class="comment-author-badge">Contributor</span>
+                                </div>
+                                <span class="comment-time">3 weeks ago</span>
+                            </div>
+                            <p class="comment-text">Kraven is one of the best villains in any Spider-Man media. The way he hunts the other villains, the respect he shows for strong opponents, and his final confrontation with Venom... absolute cinema. Jim Pirri killed it.</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 1.2K
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 4 - User about story length -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">StoryGamer</span>
+                                    <span class="comment-author-badge">Newbie</span>
+                                </div>
+                                <span class="comment-time">2 weeks ago</span>
+                            </div>
+                            <p class="comment-text">I wish the main story was longer. 15 hours felt too short after how massive the first game was. That said, those 15 hours are some of the best gaming I've experienced. Quality over quantity I guess!</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 678
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPLY to COMMENT 4 -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">Completionist</span>
+                                        <span class="reply-time">2 weeks ago</span>
+                                    </div>
+                                    <p class="reply-text">Do all the side content! Adds another 10-15 hours easily. The Mysterio missions and Howard's questline are worth it.</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 234
+                                        </button>
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-reply'></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMMENT 5 - User about MJ missions -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">MJfan</span>
+                                    <span class="comment-author-badge">Veteran</span>
+                                </div>
+                                <span class="comment-time">1 week ago</span>
+                            </div>
+                            <p class="comment-text">Unpopular opinion but I actually liked the MJ missions this time! She has a taser now and can actually fight back. Much better than the first game's stealth sections.</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 456
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN REPLY to COMMENTS -->
+            <div class="comment-thread">
+                <div class="comment-card">
+                    <div class="comment-main">
+                        <div class="comment-avatar">
+                            <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Admin">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <div class="comment-author">
+                                    <span class="comment-author-name">JONATHAN DORNBUSH</span>
+                                    <span class="comment-author-badge">Admin</span>
+                                </div>
+                                <span class="comment-time">1 week ago</span>
+                            </div>
+                            <p class="comment-text">Thanks for all the great comments everyone! I'm so glad you're all loving the symbiote stuff as much as I did. Tony Todd really is something special as Venom. What was your favorite moment in the game? Let's discuss!</p>
+                            <div class="comment-actions">
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-heart'></i> 789
+                                </button>
+                                <button class="comment-action-btn">
+                                    <i class='bx bx-reply'></i> Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPLY to ADMIN -->
+                    <div class="reply-thread">
+                        <div class="reply-card">
+                            <div class="reply-main">
+                                <div class="reply-avatar">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                                </div>
+                                <div class="reply-content">
+                                    <div class="reply-header">
+                                        <span class="reply-author-name">Spider-Verse</span>
+                                        <span class="reply-time">6 days ago</span>
+                                    </div>
+                                    <p class="reply-text">The final fight with Venom was epic! The scale, the music, the emotions. Perfect ending.</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-heart'></i> 123
+                                        </button>
+                                        <button class="reply-action-btn">
+                                            <i class='bx bx-reply'></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOAD MORE COMMENTS BUTTON -->
+            <div class="load-more-container">
+                <button class="load-more-btn">
+                    Load More Comments (17)
+                </button>
+            </div>
+
+            <!-- WRITE A COMMENT FORM -->
+            <div class="comment-form">
+                <h4>Add Your Comment</h4>
+                <textarea placeholder="Join the discussion..."></textarea>
+                <div class="comment-form-footer">
+                    <button class="comment-submit-btn">
+                        <i class='bx bx-send'></i>
+                        Post Comment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        // Check localStorage for sidebar state on page load
+        const sidebarState = localStorage.getItem('spiderman2ReviewSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('spiderman2ReviewSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('spiderman2ReviewSidebarState', 'open');
+            }
+        });
+
+        // Check login status
+        let userLoggedIn = localStorage.getItem('username') || sessionStorage.getItem('username');
+
+        // Modal functions
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function viewProfile() {
+            window.location.href = 'profile.html';
+        }
+
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+        }
+    </script>
+</body>
+</html>

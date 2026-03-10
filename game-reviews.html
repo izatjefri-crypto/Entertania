@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Game Reviews</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<!-- Game Reviews specific SEO -->
+<meta name="description" content="Read expert game reviews for the latest titles including Resident Evil Requiem, God of War, and more. Honest ratings and in-depth analysis.">
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(74, 144, 226, 0.3);
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .user-profile span {
+            font-weight: 500;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+            transform: scale(1.1);
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- REVIEWS HEADER --- */
+        .reviews-header {
+            margin-bottom: 30px;
+        }
+
+        .reviews-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .reviews-header p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tabs span {
+            color: #a0a5b1;
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .filter-tabs span:hover {
+            color: #4a90e2;
+        }
+
+        .filter-tabs span.active {
+            color: white;
+            font-weight: 600;
+        }
+
+        .filter-dropdowns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdowns select {
+            padding: 8px 15px;
+            background: #1a1f2b;
+            border: 1px solid #2a3456;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-dropdowns select:focus {
+            border-color: #4a90e2;
+        }
+
+        /* --- FEATURED REVIEW (BIG CARD) --- */
+        .featured-review {
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+
+        .featured-card {
+            display: flex;
+            background: #1a1f2b;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .featured-image {
+            width: 40%;
+            position: relative;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            width: 60%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .featured-content .meta {
+            display: flex;
+            gap: 15px;
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .featured-content .meta i {
+            color: #4a90e2;
+            margin-right: 5px;
+        }
+
+        .featured-content h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .featured-content .game-title {
+            color: #4a90e2;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .featured-content .game-title i {
+            font-size: 18px;
+        }
+
+        .featured-content .review-excerpt {
+            color: #a0a5b1;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .featured-content .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .featured-content .reviewer img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .featured-content .reviewer-info p {
+            font-weight: 600;
+            color: white;
+            font-size: 15px;
+        }
+
+        .featured-content .reviewer-info span {
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .featured-content .stats {
+            display: flex;
+            gap: 20px;
+            color: #a0a5b1;
+            font-size: 14px;
+        }
+
+        .featured-content .stats i {
+            color: #4a90e2;
+            margin-right: 5px;
+        }
+
+        /* --- REVIEW GRID --- */
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #4a90e2;
+            font-size: 24px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .review-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-card-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .review-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .review-card-content {
+            padding: 20px;
+        }
+
+        .review-card-meta {
+            display: flex;
+            gap: 10px;
+            color: #a0a5b1;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .review-card-meta i {
+            color: #4a90e2;
+            margin-right: 3px;
+        }
+
+        .review-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .review-card .game-subtitle {
+            color: #4a90e2;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .review-card .excerpt {
+            color: #a0a5b1;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .review-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .review-card-footer .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .review-card-footer .reviewer i {
+            color: #4a90e2;
+        }
+
+        .review-card-footer .stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .review-card-footer .stats i {
+            color: #4a90e2;
+            margin-right: 3px;
+        }
+
+        /* --- SIDEBAR PROMO --- */
+        .promo-sidebar {
+            margin-top: 40px;
+        }
+
+        .promo-card {
+            background: linear-gradient(135deg, #1e2330, #252b3a);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #4a90e2;
+        }
+
+        .promo-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .promo-card .price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #4a90e2;
+            margin-bottom: 5px;
+        }
+
+        .promo-card .price span {
+            font-size: 16px;
+            color: #a0a5b1;
+            font-weight: normal;
+        }
+
+        .promo-card .description {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .promo-card button {
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .promo-card button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .featured-card {
+                flex-direction: column;
+            }
+            
+            .featured-image {
+                width: 100%;
+                height: 300px;
+            }
+            
+            .featured-content {
+                width: 100%;
+            }
+            
+            .review-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .review-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-content h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+    <div class="nav-title">
+        <span>Game Reviews</span>
+    </div>
+                
+               
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR (YOUR ORIGINAL) -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item active"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- REVIEWS HEADER -->
+        <div class="reviews-header">
+            <h1>Video Game Reviews</h1>
+            <p>Trusted reviews from gaming experts</p>
+        </div>
+
+        <!-- FILTER BAR (based on your reference image) -->
+        <div class="filter-bar">
+            <div class="filter-dropdowns">
+                <select>
+                    <option>Sort by Latest ▼</option>
+                    <option>Sort by Popular</option>
+                    <option>Sort by Rating</option>
+                </select>
+                <select>
+                    <option>All Scores ▼</option>
+                    <option>9-10</option>
+                    <option>7-8</option>
+                    <option>5-6</option>
+                    <option>Below 5</option>
+                </select>
+                <select>
+                    <option>All Platforms ▼</option>
+                    <option>PC</option>
+                    <option>PS5</option>
+                    <option>Xbox Series X</option>
+                    <option>Nintendo Switch</option>
+                </select>
+                <select>
+                    <option>All Genres ▼</option>
+                    <option>Action</option>
+                    <option>RPG</option>
+                    <option>Adventure</option>
+                    <option>Horror</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- FEATURED REVIEW (BIG CARD) - Based on Resident Evil Requiem from your image -->
+        <div class="featured-review" onclick="window.location.href='residentevilrequiemreview.html?id=1'">
+            <div class="featured-card">
+                <div class="featured-image">
+                    <img src="assets/images/Leongamereview.jpeg" alt="Resident Evil Requiem">
+                </div>
+                <div class="featured-content">
+                    <div class="meta">
+                        <span><i class='bx bx-time'></i> 1d ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h2>Resident Evil Requiem Review</h2>
+                    <div class="game-title">
+                        <i class='bx bx-game'></i>
+                        <span>RESIDENT EVIL: REQUIEM</span>
+                    </div>
+                    <div class="review-excerpt">
+                        Requiem for a scream. The latest installment in the survival horror franchise brings back the tension and terror that fans have been craving. With stunning visuals and heart-pounding gameplay, this is a must-play for horror enthusiasts.
+                    </div>
+                    <div class="reviewer">
+                        <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Reviewer">
+                        <div class="reviewer-info">
+                            <p>TRISTAN OGILVIE</p>
+                            <span>Senior Editor</span>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <span><i class='bx bx-show'></i>  views</span>
+                        <span><i class='bx bx-heart'></i>  likes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LATEST REVIEWS SECTION -->
+        <div class="section-title">
+            <i class='bx bx-time'></i>
+            <span>Latest Reviews</span>
+        </div>
+
+        <!-- REVIEW GRID -->
+        <div class="review-grid">
+
+            <!-- Styx: Blades of Greed Review -->
+            <div class="review-card" onclick="window.location.href='Styx-Blades-of-Greed-Review.html?id=2'">
+                <div class="review-card-image">
+                    <img src="assets/images/styx.jpeg" alt="Styx">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 5d ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>Styx: Blades of Greed Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>STYX: BLADES OF GREED</span>
+                    </div>
+                    <div class="excerpt">
+                        This sequel mostly delivers the same stealth gameplay as its predecessors, with all the good and the bad that entails.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>TRAVIS NORTHUP</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- God of War Sons of Sparta Review -->
+            <div class="review-card" onclick="window.location.href='godofwar-sons-of-sparta-review.html?id=3'">
+                <div class="review-card-image">
+                    <img src="assets/images/godsonofsparta.jpeg" alt="God of War">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 7d ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>God of War Sons of Sparta Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>GOD OF WAR SONS OF SPARTA</span>
+                    </div>
+                    <div class="excerpt">
+                        This is, unfortunately, Sparta. A return to form that captures the essence of Kratos while adding new depth.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>JARRETT GREEN</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Red Dead Redemption 2 Review -->
+            <div class="review-card" onclick="window.location.href='rdr2-review.html?id=4'">
+                <div class="review-card-image">
+                    <img src="assets/images/rdr2.jpeg" alt="RDR2">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 2w ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>Red Dead Redemption 2 Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>RED DEAD REDEMPTION 2</span>
+                    </div>
+                    <div class="excerpt">
+                        A masterpiece of storytelling and open-world design that sets a new standard for the industry.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>MICHAEL HIGHSAM</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cyberpunk 2077 Review -->
+            <div class="review-card" onclick="window.location.href='cyberpunk-phantom-liberty-review.html?id=5'">
+                <div class="review-card-image">
+                    <img src="assets/images/Cyberpunk.jpeg" alt="Cyberpunk">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 3w ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>Cyberpunk 2077: Phantom Liberty Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>CYBERPUNK 2077</span>
+                    </div>
+                    <div class="excerpt">
+                        The redemption arc continues with this expansive expansion that delivers on the original promise.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>DAN STAPLETON</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marvel's Spider-Man 2 Review -->
+            <div class="review-card" onclick="window.location.href='spiderman-2-review.html'">
+                <div class="review-card-image">
+                    <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Spider-Man">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 1m ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>Marvel's Spider-Man 2 Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>MARVEL'S SPIDER-MAN 2</span>
+                    </div>
+                    <div class="excerpt">
+                        Insomniac swings for the fences and hits a home run with this spectacular sequel.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>JONATHAN DORNBUSH</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- God of War 2018 Review -->
+            <div class="review-card" onclick="window.location.href='godofwar-2018-review.html?id=7'">
+                <div class="review-card-image">
+                    <img src="assets/images/gow2018.jpeg" alt="God of War 2018">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 2m ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>God of War 2018 Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>GOD OF WAR 2018</span>
+                    </div>
+                    <div class="excerpt">
+                        A masterful reinvention that proves Kratos has more stories to tell.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>LUCY O'BRIEN</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kena Bridge of Spirits Review -->
+            <div class="review-card" onclick="window.location.href='kena-bridge-of-spirits-review.html?id=8'">
+                <div class="review-card-image">
+                    <img src="assets/images/kennabridgeofspirit.jpeg" alt="Kena">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 3m ago</span>
+                        <span><i class='bx bx-message'></i> comments</span>
+                    </div>
+                    <h3>Kena: Bridge of Spirits Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>KENA: BRIDGE OF SPIRITS</span>
+                    </div>
+                    <div class="excerpt">
+                        A stunning debut from Ember Lab that blends beautiful animation with satisfying combat.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>TOM MARKS</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Witcher 3 Review -->
+            <div class="review-card" onclick="window.location.href='witcher-3-review.html?id=9'">
+                <div class="review-card-image">
+                    <img src="assets/images/thewitcher3.jpeg" alt="Witcher 3">
+                </div>
+                <div class="review-card-content">
+                    <div class="review-card-meta">
+                        <span><i class='bx bx-time'></i> 4m ago</span>
+                        <span><i class='bx bx-message'></i>  comments</span>
+                    </div>
+                    <h3>The Witcher 3: Wild Hunt Review</h3>
+                    <div class="game-subtitle">
+                        <i class='bx bx-game'></i>
+                        <span>THE WITCHER 3</span>
+                    </div>
+                    <div class="excerpt">
+                        Still the gold standard for open-world RPGs, even years after release.
+                    </div>
+                    <div class="review-card-footer">
+                        <div class="reviewer">
+                            <i class='bx bx-user'></i>
+                            <span>KEZA MACDONALD</span>
+                        </div>
+                        <div class="stats">
+                            <span><i class='bx bx-heart'></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMO CARD (from your reference image) -->
+        <div class="promo-sidebar">
+            <div class="promo-card">
+                <h3>LANGGAN tonton</h3>
+                <div class="price">FREE <span>/ month</span></div>
+                <div class="price" style="font-size: 28px;">PREMIUM <span>AD-FREE ACCESS</span></div>
+                <div class="description">
+                    Also includes 100% ad-free access to Harian Metro, New Straits Times and Waktu Solat Malaysia
+                </div>
+                <button onclick="window.location.href='subscribe.html'">Subscribe Now</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 11000; backdrop-filter: blur(5px);">
+        <div style="background: linear-gradient(145deg, #1e2330, #252b3a); padding: 35px; width: 500px; max-width: 90%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+            <h2 style="margin-bottom: 25px; color: white; display: flex; align-items: center; gap: 10px;">
+                <i class='bx bx-log-in' style="color: #4a90e2;"></i>
+                Login Required
+            </h2>
+            
+            <p style="color: #a0a5b1; margin-bottom: 20px;">Please sign in or create an account to like and comment on reviews.</p>
+            
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn-primary" style="background: linear-gradient(135deg, #4a90e2, #3570b2); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="window.location.href='login.html'">Sign In</button>
+                <button class="btn-secondary" style="background: #2a3456; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer;" onclick="window.location.href='signup.html'">Create Account</button>
+            </div>
+            
+            <p style="text-align: center; margin-top: 20px;">
+                <a href="#" onclick="closeLoginModal()" style="color: #4a90e2; text-decoration: none;">Close</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Check login status
+        let userLoggedIn = localStorage.getItem('username') || sessionStorage.getItem('username');
+        
+       // Update UI based on login status
+function updateLoginUI() {
+    const navActions = document.getElementById('navActions');
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    
+    // Only update if elements exist
+    if (navActions) {
+        if (userLoggedIn) {
+            // User is logged in
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="assets/images/https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Profile">
+                    <span>${userLoggedIn}</span>
+                </div>
+            `;
+        } else {
+            // User is not logged in
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='signup.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+    }
+    
+    // Update sidebar footer
+    if (sidebarFooter) {
+        if (userLoggedIn) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    ${userLoggedIn}
+                </button>
+            `;
+        } else {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                        Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+        
+        // Call on page load
+        updateLoginUI();
+
+       // Sidebar Toggle
+const sidebar = document.getElementById('mySidebar');
+const toggleBtn = document.getElementById('sidebarToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+const pageContent = document.querySelector('.page-content');
+const navbar = document.querySelector('.navbar');
+
+// Check localStorage for sidebar state
+const sidebarState = localStorage.getItem('reviewsSidebarState');
+if (sidebarState === 'closed') {
+    sidebar.classList.add('closed');
+    toggleBtn.classList.add('moved');
+    toggleIcon.innerText = '❯';
+    pageContent.style.marginLeft = '20px';
+    if (navbar) navbar.style.left = '0';
+}
+
+toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('closed');
+    toggleBtn.classList.toggle('moved');
+
+    const isClosed = sidebar.classList.contains('closed');
+    toggleIcon.innerText = isClosed ? '❯' : '❮';
+    
+    if (isClosed) {
+        pageContent.style.marginLeft = '20px';
+        if (navbar) navbar.style.left = '0';
+        localStorage.setItem('reviewsSidebarState', 'closed');
+    } else {
+        pageContent.style.marginLeft = '250px';
+        if (navbar) navbar.style.left = '250px';
+        localStorage.setItem('reviewsSidebarState', 'open');
+    }
+});
+
+        // Modal functions
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function viewProfile() {
+            window.location.href = 'profile.html';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            if (event.target === loginModal) {
+                closeLoginModal();
+            }
+        }
+
+        // Filter tabs functionality
+        const filterTabs = document.querySelectorAll('.filter-tabs span');
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // Here you would filter reviews based on selection
+            });
+        });
+
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

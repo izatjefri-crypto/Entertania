@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Forum Discussion</title>
+<style>
+body{background:#0f1117;color:white;font-family:Arial;margin:0}
+.container{padding:30px}
+.forum-header{display:flex;justify-content:space-between;align-items:center}
+.tabs span{margin-right:20px;cursor:pointer;color:#aaa}
+.tabs span.active{color:white;border-bottom:2px solid #4e74ff}
+.actions{display:flex;gap:10px}
+input,select{background:#1a1f2b;color:white;border:1px solid #333;padding:8px}
+.thread{background:#1a1f2b;margin-top:15px;padding:15px;border-radius:8px;cursor:pointer}
+.thread:hover{background:#232838}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="forum-header">
+    <h1>Forum Discussion</h1>
+    <button onclick="createThread()">+ New Post</button>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:20px">
+    <div class="tabs">
+        <span onclick="filterTab('latest')" class="active">Latest</span>
+        <span onclick="filterTab('popular')">Popular</span>
+        <span onclick="filterTab('trending')">Trending</span>
+        <span onclick="filterTab('all')">All Discussions</span>
+    </div>
+
+    <div class="actions">
+        <input type="text" id="search" placeholder="Search..." onkeyup="render()">
+        <select onchange="render()" id="sort">
+            <option value="replies">Most Replies</option>
+            <option value="latest">Newest</option>
+        </select>
+    </div>
+</div>
+
+<div id="threadList"></div>
+
+</div>
+
+<script>
+
+let threads = [];
+let currentTab = "latest";
+
+async function loadThreads(){
+    const res = await fetch("/api/threads");
+    threads = await res.json();
+    render();
+}
+
+function filterTab(tab){
+    currentTab = tab;
+    document.querySelectorAll(".tabs span").forEach(t=>t.classList.remove("active"));
+    event.target.classList.add("active");
+    render();
+}
+
+function render(){
+    let filtered = [...threads];
+
+    if(currentTab === "latest"){
+        filtered.sort((a,b)=> new Date(b.date)-new Date(a.date));
+    }
+    if(currentTab === "popular"){
+        filtered.sort((a,b)=> b.replies-a.replies);
+    }
+    if(currentTab === "trending"){
+        filtered.sort((a,b)=> b.views-a.views);
+    }
+
+    const search = document.getElementById("search").value.toLowerCase();
+    filtered = filtered.filter(t=>t.title.toLowerCase().includes(search));
+
+    const sort = document.getElementById("sort").value;
+    if(sort==="replies"){
+        filtered.sort((a,b)=> b.replies-a.replies);
+    }
+
+    const list = document.getElementById("threadList");
+    list.innerHTML="";
+
+    filtered.forEach(t=>{
+        list.innerHTML += `
+        <div class="thread" onclick="openThread(${t.id})">
+            <h3>${t.title}</h3>
+            <p>${t.replies} replies • ${t.views} views</p>
+        </div>
+        `;
+    });
+}
+
+function openThread(id){
+    window.location.href="thread.html?id="+id;
+}
+
+async function createThread(){
+    const title = prompt("Thread Title:");
+    const content = prompt("Content:");
+    if(!title) return;
+
+    await fetch("/api/threads",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({title,content})
+    });
+
+    loadThreads();
+}
+
+loadThreads();
+</script>
+
+</body>
+</html>

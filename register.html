@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #14171e;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .register-card {
+            background: #222834;
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .brand-header h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #a0a5b1;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #14171e;
+            border: 1px solid #2a3456;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-row .input-group {
+            flex: 1;
+        }
+
+        .terms-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .terms-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #4a90e2;
+        }
+
+        .terms-group label {
+            color: #a0a5b1;
+            font-size: 14px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .register-btn:hover {
+            background: #3570b2;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #a0a5b1;
+            margin-bottom: 20px;
+        }
+
+        .login-link {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .separator {
+            text-align: center;
+            color: #2a3456;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .separator span {
+            background: #1a1f2b;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+            color: #a0a5b1;
+            font-size: 14px;
+        }
+
+        .separator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #2a3456;
+            z-index: 0;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .social-icon:hover {
+            background: #4a90e2;
+        }
+
+        .footer-links {
+            text-align: center;
+            color: #2a3456;
+            font-size: 12px;
+        }
+
+        .footer-links a {
+            color: #a0a5b1;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+
+        .error-message {
+            background: rgba(179, 25, 25, 0.1);
+            border: 1px solid #b31919;
+            color: #b31919;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 13px;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid #4ade80;
+            color: #4ade80;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 13px;
+            display: none;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #2a3456;
+            margin-top: 5px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            color: #a0a5b1;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <div class="brand-header">
+                <img src="assets/images/Entertanialogo.jpeg" alt="Entertania" class="brand-logo">
+                <h2>Create Account</h2>
+            </div>
+
+            <div id="errorMsg" class="error-message"></div>
+            <div id="successMsg" class="success-message"></div>
+
+            <form id="registerForm">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" placeholder="John" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" placeholder="Doe" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="johndoe123" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="john@example.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required onkeyup="checkPasswordStrength()">
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText">Enter password</div>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+                </div>
+
+                <div class="terms-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the Terms and Privacy Policy</label>
+                </div>
+
+                <button type="submit" class="register-btn">Sign Up</button>
+            </form>
+
+            <div class="footer-text">
+                Already have an account? <a href="login.html" class="login-link">Log in</a>
+            </div>
+
+            <div class="separator">
+                <span>Or sign up with</span>
+            </div>
+
+            <div class="social-login">
+                <button class="social-icon" onclick="socialRegister('google')"><i class='bx bxl-google'></i></button>
+                <button class="social-icon" onclick="socialRegister('facebook')"><i class='bx bxl-facebook'></i></button>
+                <button class="social-icon" onclick="socialRegister('github')"><i class='bx bxl-github'></i></button>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">Terms</a> • <a href="#">Privacy</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem('entertania_users')) || [];
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 25;
+            
+            strengthBar.style.width = strength + '%';
+            
+            if (strength <= 25) {
+                strengthBar.style.background = '#b31919';
+                strengthText.textContent = 'Weak password';
+            } else if (strength <= 50) {
+                strengthBar.style.background = '#ffd700';
+                strengthText.textContent = 'Fair password';
+            } else if (strength <= 75) {
+                strengthBar.style.background = '#4a90e2';
+                strengthText.textContent = 'Good password';
+            } else {
+                strengthBar.style.background = '#4ade80';
+                strengthText.textContent = 'Strong password';
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            document.getElementById('errorMsg').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'none';
+            
+            if (!terms) {
+                document.getElementById('errorMsg').textContent = 'You must agree to the Terms';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                document.getElementById('errorMsg').textContent = 'Passwords do not match';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('errorMsg').textContent = 'Password must be at least 6 characters';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+            
+            if (users.some(u => u.username === username)) {
+                document.getElementById('errorMsg').textContent = 'Username already taken';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                document.getElementById('errorMsg').textContent = 'Email already registered';
+                document.getElementById('errorMsg').style.display = 'block';
+                return;
+            }
+            
+            const newUser = {
+                id: Date.now().toString(),
+                firstName,
+                lastName,
+                username,
+                email,
+                password,
+                avatar: `https://ui-avatars.com/api/?name=${firstName}+${lastName}&background=4a90e2&color=fff&size=128`,
+                joinDate: new Date().toLocaleDateString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('entertania_users', JSON.stringify(users));
+            
+            localStorage.setItem('currentUser', JSON.stringify({
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                name: `${firstName} ${lastName}`,
+                avatar: newUser.avatar,
+                joinDate: newUser.joinDate,
+                loggedIn: true
+            }));
+            
+            document.getElementById('successMsg').textContent = 'Account created! Redirecting...';
+            document.getElementById('successMsg').style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = 'profile.html';
+            }, 1500);
+        });
+
+        function socialRegister(platform) {
+            const demoUser = {
+                id: Date.now().toString(),
+                username: `${platform}_user_${Math.floor(Math.random() * 1000)}`,
+                email: `${platform}@entertania.com`,
+                password: 'social',
+                firstName: platform,
+                lastName: 'User',
+                avatar: `https://ui-avatars.com/api/?name=${platform}+User&background=4a90e2&color=fff&size=128`,
+                joinDate: new Date().toLocaleDateString()
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify({
+                id: demoUser.id,
+                username: demoUser.username,
+                email: demoUser.email,
+                name: `${platform} User`,
+                avatar: demoUser.avatar,
+                joinDate: demoUser.joinDate,
+                loggedIn: true
+            }));
+            
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

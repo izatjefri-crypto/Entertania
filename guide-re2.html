@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Evil 2 Remake Complete Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (YOUR ORIGINAL STYLE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #6aaef5;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        /* --- GUIDE CONTENT SECTIONS --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- CHARACTER GRID --- */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .character-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .character-icon {
+            width: 100px;
+            height: 100px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 3px solid #4a90e2;
+        }
+
+        .character-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .character-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .character-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- WEAPON UPGRADE GRID --- */
+        .weapon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .weapon-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .weapon-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .weapon-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .weapon-location {
+            color: #4a90e2;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .weapon-effect {
+            background: #2a3456;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        /* --- PUZZLE GRID --- */
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .puzzle-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .puzzle-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .puzzle-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .puzzle-solution {
+            background: #2a3456;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        /* --- COLLECTIBLES GRID --- */
+        .collectibles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .collectible-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .collectible-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .collectible-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .collectible-count {
+            background: #2a3456;
+            color: #4a90e2;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .collectible-location {
+            color: #4ade80;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* --- ITEMS/WEAPONS GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- TIPS & TRICKS --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #4a90e2;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 95%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- SAFE CODE TABLE --- */
+        .safe-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #14171e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .safe-table th {
+            background: #2a3456;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .safe-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #2a3456;
+            color: #e0e0e0;
+        }
+
+        .safe-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .safe-code {
+            color: #4ade80;
+            font-weight: 600;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .character-grid, .weapon-grid, .items-grid, .tips-grid, .puzzle-grid, .collectibles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .character-grid, .weapon-grid, .items-grid, .tips-grid, .puzzle-grid, .collectibles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Resident Evil 2 Remake Guide</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>Resident Evil 2 Remake Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong>67,891 Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong>420K CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION -->
+       <div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/15 MUST Know Tips & Tricks In Resident Evil 2 Remake.mp4" type="video/mp4">
+            
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('start')">Getting Started</button>
+            <button class="guide-tab" onclick="showSection('weapons')">Weapons & Upgrades</button>
+            <button class="guide-tab" onclick="showSection('puzzles')">Puzzle Solutions</button>
+            <button class="guide-tab" onclick="showSection('collectibles')">Collectibles</button>
+            <button class="guide-tab" onclick="showSection('bosses')">Boss Strategies</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Secrets</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- GETTING STARTED SECTION -->
+                <div id="start" class="guide-section">
+                    <h2><i class='bx bx-flag'></i> Getting Started</h2>
+                    
+                    <h3>Leon vs Claire: Who Should You Pick?</h3>
+                    <p>Your choice affects the story, weapons, and certain areas you can access. For your first playthrough, either character works, but here's what to expect:</p>
+                    
+                    <div class="character-grid">
+                        <div class="character-card">
+                            <div class="character-icon">
+                                <img src="assets/images/leon-kennedy.jpg" alt="Leon S. Kennedy" onerror="this.src='https://via.placeholder.com/100x100?text=Leon'">
+                            </div>
+                            <h4>Leon S. Kennedy</h4>
+                            <p>Rookie cop on his first day. Starts with the Matilda handgun. Focuses on shotgun and magnum weapons. Story focuses on Ada Wong and the search for survivors.</p>
+                            <span class="character-role" style="color:#4a90e2;">👮‍♂️ Rookie Cop</span>
+                        </div>
+                        <div class="character-card">
+                            <div class="character-icon">
+                                <img src="assets/images/claire-redfield.jpg" alt="Claire Redfield" onerror="this.src='https://via.placeholder.com/100x100?text=Claire'">
+                            </div>
+                            <h4>Claire Redfield</h4>
+                            <p>College student looking for her brother. Starts with the SLS 60 revolver. Focuses on grenade launcher and SMG weapons. Story focuses on Sherry Birkin.</p>
+                            <span class="character-role" style="color:#4a90e2;">👧 College Student</span>
+                        </div>
+                    </div>
+
+                    <h3>Difficulty Levels</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-smile'></i></div>
+                            <h4>Assisted</h4>
+                            <p>Enemies deal less damage, auto-heal, infinite saves. Great for beginners focusing on story.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-meh'></i></div>
+                            <h4>Standard</h4>
+                            <p>Balanced difficulty. Unlimited saves in safe rooms. Recommended for first playthrough.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-skull'></i></div>
+                            <h4>Hardcore</h4>
+                            <p>Enemies hit harder, limited saves with Ink Ribbons. Typewriter saves only. True survival horror experience.</p>
+                        </div>
+                    </div>
+
+                    <h3>Essential Early Tips</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-save'></i> Save Ink Ribbons</h4>
+                            <p>On Hardcore mode, Ink Ribbons are limited. Only save after major progress. On Standard, save freely in safe rooms.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-heart'></i> Combine Herbs</h4>
+                            <p>Green + Green = better healing. Green + Red = full heal. Green + Blue = antidote. Red + Blue + Green = ultimate recovery.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-target-lock'></i> Shoot for Knees</h4>
+                            <p>Aiming for zombie legs can make them stumble, giving you time to run past. Save ammo by avoiding unnecessary kills.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-search'></i> Explore Everything</h4>
+                            <p>Check every corner for gunpowder, herbs, and ammo. Many important items are hidden in desks and lockers.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-card" style="margin-top: 20px;">
+                        <h4><i class='bx bx-ghost'></i> Mr. X (The Tyrant)</h4>
+                        <p>After the helicopter crashes into the police station, Mr. X will begin stalking you. He cannot be killed, only slowed down. Learn to avoid him by walking, not running, and hiding in safe rooms [citation:8].</p>
+                    </div>
+                </div>
+
+                <!-- WEAPONS & UPGRADES SECTION -->
+                <div id="weapons" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-gun'></i> Weapons & Upgrades</h2>
+                    
+                    <h3>Leon's Weapons & Upgrades</h3>
+                    <div class="weapon-grid">
+                        <div class="weapon-card">
+                            <h4>Matilda (Pistol)</h4>
+                            <p><strong>High Capacity Magazine:</strong> West Office, RPD 1F - Unlock Leon's desk with NED/MRG initials [citation:10]</p>
+                            <p><strong>Gun Stock:</strong> Parking Garage - Find worn key in Firing Range, examine to open car trunk [citation:10]</p>
+                            <p><strong>Muzzle Brake:</strong> Waiting Room Safe - Code: Left 6, Right 2, Left 11 [citation:6]</p>
+                            <span class="weapon-effect">24 Rounds + 3-Round Burst</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>W-870 Shotgun</h4>
+                            <p><strong>Long Barrel:</strong> Kendo's Gun Shop - On shelf after Ada picks lock [citation:2]</p>
+                            <p><strong>Shotgun Stock:</strong> Sewers Treatment Pool - Safe code: Left 2, Right 12, Left 8 [citation:2]</p>
+                            <span class="weapon-effect">8 Shells + Faster Reload</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>Lightning Hawk (Magnum)</h4>
+                            <p><strong>Long Barrel:</strong> Underground Stairs - Requires STARS Badge to open lockbox [citation:10]</p>
+                            <p><strong>Red Dot Sight:</strong> STARS Office - Develop Hiding Place film first [citation:10]</p>
+                            <p><strong>High Capacity Magazine:</strong> Waiting Room - Same safe as Matilda upgrade [citation:10]</p>
+                            <span class="weapon-effect">Reduced Recoil + Better Aim</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>Chemical Flamethrower</h4>
+                            <p><strong>Regulator:</strong> Nap Room, Laboratory - Use Signal Modulator to open [citation:10]</p>
+                            <span class="weapon-effect">Decreased Fuel Cost</span>
+                        </div>
+                    </div>
+
+                    <h3>Claire's Weapons & Upgrades</h3>
+                    <div class="weapon-grid">
+                        <div class="weapon-card">
+                            <h4>SLS 60 (Revolver)</h4>
+                            <p><strong>Speed Loader:</strong> West Office - Same desk as Leon (NED/MRG) [citation:10]</p>
+                            <p><strong>Reinforced Frame:</strong> Sewers Treatment Pool - Same safe (2 Left, 12 Right, 8 Left) [citation:10]</p>
+                            <span class="weapon-effect">Faster Reload + High-Caliber Mode</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>GM 79 Grenade Launcher</h4>
+                            <p><strong>Shoulder Stock:</strong> Elevator Controls Room, Parking Garage B1 - Need Diamond Key [citation:10]</p>
+                            <span class="weapon-effect">Stabilized Aim</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>MQ 11 SMG</h4>
+                            <p><strong>Suppressor:</strong> Underground Stairs - STARS Badge lockbox [citation:10]</p>
+                            <p><strong>High Capacity Mag:</strong> STARS Office - Develop Hiding Place film [citation:10]</p>
+                            <span class="weapon-effect">50 Rounds + Reduced Recoil</span>
+                        </div>
+                        <div class="weapon-card">
+                            <h4>Spark Shot</h4>
+                            <p><strong>High-Voltage Condenser:</strong> Nap Room, Laboratory - Signal Modulator required [citation:10]</p>
+                            <span class="weapon-effect">Reduced Charge Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUZZLE SOLUTIONS SECTION -->
+                <div id="puzzles" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-puzzle'></i> Puzzle Solutions</h2>
+                    
+                    <h3>Safe & Locker Combinations</h3>
+                    <table class="safe-table">
+                        <thead>
+                            <tr>
+                                <th>Location</th>
+                                <th>Code</th>
+                                <th>Reward</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>West Office Safe (RPD 1F)</td>
+                                <td class="safe-code">Left 9, Right 15, Left 7</td>
+                                <td>Hip Pouch (Inventory Upgrade)</td>
+                            </tr>
+                            <tr>
+                                <td>Waiting Room Safe (RPD 2F)</td>
+                                <td class="safe-code">Left 6, Right 2, Left 11</td>
+                                <td>Matilda Muzzle Brake / JMB HP3 Extended Mag</td>
+                            </tr>
+                            <tr>
+                                <td>Shower Room Locker (RPD 2F)</td>
+                                <td class="safe-code">CAP</td>
+                                <td>Ammunition</td>
+                            </tr>
+                            <tr>
+                                <td>3F Hallway Locker</td>
+                                <td class="safe-code">DCM</td>
+                                <td>Ammunition</td>
+                            </tr>
+                            <tr>
+                                <td>Sewers Treatment Pool Safe</td>
+                                <td class="safe-code">Left 2, Right 12, Left 8</td>
+                                <td>Shotgun Stock / SLS 60 Reinforced Frame</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Medallion Puzzles [citation:8]</h3>
+                    <div class="puzzle-grid">
+                        <div class="puzzle-card">
+                            <h4>Lion Statue</h4>
+                            <p>RPD Main Hall</p>
+                            <div class="puzzle-solution">Solution: Lion, Twig, Eagle</div>
+                        </div>
+                        <div class="puzzle-card">
+                            <h4>Unicorn Statue</h4>
+                            <p>RPD Lounge (2F)</p>
+                            <div class="puzzle-solution">Solution: Fish, Scorpion, Aquarius</div>
+                        </div>
+                        <div class="puzzle-card">
+                            <h4>Maiden Statue</h4>
+                            <p>RPD Waiting Room</p>
+                            <div class="puzzle-solution">Solution: Woman, Bow, Snake</div>
+                        </div>
+                    </div>
+
+                    <h3>Chess Plug Puzzle (Sewers) [citation:3][citation:7]</h3>
+                    <div class="puzzle-card">
+                        <h4>First Run Solution</h4>
+                        <p>Based on clue: "Rook and Knight are on same wall. Bishop and Queen not next to each other. Queen and Rook opposite."</p>
+                        <div class="puzzle-solution">
+                            <strong>Left Wall:</strong> Bishop, Rook, Knight<br>
+                            <strong>Right Wall:</strong> Pawn, Queen, King
+                        </div>
+                    </div>
+                    <div class="puzzle-card" style="margin-top: 15px;">
+                        <h4>Second Run Solution</h4>
+                        <p>Based on clue: "Rook next to Knight, not facing Queen. King not next to Queen, facing Knight at the end."</p>
+                        <div class="puzzle-solution">
+                            <strong>Left Wall:</strong> Queen, Bishop, King<br>
+                            <strong>Right Wall:</strong> Pawn, Rook, Knight
+                        </div>
+                    </div>
+
+                    <h3>Desk Lock Initials [citation:8]</h3>
+                    <div class="puzzle-card">
+                        <h4>Leon's Desk (West Office)</h4>
+                        <p>Look at nameplates on desks nearby</p>
+                        <div class="puzzle-solution">
+                            <strong>Left Lock:</strong> NED (David, Elliot, ???)<br>
+                            <strong>Right Lock:</strong> MRG (Marvin, Rita, George)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLLECTIBLES SECTION -->
+                <div id="collectibles" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-map'></i> Collectibles Guide</h2>
+                    
+                    <h3>Mr. Raccoon Locations [citation:4]</h3>
+                    <p>Find and destroy all 15 Mr. Raccoon toys to unlock the Unbreakable Combat Knife.</p>
+                    
+                    <div class="collectibles-grid">
+                        <div class="collectible-card">
+                            <h4>#1 West Office</h4>
+                            <p>On high cabinets against north wall.</p>
+                            <div class="collectible-location">RPD 1F - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#2 STARS Office</h4>
+                            <p>Behind boxes in corner, after disabling steam.</p>
+                            <div class="collectible-location">RPD 2F - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#3 Firing Range</h4>
+                            <p>Behind fallen target between two zombies.</p>
+                            <div class="collectible-location">Parking Garage B1 - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#4 Break Room</h4>
+                            <p>Behind bags near bunk bed.</p>
+                            <div class="collectible-location">RPD 1F - Leon Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#5 East Hall Stairwell</h4>
+                            <p>On small table.</p>
+                            <div class="collectible-location">RPD 2F - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#6 East Storage</h4>
+                            <p>On shelf near mannequins (Heart Key required).</p>
+                            <div class="collectible-location">RPD 3F - Claire Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#7 Clock Tower Passage</h4>
+                            <p>On window sill at dead end.</p>
+                            <div class="collectible-location">RPD 3F - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#8 Destroyed Bus</h4>
+                            <p>On dashboard of bus near basketball court.</p>
+                            <div class="collectible-location">Behind RPD - Claire Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#9 Orphanage Nursery</h4>
+                            <p>In cubby hole.</p>
+                            <div class="collectible-location">Orphanage 2F - Claire Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#10 Sewer Entrance</h4>
+                            <p>On ledge behind debris after alligator chase.</p>
+                            <div class="collectible-location">Sewers - Leon Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#11 Incinerator Room</h4>
+                            <p>By railing near incinerator doors.</p>
+                            <div class="collectible-location">Sewers - Leon Only</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#12 Supplies Storage Hall</h4>
+                            <p>Around corner past boxes near table.</p>
+                            <div class="collectible-location">Sewers - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#13 Laboratory Cafeteria</h4>
+                            <p>On counter by window near ladder.</p>
+                            <div class="collectible-location">Lab North - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#14 Nap Room</h4>
+                            <p>In first nap pod after using Signal Modulator.</p>
+                            <div class="collectible-location">Lab North - Both</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>#15 Side Entrance</h4>
+                            <p>Among plants near stairs (2nd Run only).</p>
+                            <div class="collectible-location">RPD 1F - 2nd Run</div>
+                        </div>
+                    </div>
+
+                    <h3>Inventory Upgrades (Hip Pouches) [citation:8]</h3>
+                    <div class="collectibles-grid">
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #1</h4>
+                            <p>West Office Safe - Code: 9 Left, 15 Right, 7 Left</p>
+                            <div class="collectible-location">RPD 1F</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #2</h4>
+                            <p>West Storage Room (3F) - On table</p>
+                            <div class="collectible-location">RPD 3F</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #3</h4>
+                            <p>Private Collection Room (2F) - On shelf</p>
+                            <div class="collectible-location">RPD 2F</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #4</h4>
+                            <p>Clock Tower (3F) - On railing</p>
+                            <div class="collectible-location">RPD 3F</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #5</h4>
+                            <p>Upper Waterway (Sewers) - Near ladder</p>
+                            <div class="collectible-location">Sewers</div>
+                        </div>
+                        <div class="collectible-card">
+                            <h4>Hip Pouch #6</h4>
+                            <p>Laboratory Nap Room - Requires Signal Modulator</p>
+                            <div class="collectible-location">Lab North</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOSS STRATEGIES SECTION -->
+                <div id="bosses" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-skull'></i> Boss Strategies</h2>
+                    
+                    <h3>G (William Birkin) Phases</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4>G Phase 1 (Underground Facility)</h4>
+                            <p><strong>Leon:</strong> Shoot the glowing eye. Use grenades to stagger. Stay near walls to avoid grabs.</p>
+                            <p><strong>Claire:</strong> Acid rounds do massive damage. Aim for the eye.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>G Phase 2 (Sewers)</h4>
+                            <p>Shoot the eye on his shoulder. When he charges, dodge to the side. Use explosive weapons on the containers above to drop on him.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4>G Phase 3 (Laboratory)</h4>
+                            <p>Stay on the outer edge. Shoot eye when it opens. Use the pillars for cover. Save magnum/grenade ammo for this fight.</p>
+                        </div>
+                    </div>
+
+                    <h3>Other Bosses</h3>
+                    <div class="puzzle-grid">
+                        <div class="puzzle-card">
+                            <h4>Giant Alligator</h4>
+                            <p><strong>Leon Only:</strong> Run and avoid debris. Shoot the red tank in its mouth when it opens wide. One shot with any weapon works.</p>
+                            <div class="puzzle-solution">Tip: Wait until the mouth is fully open before shooting</div>
+                        </div>
+                        <div class="puzzle-card">
+                            <h4>Super Tyrant</h4>
+                            <p>Final boss for Leon. Shoot him continuously. When he does his charge attack, dodge. Use the rocket launcher when it drops for instant kill.</p>
+                            <div class="puzzle-solution">Save all heavy ammo for this fight</div>
+                        </div>
+                    </div>
+
+                    <h3>Mr. X Survival Tips</h3>
+                    <div class="tip-card">
+                        <p>• Walk instead of run when he's nearby (running makes noise)<br>
+                        • Safe rooms are completely safe - he cannot enter<br>
+                        • If he spots you, lead him away then double back<br>
+                        • Flash grenades stun him for several seconds<br>
+                        • He can be slowed down with enough damage, but not killed</p>
+                    </div>
+                </div>
+
+                <!-- TIPS & SECRETS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Tips & Secrets</h2>
+                    
+                    <h3>Beginner Tips</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-ghost'></i> Zombie Management</h4>
+                            <p>Don't kill every zombie. It's often better to shoot their legs to stagger and run past. Ammo conservation is key.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-flask'></i> Herb Combinations</h4>
+                            <p>G+G = stronger heal | G+R = full heal | G+B = antidote | R+G+B = ultimate defense boost</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-diamond'></i> Gunpowder Recipes</h4>
+                            <p>Gunpowder (Large) + Gunpowder = Handgun Ammo | Gunpowder (Large) + High-Grade = Shotgun/SMG Ammo</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-map'></i> Explore Thoroughly</h4>
+                            <p>Always check the map for red rooms (unexplored) and blue rooms (all items found).</p>
+                        </div>
+                    </div>
+
+                    <h3>2nd Run Secrets [citation:1]</h3>
+                    <div class="tip-card">
+                        <p>After completing the game once, you unlock "2nd Run" mode with the other character. This features:</p>
+                        <p>• Different starting location in the police station<br>
+                        • Already unlocked shortcuts from the first playthrough<br>
+                        • New puzzle solutions<br>
+                        • The true ending of the game</p>
+                    </div>
+
+                    <h3>Unlockable Weapons</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-gun'></i></div>
+                            <h4>Infinite Knife</h4>
+                            <p>Destroy all 15 Mr. Raccoons</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-gun'></i></div>
+                            <h4>Infinite Samurai Edge</h4>
+                            <p>Complete Leon's story on Hardcore with S+ rank</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-gun'></i></div>
+                            <h4>Infinite Minigun</h4>
+                            <p>Complete Leon's story with S+ rank in under 2:30:00</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-gun'></i></div>
+                            <h4>Infinite Rocket Launcher</h4>
+                            <p>Complete Claire's story with S+ rank in under 2:30:00</p>
+                        </div>
+                    </div>
+
+                    <h3>Hidden Room: STARS Office Armory</h3>
+                    <div class="tip-card">
+                        <p>Find the STARS Badge in the Interrogation Room jewelry box. Examine it to flip it over, revealing a USB port. Use it on the laptop in the STARS Office to unlock the armory containing the Lightning Hawk (Leon) or MQ 11 (Claire) [citation:8].</p>
+                    </div>
+
+                    <div class="warning-card" style="background: #14171e; border-left: 4px solid #b31919; padding: 15px; margin: 20px 0;">
+                        <p><strong>⚠️ HARDCOURSE MODE:</strong> On Hardcore, saves require Ink Ribbons (limited), enemies deal 200% damage, and there are no auto-saves. Plan your route carefully and save before major boss fights [citation:1].</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="guide-side">
+
+
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 98%</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p style="color: #a0a5b1; font-size: 13px; margin-top: 10px;">Updated for All Scenarios</p>
+                </div>
+
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('start')"><i class='bx bx-flag'></i> Getting Started</a>
+                    <a href="#" class="quick-link" onclick="showSection('weapons')"><i class='bx bx-gun'></i> Weapons & Upgrades</a>
+                    <a href="#" class="quick-link" onclick="showSection('puzzles')"><i class='bx bx-puzzle'></i> Puzzle Solutions</a>
+                    <a href="#" class="quick-link" onclick="showSection('collectibles')"><i class='bx bx-map'></i> Collectibles</a>
+                    <a href="#" class="quick-link" onclick="showSection('bosses')"><i class='bx bx-skull'></i> Boss Strategies</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Tips & Secrets</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('re2SidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('re2SidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('re2SidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.getElementById('start').style.display = 'none';
+            document.getElementById('weapons').style.display = 'none';
+            document.getElementById('puzzles').style.display = 'none';
+            document.getElementById('collectibles').style.display = 'none';
+            document.getElementById('bosses').style.display = 'none';
+            document.getElementById('tips').style.display = 'none';
+            
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            const tabTexts = ['start', 'weapons', 'puzzles', 'collectibles', 'bosses', 'tips'];
+            const index = tabTexts.indexOf(sectionId);
+            if (index !== -1) {
+                tabs[index].classList.add('active');
+            }
+        }
+
+        // Check login status
+        function checkLoginStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const sidebarFooter = document.querySelector('.sidebar__footer');
+            const navActions = document.getElementById('navActions');
+            
+            if (currentUser && currentUser.loggedIn) {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="user-profile" onclick="window.location.href='profile.html'">
+                            <img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=4a90e2&color=fff&size=32'}" alt="Profile">
+                            <span>${currentUser.username}</span>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom: 10px; width: 100%;">
+                            <i class='bx bx-user-circle'></i> ${currentUser.username}
+                        </button>
+                        <button class="logout-btn" onclick="logout()" style="width: 100%; background: transparent; border: 1px solid #b31919; color: #b31919; padding: 8px; border-radius: 20px; cursor: pointer;">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
+                    `;
+                }
+            } else {
+                if (navActions) {
+                    navActions.innerHTML = `
+                        <div class="login-prompt">
+                            <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                            <button onclick="window.location.href='login.html'">Log In</button>
+                        </div>
+                    `;
+                }
+                
+                if (sidebarFooter) {
+                    sidebarFooter.innerHTML = `
+                        <a href="login.html" style="text-decoration: none; display: block;">
+                            <button class="btn-login">
+                                <i class='bx bx-user-circle'></i> Sign up or log in
+                            </button>
+                        </a>
+                    `;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+
+        // Add logout button CSS
+        const logoutStyle = document.createElement('style');
+        logoutStyle.textContent = `
+            .logout-btn {
+                width: 100%;
+                background: transparent;
+                border: 1px solid #b31919;
+                color: #b31919;
+                padding: 10px;
+                border-radius: 25px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .logout-btn:hover {
+                background: #b31919;
+                color: white;
+            }
+            
+            .login-prompt {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .login-prompt button {
+                background: transparent;
+                border: 1px solid #4a90e2;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+            
+            .login-prompt .signup-btn {
+                background: linear-gradient(135deg, #4a90e2, #3570b2);
+                border: none;
+            }
+            
+            .user-profile {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: rgba(255,255,255,0.1);
+                padding: 6px 12px;
+                border-radius: 25px;
+                cursor: pointer;
+            }
+            
+            .user-profile img {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        `;
+        document.head.appendChild(logoutStyle);
+
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>

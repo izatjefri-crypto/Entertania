@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Legends: Complete Champion Guide - Entertania</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* --- RESET & BASE (consistent with Witcher page) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: white; /* LoL gold accent */
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR (identical structure, LoL flavor) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a90e2;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a90e2;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- GUIDE HEADER (LoL colors) --- */
+        .guide-header {
+            margin-bottom: 30px;
+        }
+
+        .guide-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        .guide-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .guide-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #a0a5b1;
+        }
+
+        .guide-meta-item i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .guide-meta-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- BACK BUTTON --- */
+        .back-button {
+            margin-bottom: 20px;
+        }
+        
+        .back-to-guides {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a3456;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* --- GUIDE LAYOUT (same grid) --- */
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .guide-main {
+            width: 100%;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            margin-bottom: 30px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #1a1f2b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #1e2330, #252b3a);
+            cursor: pointer;
+        }
+
+        .video-placeholder i {
+            font-size: 80px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+        }
+
+        .video-placeholder p {
+            color: #a0a5b1;
+            font-size: 16px;
+        }
+
+        .video-placeholder:hover i {
+            color: #4a90e2;
+        }
+
+        .video-caption {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* --- GUIDE TABS --- */
+        .guide-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #2a3456;
+            padding-bottom: 15px;
+        }
+
+        .guide-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #2a3456;
+            color: #a0a5b1;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .guide-tab:hover {
+            border-color: #4a90e2;
+            color: white;
+        }
+
+        .guide-tab.active {
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: #ffffff;
+        }
+
+        /* --- GUIDE SECTIONS (consistent) --- */
+        .guide-section {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .guide-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .guide-section h2 i {
+            color: #4a90e2;
+        }
+
+        .guide-section h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: white;
+        }
+
+        .guide-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            color: #4a90e2;
+        }
+
+        .guide-section p {
+            color: #e0e0e0;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* --- CHAPTER / ROLE LIST --- */
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .chapter-item {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .chapter-item h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .chapter-item p {
+            margin-bottom: 0;
+            color: #a0a5b1;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            color: #4a90e2;
+            font-size: 13px;
+        }
+
+        /* --- ROLE CARDS (like mode-grid) --- */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .mode-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .mode-card h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .mode-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .mode-tag {
+            display: inline-block;
+            background: #2a3456;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+
+        /* --- ITEMS/CHAMP GRID --- */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .item-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .item-icon {
+            width: 80px;
+            height: 80px;
+            background: #2a3456;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .item-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+
+        .item-card h4 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .item-card p {
+            color: #a0a5b1;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* --- TIPS & TRICKS (like tips-grid) --- */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #b31919;
+        }
+
+        .tip-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-card h4 i {
+            color: #4a90e2;
+        }
+
+        .tip-card p {
+            color: #a0a5b1;
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        /* --- RIGHT SIDEBAR (LoL colors) --- */
+        .guide-side {
+            width: 100%;
+        }
+
+        .info-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2a3456;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3 i {
+            color: #4a90e2;
+        }
+
+        .contributor-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contributor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .contributor-item:last-child {
+            border-bottom: none;
+        }
+
+        .contributor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a3456;
+        }
+
+        .contributor-info {
+            flex: 1;
+        }
+
+        .contributor-info h4 {
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .contributor-info p {
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a3456;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 92%;
+            height: 100%;
+            background: #4a90e2;
+            border-radius: 4px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 12px;
+            background: #14171e;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: #2a3456;
+        }
+
+        .quick-link i {
+            color: #4a90e2;
+            margin-right: 8px;
+        }
+
+        /* --- ITEM SETS (LoL specific) --- */
+        .item-set-badge {
+            background: #1e2a3a;
+            color: #4a90e2;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        /* --- RESPONSIVE (same as Witcher) --- */
+        @media (max-width: 1024px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                left: 0;
+            }
+            .page-content {
+                margin-left: 0;
+            }
+            .toggle-btn {
+                display: none;
+            }
+            .items-grid, .tips-grid, .mode-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .items-grid, .tips-grid, .mode-grid {
+                grid-template-columns: 1fr;
+            }
+            .guide-header h1 {
+                font-size: 32px;
+            }
+            .guide-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>League of Legends: Champion Guide</span>
+                </div>
+                <div class="nav-actions" id="navActions"></div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR (same structure) -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search champions...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item active"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+        <div class="sidebar__footer"></div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- BACK BUTTON -->
+        <div class="back-button">
+            <a href="guides.html" class="back-to-guides">
+                <i class='bx bx-arrow-back'></i>
+                Back to Guides
+            </a>
+        </div>
+
+        <!-- GUIDE HEADER -->
+        <div class="guide-header">
+            <h1>League of Legends: Champion Guide</h1>
+            <div class="guide-meta">
+                <div class="guide-meta-item">
+                    <i class='bx bx-group'></i>
+                    <span><strong> Contributors</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-time'></i>
+                    <span>Last updated: <strong>March 2025</strong></span>
+                </div>
+                <div class="guide-meta-item">
+                    <i class='bx bx-message'></i>
+                    <span><strong> CC</strong> (Community Credits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDEO SECTION (placeholder with play button) -->
+        <div class="video-section">
+    <div class="video-container">
+        <video width="100%" height="100%" controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/The ULTIMATE Beginner's Guide to League of Legends! - Skill Capped.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <p class="video-caption">Complete video guide</p>
+</div>
+
+        <!-- GUIDE TABS -->
+        <div class="guide-tabs">
+            <button class="guide-tab active" onclick="showSection('start')">Getting Started</button>
+            <button class="guide-tab" onclick="showSection('roles')">Roles & Meta</button>
+            <button class="guide-tab" onclick="showSection('champions')">Champions</button>
+            <button class="guide-tab" onclick="showSection('items')">Items & Builds</button>
+            <button class="guide-tab" onclick="showSection('map')">Map & Objectives</button>
+            <button class="guide-tab" onclick="showSection('tips')">Tips & Tricks</button>
+        </div>
+
+        <!-- GUIDE LAYOUT -->
+        <div class="guide-layout">
+            <!-- MAIN CONTENT -->
+            <div class="guide-main">
+
+                <!-- GETTING STARTED SECTION -->
+                <div id="start" class="guide-section">
+                    <h2><i class='bx bx-flag'></i> Getting Started in League of Legends</h2>
+                    
+                    <h3>Core Game Modes</h3>
+                    <div class="mode-grid">
+                        <div class="mode-card">
+                            <h4>Summoner's Rift (5v5)</h4>
+                            <p>The classic MOBA experience. Destroy the enemy Nexus. Two lanes, jungle, river.</p>
+                            <span class="mode-tag">Ranked</span>
+                            <span class="mode-tag">Draft</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Aram (Howling Abyss)</h4>
+                            <p>All Random, All Mid. Fast-paced teamfights. Great for learning champions.</p>
+                            <span class="mode-tag">Random</span>
+                            <span class="mode-tag">ARAM only</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Teamfight Tactics</h4>
+                            <p>Auto-battler strategy. Not covered in this guide.</p>
+                            <span class="mode-tag">TFT</span>
+                        </div>
+                        <div class="mode-card">
+                            <h4>Ultimate Spellbook</h4>
+                            <p>Rotational mode with summoner spell swaps.</p>
+                            <span class="mode-tag">Limited Time</span>
+                        </div>
+                    </div>
+
+                    <h3>First-Time Player Tips</h3>
+                    <div class="items-grid">
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-pointer'></i></div>
+                            <h4>Last Hitting</h4>
+                            <p>Practice last-hitting minions for gold. Core mechanic.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-map-alt'></i></div>
+                            <h4>Minimap Awareness</h4>
+                            <p>Glance every few seconds. Track enemy roams.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-shield'></i></div>
+                            <h4>Summoner Spells</h4>
+                            <p>Flash is essential. Take Ignite/Teleport based on role.</p>
+                        </div>
+                        <div class="item-card">
+                            <div class="item-icon"><i class='bx bx-ghost'></i></div>
+                            <h4>Warding</h4>
+                            <p>Buy Control Wards. Place stealth wards in river.</p>
+                        </div>
+                    </div>
+
+                    <h3>Beginner-Friendly Champions</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class='bx bx-sword'></i> Garen (Top)</h4>
+                            <p>Simple kit, sustain, no mana. Great to learn trading and split pushing.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-magic'></i> Annie (Mid)</h4>
+                            <p>Easy last-hitting with Q, point-and-click stun, high burst.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-bow'></i> Ashe (ADC)</h4>
+                            <p>Built-in slow, global vision with E, good kiting practice.</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class='bx bx-support'></i> Soraka (Support)</h4>
+                            <p>Healing focused, safe laning, global ult impact.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLES & META SECTION -->
+                <div id="roles" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-group'></i> Roles & Current Meta (Patch 25.5)</h2>
+                    
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Top Lane (Island)</h3>
+                            <p>Bruisers, tanks, duelists. Focus on split pushing and teleport plays. Strong picks: K'Sante, Jax, Malphite.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-trending-up'></i> Sustain</span>
+                                <span><i class='bx bx-shield'></i> Tank or Carry</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Jungle (The Chessmaster)</h3>
+                            <p>Controls objectives, ganks lanes. Pathing and smite crucial. Meta: Lee Sin, Viego, Maokai.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-map'></i> Objective control</span>
+                                <span><i class='bx bx-time'></i> Early ganks</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Mid Lane (Playmaker)</h3>
+                            <p>Mages or assassins. Roam potential. Strong: Ahri, Sylas, Taliyah.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-bolt'></i> Burst</span>
+                                <span><i class='bx bx-run'></i> Roaming</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Bot Lane (ADC)</h3>
+                            <p>Attack damage carry. Scale into late game. Meta: Jinx, Kai'Sa, Ezreal.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-target-lock'></i> Positioning</span>
+                                <span><i class='bx bx-diamond'></i> Crit/On-Hit</span>
+                            </div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Support (The Visionary)</h3>
+                            <p>Peel, engage, or poke. Roam with jungler. Top: Thresh, Nautilus, Lulu.</p>
+                            <div class="chapter-meta">
+                                <span><i class='bx bx-bulb'></i> Vision</span>
+                                <span><i class='bx bx-heart'></i> Peel/Engage</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Current Tier List (S-Tier)</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Top: K'Sante</h4><p>High skill, tanky, mobile.</p></div>
+                        <div class="item-card"><h4>Jungle: Briar</h4><p>Strong sustain, ganks.</p></div>
+                        <div class="item-card"><h4>Mid: Ahri</h4><p>Safe, picks, charm.</p></div>
+                        <div class="item-card"><h4>ADC: Jhin</h4><p>Damage, utility, speed.</p></div>
+                        <div class="item-card"><h4>Support: Rell</h4><p>Engage, tank, cc chain.</p></div>
+                    </div>
+                </div>
+
+                <!-- CHAMPIONS SECTION -->
+                <div id="champions" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-shield-quarter'></i> Champion Spotlights & Combos</h2>
+                    
+                    <h3>Class Breakdown</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><i class='bx bx-shield'></i><h4>Tank</h4><p>Ornn, Leona, Sion</p></div>
+                        <div class="item-card"><i class='bx bx-sword'></i><h4>Fighter</h4><p>Darius, Riven, Fiora</p></div>
+                        <div class="item-card"><i class='bx bx-magic'></i><h4>Mage</h4><p>Syndra, Viktor, Lux</p></div>
+                        <div class="item-card"><i class='bx bx-knife'></i><h4>Assassin</h4><p>Zed, Katarina, Talon</p></div>
+                        <div class="item-card"><i class='bx bx-bow'></i><h4>Marksman</h4><p>Caitlyn, Vayne, Aphelios</p></div>
+                        <div class="item-card"><i class='bx bx-support'></i><h4>Enchanter</h4><p>Janna, Sona, Milio</p></div>
+                    </div>
+
+                    <h3>Essential Combos (Example: Ahri)</h3>
+                    <div class="tip-card">
+                        <h4><i class='bx bx-flash'></i> Charm -> Orb -> Foxfire</h4>
+                        <p>Land E (Charm), then immediately Q (Orb) and W (Foxfire) for guaranteed true damage.</p>
+                    </div>
+                    <div class="tip-card" style="margin-top:15px;">
+                        <h4><i class='bx bx-flash'></i> Lee Sin "Insec"</h4>
+                        <p>Q -> Q -> Ward -> W -> R. Kick enemy into your team.</p>
+                    </div>
+                </div>
+
+                <!-- ITEMS & BUILDS SECTION -->
+                <div id="items" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-cube'></i> Items & Build Paths</h2>
+                    
+                    <h3>Starter Items by Role</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card"><h4>Top: Doran's Shield</h4><p>Sustain vs poke. Second wind synergy.</p></div>
+                        <div class="tip-card"><h4>Jungle: Emberknife</h4><p>Jungle item, smite upgrade.</p></div>
+                        <div class="tip-card"><h4>Mid: Doran's Ring</h4><p>Mana regen, AP, health.</p></div>
+                        <div class="tip-card"><h4>ADC: Doran's Blade</h4><p>Life steal, AD, health.</p></div>
+                        <div class="tip-card"><h4>Support: World Atlas</h4><p>Gold generation, quest item.</p></div>
+                    </div>
+
+                    <h3>Core Mythic Items (current)</h3>
+                    <div class="items-grid">
+                        <div class="item-card"><h4>Trinity Force</h4><p>Sheen procs, phage passive. Fighters.</p></div>
+                        <div class="item-card"><h4>Heartsteel</h4><p>Health stacking, tanks.</p></div>
+                        <div class="item-card"><h4>Luden's Echo</h4><p>Burst mages.</p></div>
+                        <div class="item-card"><h4>Kraken Slayer</h4><p>ADC DPS.</p></div>
+                        <div class="item-card"><h4>Echo of Helia</h4><p>Enchanter support.</p></div>
+                    </div>
+
+                    <h3>Itemization Tips</h3>
+                    <div class="tip-card">
+                        <h4><i class='bx bx-shield'></i> Armor vs MR</h4>
+                        <p>Build armor vs AD (Randuin's), MR vs AP (Force of Nature). Mix: Gargoyle's.</p>
+                    </div>
+                </div>
+
+                <!-- MAP & OBJECTIVES SECTION -->
+                <div id="map" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-map'></i> Map & Objectives</h2>
+                    
+                    <div class="chapter-list">
+                        <div class="chapter-item">
+                            <h3>Baron Nashor (20:00)</h3>
+                            <p>Strong buff for minions and team. Secure after picks or ace.</p>
+                            <div class="chapter-meta"><span>Baron spawn</span></div>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Drakes (5:00)</h3>
+                            <p>Cloud, Infernal, Mountain, Ocean, Hextech, Chemtech. Stack soul point.</p>
+                        </div>
+                        <div class="chapter-item">
+                            <h3>Rift Herald (8:00-19:45)</h3>
+                            <p>Summon to push lane. Give to solo laner.</p>
+                        </div>
+                    </div>
+                    <p>Always secure vision around objective 1 minute before spawn.</p>
+                </div>
+
+                <!-- TIPS & TRICKS SECTION -->
+                <div id="tips" class="guide-section" style="display: none;">
+                    <h2><i class='bx bx-bulb'></i> Advanced Tips & Micro/Macro</h2>
+                    
+                    <div class="tips-grid">
+                        <div class="tip-card"><h4><i class='bx bx-skip-next'></i> Animation Canceling</h4><p>Auto between abilities (Riven, Renekton). Practice in Practice Tool.</p></div>
+                        <div class="tip-card"><h4><i class='bx bx-timer'></i> Cooldown Tracking</h4><p>Mentally note enemy Flash (5 min) and ult timers.</p></div>
+                        <div class="tip-card"><h4><i class='bx bx-chip'></i> F-keys</h4><p>Use F1-F5 to quickly check teammates' lanes.</p></div>
+                        <div class="tip-card"><h4><i class='bx bx-current-location'></i> Baiting</h4><p>Fake recall in brush, then punish overconfident enemies.</p></div>
+                    </div>
+
+                    <h3>Wave Management</h3>
+                    <div class="tip-card">
+                        <h4>Freezing, Slow pushing, Fast pushing</h4>
+                        <p>Freeze near your tower for safety. Slow push to stack wave then dive. Fast push to reset or roam.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR (LoL contributors) -->
+            <div class="guide-side">
+                <div class="info-card">
+                    <h3><i class='bx bx-line-chart'></i> Guide Progress</h3>
+                    <p>Complete Guide: 92%</p>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p style="color:#a0a5b1; font-size:13px;">Updated for Split 1, 2025</p>
+                </div>
+                <div class="info-card">
+                    <h3><i class='bx bx-link'></i> Quick Links</h3>
+                    <a href="#" class="quick-link" onclick="showSection('start')"><i class='bx bx-flag'></i> Getting Started</a>
+                    <a href="#" class="quick-link" onclick="showSection('roles')"><i class='bx bx-group'></i> Roles & Meta</a>
+                    <a href="#" class="quick-link" onclick="showSection('champions')"><i class='bx bx-shield-quarter'></i> Champions</a>
+                    <a href="#" class="quick-link" onclick="showSection('items')"><i class='bx bx-cube'></i> Items & Builds</a>
+                    <a href="#" class="quick-link" onclick="showSection('map')"><i class='bx bx-map'></i> Map & Objectives</a>
+                    <a href="#" class="quick-link" onclick="showSection('tips')"><i class='bx bx-bulb'></i> Tips & Tricks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle (same as Witcher)
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        const sidebarState = localStorage.getItem('lolSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                if (navbar) navbar.style.left = '0';
+                localStorage.setItem('lolSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                if (navbar) navbar.style.left = '250px';
+                localStorage.setItem('lolSidebarState', 'open');
+            }
+        });
+
+        // Tab functionality
+        function showSection(sectionId) {
+            const sections = ['start','roles','champions','items','map','tips'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            
+            const tabs = document.querySelectorAll('.guide-tab');
+            tabs.forEach((tab, index) => {
+                tab.classList.remove('active');
+                if (sections[index] === sectionId) tab.classList.add('active');
+            });
+        }
+
+        // Login simulation (minimal)
+      function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        if (navActions) {
+            navActions.innerHTML = `<div class="user-profile" onclick="window.location.href='profile.html'"><img src="${currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=b31919&color=fff&size=32'}" alt="Profile"><span>${currentUser.username}</span></div>`;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="window.location.href='profile.html'" style="margin-bottom:10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        if (navActions) {
+            navActions.innerHTML = `<div class="login-prompt"><button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button><button onclick="window.location.href='login.html'">Log In</button></div>`;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `<a href="login.html" style="text-decoration:none; display:block;"><button class="btn-login"><i class='bx bx-user-circle'></i> Sign up or log in</button></a>`;
+        }
+    }
+}
+        function logout() { localStorage.removeItem('currentUser'); window.location.reload(); }
+        document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+    <!-- minimal style for login elements -->
+    <style>
+       .logout-btn { 
+    width:100%; 
+    background:transparent; 
+    border:1px solid #b31919;  /* Red border */
+    color:#b31919;              /* Red text */
+    padding:10px; 
+    border-radius:25px; 
+    font-weight:600; 
+    cursor:pointer; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    gap:8px; 
+    margin-top: 8px;
+}
+.logout-btn:hover { 
+    background:#b31919;        /* Red background on hover */
+    color:#14171e;              /* Dark text on hover */
+}
+        .login-prompt { display:flex; align-items:center; gap:15px; }
+        .login-prompt button { background:transparent; border:1px solid #b31919; color:white; padding:8px 20px; border-radius:25px; cursor:pointer; font-weight:600; }
+        .login-prompt .signup-btn { background:linear-gradient(135deg, #b31919, #b31919); border:none; color:#14171e; }
+        .user-profile { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.1); padding:6px 12px; border-radius:25px; cursor:pointer; }
+        .user-profile img { width:32px; height:32px; border-radius:50%; object-fit:cover; }
+    </style>
+</body>
+</html>

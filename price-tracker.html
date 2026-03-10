@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Price Tracker</title>
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+    <meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+    <meta name="author" content="Entertania">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <link rel="canonical" href="https://www.entertania.com">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+    <meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+    <meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+    <meta property="og:url" content="https://www.entertania.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Entertania - Game Encyclopedia">
+    <meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+    <meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+    
+    <!-- Price Tracker specific SEO -->
+    <meta name="description" content="Compare game prices across Malaysia, US, EU and more. Track price history for Baldur's Gate 3, Cyberpunk 2077, Elden Ring and hundreds of games. Get the best deals.">
+    <meta name="keywords" content="game price comparison, cheapest games, price tracker, game deals, Baldur's Gate 3 price, Cyberpunk 2077 sale, Elden Ring discount">
+    
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: linear-gradient(135deg, #001242 0%, #002b5c 100%);
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            border-bottom: 1px solid #2a3456;
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .nav-title i {
+            color: #4a90e2;
+            font-size: 28px;
+        }
+
+        .nav-title span {
+            background: linear-gradient(135deg, #ffffff, white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+            border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+            width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+        
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20000;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- PRICE TRACKER HEADER --- */
+        .price-header {
+            margin-bottom: 30px;
+        }
+
+        .price-header h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-header p {
+            color: #a0a5b1;
+            font-size: 18px;
+        }
+
+        /* --- CURRENCY SELECTOR --- */
+        .currency-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 0;
+            border-bottom: 1px solid #2a3456;
+        }
+
+        .currency-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .currency-selector label {
+            color: #a0a5b1;
+        }
+
+        .currency-selector select {
+            background: #1a1f2b;
+            color: white;
+            border: 1px solid #2a3456;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .last-updated {
+            color: #a0a5b1;
+            font-size: 14px;
+        }
+
+        .last-updated i {
+            color: #4a90e2;
+            margin-right: 5px;
+        }
+
+        /* --- FEATURED DEALS --- */
+        .featured-deals {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #b31919;
+            font-size: 24px;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .deal-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+            border: 1px solid #4a90e2;
+        }
+
+        .deal-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .deal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .deal-content {
+            flex: 1;
+        }
+
+        .deal-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .deal-platform {
+            color: #4a90e2;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .deal-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .current-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .old-price {
+            color: #a0a5b1;
+            font-size: 14px;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #b31919;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .deal-store {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #a0a5b1;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .deal-store i {
+            color: #4a90e2;
+        }
+
+        /* --- PRICE COMPARISON TABLE --- */
+        .comparison-section {
+            margin-bottom: 40px;
+        }
+
+        .comparison-table {
+            background: #1a1f2b;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+            background: #2a3456;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+            padding: 15px 20px;
+            border-bottom: 1px solid #2a3456;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .table-row:hover {
+            background: #2a3456;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .game-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .game-info-cell img {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .game-info-cell span {
+            font-weight: 500;
+        }
+
+        .price-cell {
+            font-weight: 600;
+        }
+
+        .price-cell.lowest {
+            color: #4ade80;
+        }
+
+        .store-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .store-cell i {
+            color: #4a90e2;
+            font-size: 18px;
+        }
+
+        .history-btn {
+            background: transparent;
+            border: 1px solid #4a90e2;
+            color: #4a90e2;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+
+        .history-btn:hover {
+            background: #4a90e2;
+            color: white;
+        }
+
+        /* --- PRICE HISTORY CHART --- */
+        .history-section {
+            margin-bottom: 40px;
+        }
+
+        .history-card {
+            background: #1a1f2b;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .history-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+        }
+
+        .history-header h3 i {
+            color: #4a90e2;
+        }
+
+        .game-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .game-selector select {
+            background: #2a3456;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .chart-container {
+            background: #14171e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            margin: 20px 0 10px;
+            gap: 5px;
+        }
+
+        .bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(to top, #4a90e2, #6aaef5);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s;
+            min-height: 4px;
+        }
+
+        .bar-label {
+            font-size: 11px;
+            color: #a0a5b1;
+            transform: rotate(-45deg);
+            white-space: nowrap;
+        }
+
+        .chart-values {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #a0a5b1;
+        }
+
+        .chart-values span {
+            text-align: center;
+            flex: 1;
+        }
+
+        .price-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2a3456;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #a0a5b1;
+            font-size: 12px;
+        }
+
+        .stat-value {
+            color: #4ade80;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* --- WISHLIST SECTION (SIMPLIFIED) --- */
+        .wishlist-section {
+            margin-bottom: 40px;
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .wishlist-card {
+            background: #1a1f2b;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-5px);
+            border: 1px solid #4a90e2;
+        }
+
+        .wishlist-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .wishlist-card h4 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .wishlist-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wishlist-current {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        .wishlist-old {
+            color: #a0a5b1;
+            font-size: 12px;
+            text-decoration: line-through;
+        }
+
+        .track-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: background 0.2s;
+        }
+
+        .track-btn:hover {
+            background: #3570b2;
+        }
+
+        .remove-btn {
+            background: transparent;
+            border: 1px solid #b31919;
+            color: #b31919;
+            padding: 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            background: #b31919;
+            color: white;
+        }
+
+        .add-wishlist-btn {
+            background: #2a3456;
+            color: white;
+            border: 1px dashed #4a90e2;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            grid-column: span 4;
+        }
+
+        .add-wishlist-btn:hover {
+            background: #353b4b;
+        }
+
+        /* --- PRICE ALERT --- */
+        .alert-badge {
+            background: #b31919;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .deals-grid, .wishlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .table-header, .table-row {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+            
+            .store-cell {
+                display: none;
+            }
+            
+            .navbar {
+                left: 0 !important;
+            }
+            
+            .page-content {
+                margin-left: 20px !important;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+            
+            .add-wishlist-btn {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .deals-grid, .wishlist-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-header, .table-row {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+            
+            .price-cell:nth-child(3) {
+                display: none;
+            }
+            
+            .currency-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .add-wishlist-btn {
+                grid-column: span 1;
+            }
+            
+            .chart-bars {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <span>Price Tracker</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+            <li><a href="price-tracker.html" class="sidebar__item active"><i class='bx bx-line-chart'></i> Price Tracker</a></li>
+        </ul>
+
+         <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- PRICE TRACKER HEADER -->
+        <div class="price-header">
+            <h1>Price Tracker</h1>
+            <p>Compare game prices across regions and track price history</p>
+        </div>
+
+        <!-- CURRENCY SELECTOR -->
+        <div class="currency-bar">
+            <div class="currency-selector">
+                <label>Display prices in:</label>
+                <select id="currencySelect" onchange="updateCurrency()">
+                    <option value="MYR" data-rate="1">Malaysian Ringgit (RM)</option>
+                    <option value="USD" data-rate="0.21">US Dollar ($)</option>
+                    <option value="EUR" data-rate="0.20">Euro (€)</option>
+                    <option value="GBP" data-rate="0.17">British Pound (£)</option>
+                    <option value="JPY" data-rate="32.5">Japanese Yen (¥)</option>
+                    <option value="SGD" data-rate="0.30">Singapore Dollar (S$)</option>
+                </select>
+            </div>
+            <div class="last-updated" id="lastUpdated">
+                <i class='bx bx-time'></i> Last updated: Just now
+            </div>
+        </div>
+
+        <!-- FEATURED DEALS SECTION -->
+        <div class="featured-deals">
+            <h2 class="section-title">
+                <i class='bx bx-gift'></i>
+                Best Deals This Week
+            </h2>
+
+            <div class="deals-grid" id="dealsGrid">
+                <!-- Deals will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- PRICE COMPARISON TABLE -->
+        <div class="comparison-section">
+            <h2 class="section-title">
+                <i class='bx bx-table'></i>
+                Price Comparison
+            </h2>
+
+            <div class="comparison-table" id="comparisonTable">
+                <!-- Table will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- PRICE HISTORY CHART -->
+        <div class="history-section">
+            <div class="history-card">
+                <div class="history-header">
+                    <h3>
+                        <i class='bx bx-line-chart'></i>
+                        Price History - <span id="selectedGame">Baldur's Gate 3</span>
+                    </h3>
+                    <div class="game-selector">
+                        <select id="historyGameSelect" onchange="updateChart()">
+                            <option value="0">Baldur's Gate 3</option>
+                            <option value="1">Cyberpunk 2077</option>
+                            <option value="2">Elden Ring</option>
+                            <option value="3">Red Dead Redemption 2</option>
+                            <option value="4">God of War Ragnarok</option>
+                        </select>
+                        <select id="historyRegionSelect" onchange="updateChart()">
+                            <option value="MYR">Malaysia (RM)</option>
+                            <option value="USD">US ($)</option>
+                            <option value="EUR">EU (€)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-container" id="chartContainer">
+                    <div class="chart-bars" id="chartBars"></div>
+                    <div class="chart-values" id="chartValues"></div>
+                    <div class="price-stats" id="priceStats"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WISHLIST SECTION -->
+        <div class="wishlist-section">
+            <h2 class="section-title">
+                <i class='bx bx-heart'></i>
+                My Wishlist
+            </h2>
+
+            <div class="wishlist-grid" id="wishlistGrid">
+                <!-- Wishlist items will be populated by JavaScript -->
+            </div>
+            <div class="add-wishlist-btn" id="addWishlistBtn" onclick="showAddToWishlist()">
+                <i class='bx bx-plus-circle' style="font-size: 24px;"></i>
+                Add Game to Wishlist
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD TO WISHLIST MODAL (SIMPLIFIED) -->
+    <div id="addWishlistModal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 11000; backdrop-filter: blur(5px);">
+        <div style="background: #1a1f2b; padding: 30px; width: 400px; max-width: 90%; border-radius: 16px;">
+            <h3 style="margin-bottom: 20px; color: white; display: flex; align-items: center; gap: 10px;">
+                <i class='bx bx-heart' style="color: #4a90e2;"></i>
+                Add to Wishlist
+            </h3>
+            
+            <select id="wishlistGameSelect" style="width: 100%; padding: 12px; background: #14171e; border: 1px solid #2a3456; color: white; border-radius: 8px; margin-bottom: 15px;">
+                <option value="0">Baldur's Gate 3</option>
+                <option value="1">Cyberpunk 2077</option>
+                <option value="2">Elden Ring</option>
+                <option value="3">Red Dead Redemption 2</option>
+                <option value="4">God of War Ragnarok</option>
+            </select>
+            
+            <input type="number" id="targetPrice" placeholder="Target Price (RM)" style="width: 100%; padding: 12px; background: #14171e; border: 1px solid #2a3456; color: white; border-radius: 8px; margin-bottom: 15px;">
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="addToWishlist()" style="flex: 1; background: #4a90e2; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer;">Add</button>
+                <button onclick="closeWishlistModal()" style="flex: 1; background: #2a3456; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Game data
+    const games = [
+        {
+            id: 0,
+            name: "Baldur's Gate 3",
+            image: "assets/images/Baldur.jpeg",
+            platform: "Steam",
+            basePrice: 219.00,
+            currentPrice: 175.20,
+            discount: 20,
+            steamAppId: 1086940,
+            prices: {
+                MYR: { current: 175.20, original: 219.00, store: "Steam" },
+                USD: { current: 59.99, original: 59.99, store: "Steam" },
+                EUR: { current: 54.99, original: 54.99, store: "Steam" }
+            },
+            history: [219, 209, 199, 189, 179, 175.20, 175.20, 179, 185, 175.20]
+        },
+        {
+            id: 1,
+            name: "Cyberpunk 2077",
+            image: "assets/images/Cyberpunk.jpeg",
+            platform: "GOG",
+            basePrice: 219.00,
+            currentPrice: 109.50,
+            discount: 50,
+            steamAppId: 1091500,
+            prices: {
+                MYR: { current: 109.50, original: 219.00, store: "GOG" },
+                USD: { current: 29.99, original: 59.99, store: "Steam" },
+                EUR: { current: 27.99, original: 54.99, store: "GOG" }
+            },
+            history: [219, 199, 179, 159, 139, 119, 109.50, 109.50, 119, 109.50]
+        },
+        {
+            id: 2,
+            name: "Elden Ring",
+            image: "assets/images/Eldenring.jpeg",
+            platform: "PlayStation Store",
+            basePrice: 199.00,
+            currentPrice: 169.15,
+            discount: 15,
+            steamAppId: 1245620,
+            prices: {
+                MYR: { current: 199.00, original: 199.00, store: "PS Store" },
+                USD: { current: 39.99, original: 59.99, store: "Steam" },
+                EUR: { current: 37.99, original: 54.99, store: "PS Store" }
+            },
+            history: [199, 199, 189, 179, 169.15, 169.15, 179, 189, 199, 169.15]
+        },
+        {
+            id: 3,
+            name: "Red Dead Redemption 2",
+            image: "assets/images/rdr2.jpeg",
+            platform: "Steam",
+            basePrice: 159.00,
+            currentPrice: 159.00,
+            discount: 0,
+            steamAppId: 1174180,
+            prices: {
+                MYR: { current: 159.00, original: 159.00, store: "Steam" },
+                USD: { current: 49.99, original: 49.99, store: "Steam" },
+                EUR: { current: 45.99, original: 45.99, store: "Steam" }
+            },
+            history: [159, 159, 149, 139, 129, 129, 139, 149, 159, 159]
+        },
+        {
+            id: 4,
+            name: "God of War Ragnarok",
+            image: "assets/images/gow2018.jpeg",
+            platform: "PlayStation Store",
+            basePrice: 239.00,
+            currentPrice: 239.00,
+            discount: 0,
+            steamAppId: 2322010,
+            prices: {
+                MYR: { current: 239.00, original: 239.00, store: "PS Store" },
+                USD: { current: 59.99, original: 59.99, store: "PS Store" },
+                EUR: { current: 49.99, original: 54.99, store: "PS Store" }
+            },
+            history: [239, 239, 239, 229, 219, 209, 199, 199, 209, 239]
+        }
+    ];
+
+    // Exchange rates (relative to MYR)
+    const exchangeRates = {
+        MYR: 1,
+        USD: 0.21,
+        EUR: 0.20,
+        GBP: 0.17,
+        JPY: 32.5,
+        SGD: 0.30
+    };
+
+    let currentCurrency = 'MYR';
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    let allSteamDeals = []; // Store all fetched deals
+
+    // Steam App IDs mapping
+    const steamGames = games.map(game => ({
+        id: game.id,
+        name: game.name,
+        steamAppId: game.steamAppId
+    }));
+
+async function fetchSteamImage(steamAppId) {
+    try {
+        // Try to get image from SteamGridDB
+        const response = await fetch(`https://www.steamgriddb.com/api/v2/search/steam/${steamAppId}`);
+        const data = await response.json();
+        if (data.success && data.data.length > 0) {
+            return data.data[0].url; // Return first image URL
+        }
+    } catch (error) {
+        console.log('Failed to fetch Steam image for app ID:', steamAppId);
+    }
+    return null; // Return null if no image found
+}
+
+    async function updateSteamPrices() {
+    try {
+        // Show loading state
+        document.getElementById('lastUpdated').innerHTML = '<i class="bx bx-time"></i> Updating Steam prices...';
+        
+        // Fetch current deals from CheapShark
+        const response = await fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&onSale=1&pageSize=50');
+        const deals = await response.json();
+        
+        // Store all deals for reference
+        allSteamDeals = deals;
+        
+        let updatedCount = 0;
+        const usdToMyr = 4.4; // Approximate exchange rate
+        
+        // Update each game if found in deals
+        steamGames.forEach(game => {
+            const deal = deals.find(d => 
+                d.steamAppID == game.steamAppId || 
+                d.title.toLowerCase().includes(game.name.toLowerCase().split(' ')[0])
+            );
+            
+            if (deal) {
+                const gameIndex = games.findIndex(g => g.id === game.id);
+                if (gameIndex !== -1) {
+                    // Update with real Steam price
+                    const salePriceUSD = parseFloat(deal.salePrice);
+                    const normalPriceUSD = parseFloat(deal.normalPrice);
+                    const savings = parseFloat(deal.savings);
+                    
+                    games[gameIndex].currentPrice = salePriceUSD * usdToMyr;
+                    games[gameIndex].basePrice = normalPriceUSD * usdToMyr;
+                    games[gameIndex].discount = Math.round(savings);
+                    games[gameIndex].platform = "Steam";
+                    
+                    // Update the prices object
+                    games[gameIndex].prices.MYR.current = salePriceUSD * usdToMyr;
+                    games[gameIndex].prices.MYR.original = normalPriceUSD * usdToMyr;
+                    games[gameIndex].prices.MYR.store = "Steam";
+                    games[gameIndex].prices.USD.current = salePriceUSD;
+                    games[gameIndex].prices.USD.original = normalPriceUSD;
+                    games[gameIndex].prices.USD.store = "Steam";
+                    
+                    // Update history with new price
+                    games[gameIndex].history.pop();
+                    games[gameIndex].history.unshift(salePriceUSD * usdToMyr);
+                    
+                    updatedCount++;
+                }
+            }
+        });
+        
+        // Refresh the display with new deal data
+        renderDeals();
+        renderComparisonTable();
+        updateChart();
+        
+        const now = new Date();
+        document.getElementById('lastUpdated').innerHTML = `
+            <i class='bx bx-time'></i> Steam prices updated: ${now.toLocaleTimeString()}
+        `;
+        
+        console.log(`✅ Updated ${updatedCount} games with real Steam prices`);
+        
+    } catch (error) {
+        console.error('Failed to fetch Steam deals:', error);
+        document.getElementById('lastUpdated').innerHTML = `
+            <i class='bx bx-time'></i> Using cached prices (offline mode)
+        `;
+        renderDeals(); // Still try to render even if API fails
+    }
+}
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // First render with existing data
+        renderDeals();
+        renderComparisonTable();
+        updateChart();
+        renderWishlist();
+        updateLastUpdated();
+        
+        // Then try to fetch real Steam prices
+        updateSteamPrices();
+        
+        // Refresh Steam prices every 30 minutes
+        setInterval(updateSteamPrices, 30 * 60 * 1000);
+    });
+
+    // Currency update function
+    function updateCurrency() {
+        const select = document.getElementById('currencySelect');
+        currentCurrency = select.value;
+        updateAllPrices();
+        updateLastUpdated();
+    }
+
+    function updateAllPrices() {
+        renderDeals();
+        renderComparisonTable();
+        updateChart();
+    }
+
+    function formatPrice(amount, currency = currentCurrency) {
+        const rate = exchangeRates[currency] || 1;
+        const converted = amount * rate;
+        
+        switch(currency) {
+            case 'MYR': return `RM${converted.toFixed(2)}`;
+            case 'USD': return `$${converted.toFixed(2)}`;
+            case 'EUR': return `€${converted.toFixed(2)}`;
+            case 'GBP': return `£${converted.toFixed(2)}`;
+            case 'JPY': return `¥${Math.round(converted)}`;
+            case 'SGD': return `S$${converted.toFixed(2)}`;
+            default: return `RM${converted.toFixed(2)}`;
+        }
+    }
+
+    function renderDeals() {
+    const dealsGrid = document.getElementById('dealsGrid');
+    
+    // If we haven't fetched deals yet or there are no deals, show loading or empty state
+    if (!allSteamDeals || allSteamDeals.length === 0) {
+        dealsGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; padding: 40px; color: #a0a5b1;"><i class="bx bx-loader bx-spin" style="font-size: 24px;"></i><p>Checking for current deals...</p></div>';
+        
+        // Set a timeout to check again after API call
+        setTimeout(() => {
+            if (allSteamDeals && allSteamDeals.length > 0) {
+                renderDealsWithData();
+            } else {
+                dealsGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; padding: 40px; color: #a0a5b1;">No current deals available</div>';
+            }
+        }, 3000);
+        
+        return;
+    }
+    
+    renderDealsWithData();
+}
+
+function renderDealsWithData() {
+    const dealsGrid = document.getElementById('dealsGrid');
+    
+    // Get games that are actually on sale from the Steam API data
+    let activeDeals = [];
+    
+    // First, check which of our tracked games are actually on sale in the API
+    steamGames.forEach(game => {
+        const deal = allSteamDeals.find(d => 
+            d.steamAppID == game.steamAppId || 
+            d.title.toLowerCase().includes(game.name.toLowerCase().split(' ')[0])
+        );
+        
+        if (deal) {
+            // This game has an active deal on Steam
+            const gameIndex = games.findIndex(g => g.id === game.id);
+            if (gameIndex !== -1) {
+                const salePriceUSD = parseFloat(deal.salePrice);
+                const normalPriceUSD = parseFloat(deal.normalPrice);
+                const savings = parseFloat(deal.savings);
+                
+                activeDeals.push({
+                    id: game.id,
+                    name: game.name,
+                    image: games[gameIndex].image, // Use your existing image
+                    platform: "Steam",
+                    currentPrice: salePriceUSD * 4.4,
+                    basePrice: normalPriceUSD * 4.4,
+                    discount: Math.round(savings),
+                    steamAppId: game.steamAppId,
+                    isTracked: true
+                });
+            }
+        }
+    });
+    
+    // Also add top 6 other Steam deals that are on sale (increased from 3 to 6)
+    const otherDeals = allSteamDeals
+        .filter(deal => {
+            // Check if this deal is not already in our tracked games
+            return !steamGames.some(game => 
+                game.steamAppId == deal.steamAppID || 
+                deal.title.toLowerCase().includes(game.name.toLowerCase().split(' ')[0])
+            );
+        })
+        .slice(0, 6) // Take top 6
+        .map(deal => ({
+            name: deal.title,
+            image: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${deal.steamAppID}/capsule_231x87.jpg`, // Steam's official image
+            platform: "Steam",
+            currentPrice: parseFloat(deal.salePrice) * 4.4,
+            basePrice: parseFloat(deal.normalPrice) * 4.4,
+            discount: Math.round(parseFloat(deal.savings)),
+            isExternal: true,
+            steamAppId: deal.steamAppID,
+            dealData: deal
+        }));
+    
+    // Combine both types of deals
+    activeDeals = [...activeDeals, ...otherDeals];
+    
+    // Sort by discount percentage (highest first)
+    activeDeals.sort((a, b) => b.discount - a.discount);
+    
+    // Take top 6 deals max
+    const topDeals = activeDeals.slice(0, 6);
+    
+    if (topDeals.length === 0) {
+        dealsGrid.innerHTML = '<div style="grid-column: span 3; text-align: center; padding: 40px; color: #a0a5b1;">No current deals available</div>';
+        return;
+    }
+    
+    let html = '';
+    
+    topDeals.forEach(deal => {
+        // Use Steam's official image URL
+        const imageUrl = deal.isExternal 
+            ? `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${deal.steamAppId}/capsule_231x87.jpg`
+            : deal.image;
+        
+        if (deal.isExternal) {
+            // External Steam deal
+            html += `
+                <div class="deal-card" onclick="window.open('https://store.steampowered.com/app/${deal.steamAppId}', '_blank')">
+                    <span class="discount-badge">-${deal.discount}%</span>
+                    <div class="deal-image">
+                        <img src="${imageUrl}" alt="${deal.name}" 
+                             onerror="this.src='https://via.placeholder.com/80x80?text=Steam'"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="deal-content">
+                        <h3>${deal.name.length > 30 ? deal.name.substring(0, 30) + '...' : deal.name}</h3>
+                        <div class="deal-platform">Steam</div>
+                        <div class="deal-price">
+                            <span class="current-price">${formatPrice(deal.currentPrice)}</span>
+                            <span class="old-price">${formatPrice(deal.basePrice)}</span>
+                        </div>
+                        <div class="deal-store">
+                            <i class='bx bxl-steam'></i>
+                            <span>🔥 Steam Sale</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // Our tracked game with active deal
+            html += `
+                <div class="deal-card" onclick="showPriceHistory(${deal.id})">
+                    <span class="discount-badge">-${deal.discount}%</span>
+                    <div class="deal-image">
+                        <img src="${deal.image}" alt="${deal.name}">
+                    </div>
+                    <div class="deal-content">
+                        <h3>${deal.name}</h3>
+                        <div class="deal-platform">${deal.platform}</div>
+                        <div class="deal-price">
+                            <span class="current-price">${formatPrice(deal.currentPrice)}</span>
+                            <span class="old-price">${formatPrice(deal.basePrice)}</span>
+                        </div>
+                        <div class="deal-store">
+                            <i class='bx bxl-steam'></i>
+                            <span>🔥 Steam Sale</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    });
+
+    dealsGrid.innerHTML = html;
+}
+
+    function renderComparisonTable() {
+        const table = document.getElementById('comparisonTable');
+        let html = `
+            <div class="table-header">
+                <div>Game</div>
+                <div>Malaysia</div>
+                <div>US</div>
+                <div>EU</div>
+                <div>Best Store</div>
+            </div>
+        `;
+
+        games.forEach(game => {
+            const myrPrice = game.prices.MYR.current;
+            const usdPrice = game.prices.USD.current;
+            const eurPrice = game.prices.EUR.current;
+            
+            // Find lowest price
+            const prices = [
+                { region: 'MYR', price: myrPrice, store: game.prices.MYR.store },
+                { region: 'USD', price: usdPrice, store: game.prices.USD.store },
+                { region: 'EUR', price: eurPrice, store: game.prices.EUR.store }
+            ];
+            
+            const lowest = prices.reduce((min, p) => p.price < min.price ? p : min, prices[0]);
+
+            html += `
+                <div class="table-row">
+                    <div class="game-info-cell" onclick="showPriceHistory(${game.id})">
+                        <img src="${game.image}" alt="${game.name}">
+                        <span>${game.name}</span>
+                    </div>
+                    <div class="price-cell ${lowest.region === 'MYR' ? 'lowest' : ''}">${formatPrice(myrPrice, 'MYR')}</div>
+                    <div class="price-cell ${lowest.region === 'USD' ? 'lowest' : ''}">${formatPrice(usdPrice, 'USD')}</div>
+                    <div class="price-cell ${lowest.region === 'EUR' ? 'lowest' : ''}">${formatPrice(eurPrice, 'EUR')}</div>
+                    <div class="store-cell">
+                        <i class='bx ${getStoreIcon(lowest.store)}'></i>
+                        <span>${lowest.store}</span>
+                        <button class="history-btn" onclick="showPriceHistory(${game.id})">
+                            <i class='bx bx-history'></i> History
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+
+        table.innerHTML = html;
+    }
+
+    function getStoreIcon(store) {
+        switch(store) {
+            case 'Steam': return 'bxl-steam';
+            case 'GOG': return 'bxl-gog';
+            case 'PS Store': return 'bxl-play-store';
+            default: return 'bx-store';
+        }
+    }
+
+    function updateChart() {
+        const gameSelect = document.getElementById('historyGameSelect');
+        const regionSelect = document.getElementById('historyRegionSelect');
+        const gameId = parseInt(gameSelect.value);
+        const region = regionSelect.value;
+        const game = games[gameId];
+        
+        if (!game) return;
+        
+        document.getElementById('selectedGame').textContent = game.name;
+        
+        const history = game.history;
+        const maxPrice = Math.max(...history);
+        const minPrice = Math.min(...history);
+        
+        // Generate bars
+        const chartBars = document.getElementById('chartBars');
+        const barWidth = 100 / history.length;
+        
+        let barsHtml = '';
+        let valuesHtml = '';
+        
+        history.forEach((price, index) => {
+            const height = (price / maxPrice) * 180;
+            const date = new Date();
+            date.setDate(date.getDate() - (history.length - 1 - index) * 3);
+            const dateStr = `${date.getDate()}/${date.getMonth() + 1}`;
+            
+            barsHtml += `
+                <div class="bar-wrapper" style="width: ${barWidth}%">
+                    <div class="bar" style="height: ${height}px;"></div>
+                    <div class="bar-label">${dateStr}</div>
+                </div>
+            `;
+            
+            valuesHtml += `<span>${formatPrice(price, region)}</span>`;
+        });
+        
+        chartBars.innerHTML = barsHtml;
+        document.getElementById('chartValues').innerHTML = valuesHtml;
+        
+        // Stats
+        const avgPrice = history.reduce((a, b) => a + b, 0) / history.length;
+        document.getElementById('priceStats').innerHTML = `
+            <div class="stat-item">
+                <div class="stat-label">Highest</div>
+                <div class="stat-value">${formatPrice(maxPrice, region)}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Lowest</div>
+                <div class="stat-value" style="color: #4ade80;">${formatPrice(minPrice, region)}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Average</div>
+                <div class="stat-value">${formatPrice(avgPrice, region)}</div>
+            </div>
+        `;
+    }
+
+    function showPriceHistory(gameId) {
+        const gameSelect = document.getElementById('historyGameSelect');
+        gameSelect.value = gameId;
+        updateChart();
+        
+        // Smooth scroll to chart
+        document.querySelector('.history-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderWishlist() {
+        const wishlistGrid = document.getElementById('wishlistGrid');
+        
+        if (wishlist.length === 0) {
+            wishlistGrid.innerHTML = `
+                <div style="grid-column: span 4; text-align: center; padding: 40px; color: #a0a5b1;">
+                    <i class='bx bx-heart' style="font-size: 48px; color: #4a90e2; margin-bottom: 15px;"></i>
+                    <p>Your wishlist is empty. Add games to track prices!</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let html = '';
+        wishlist.forEach((item, index) => {
+            const game = games.find(g => g.id === item.gameId);
+            if (!game) return;
+            
+            const isTargetMet = game.currentPrice <= item.targetPrice;
+            
+            html += `
+                <div class="wishlist-card">
+                    <img src="${game.image}" alt="${game.name}">
+                    <h4>${game.name}</h4>
+                    <div class="wishlist-price">
+                        <span class="wishlist-current">${formatPrice(game.currentPrice)}</span>
+                        <span class="wishlist-old">Target: ${formatPrice(item.targetPrice)}</span>
+                    </div>
+                    ${isTargetMet ? '<span class="alert-badge">🔥 Target Met!</span>' : ''}
+                    <button class="track-btn" onclick="trackGame(${index})">
+                        <i class='bx bx-bell'></i> Track
+                    </button>
+                    <button class="remove-btn" onclick="removeFromWishlist(${index})">
+                        <i class='bx bx-trash'></i> Remove
+                    </button>
+                </div>
+            `;
+        });
+        
+        wishlistGrid.innerHTML = html;
+    }
+
+    function showAddToWishlist() {
+        document.getElementById('addWishlistModal').style.display = 'flex';
+    }
+
+    function closeWishlistModal() {
+        document.getElementById('addWishlistModal').style.display = 'none';
+    }
+
+    function addToWishlist() {
+        const gameSelect = document.getElementById('wishlistGameSelect');
+        const targetPrice = document.getElementById('targetPrice').value;
+        
+        if (!targetPrice || targetPrice <= 0) {
+            alert('Please enter a valid target price');
+            return;
+        }
+        
+        const gameId = parseInt(gameSelect.value);
+        const game = games[gameId];
+        
+        wishlist.push({
+            gameId: gameId,
+            targetPrice: parseFloat(targetPrice),
+            addedAt: new Date().toISOString()
+        });
+        
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        renderWishlist();
+        closeWishlistModal();
+        
+        alert(`${game.name} added to wishlist with target price ${formatPrice(targetPrice)}`);
+    }
+
+    function removeFromWishlist(index) {
+        wishlist.splice(index, 1);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        renderWishlist();
+    }
+
+    function trackGame(index) {
+        const item = wishlist[index];
+        const game = games.find(g => g.id === item.gameId);
+        alert(`Tracking ${game.name} - Current: ${formatPrice(game.currentPrice)}, Target: ${formatPrice(item.targetPrice)}`);
+    }
+
+    function updateLastUpdated() {
+        const now = new Date();
+        document.getElementById('lastUpdated').innerHTML = `
+            <i class='bx bx-time'></i> Last updated: ${now.toLocaleTimeString()}
+        `;
+    }
+
+    // Sidebar Toggle
+    const sidebar = document.getElementById('mySidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const pageContent = document.querySelector('.page-content');
+    const navbar = document.querySelector('.navbar');
+
+    const sidebarState = localStorage.getItem('priceSidebarState');
+    if (sidebarState === 'closed') {
+        sidebar.classList.add('closed');
+        toggleBtn.classList.add('moved');
+        toggleIcon.innerText = '❯';
+        pageContent.style.marginLeft = '20px';
+        if (navbar) navbar.style.left = '0';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        toggleBtn.classList.toggle('moved');
+
+        const isClosed = sidebar.classList.contains('closed');
+        toggleIcon.innerText = isClosed ? '❯' : '❮';
+        
+        if (isClosed) {
+            pageContent.style.marginLeft = '20px';
+            if (navbar) navbar.style.left = '0';
+            localStorage.setItem('priceSidebarState', 'closed');
+        } else {
+            pageContent.style.marginLeft = '250px';
+            if (navbar) navbar.style.left = '250px';
+            localStorage.setItem('priceSidebarState', 'open');
+        }
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('addWishlistModal');
+        if (event.target === modal) {
+            closeWishlistModal();
+        }
+    }
+
+    // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+    
+</script>
+</body>
+</html>
