@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entertania - Forum Discussion</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- SEO Meta Tags -->
+<meta name="description" content="Entertania - Your ultimate gaming encyclopedia for game reviews, price tracking, guides, and community discussions. Compare game prices across regions, read expert reviews, and join the gaming community.">
+<meta name="keywords" content="game reviews, price tracker, game guides, gaming community, game discussion, game prices, game encyclopedia, Resident Evil, Elden Ring, gaming forum">
+<meta name="author" content="Entertania">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://www.entertania.com">
+
+<!-- Open Graph / Social Media Meta Tags -->
+<meta property="og:title" content="Entertania - Game Encyclopedia & Price Tracker">
+<meta property="og:description" content="Your ultimate gaming destination for reviews, price comparisons, guides and community discussions.">
+<meta property="og:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<meta property="og:url" content="https://www.entertania.com">
+<meta property="og:type" content="website">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Entertania - Game Encyclopedia">
+<meta name="twitter:description" content="Compare game prices, read reviews, and join discussions.">
+<meta name="twitter:image" content="https://www.entertania.com/Entertanialogo.jpeg">
+<!-- Forum specific SEO -->
+<meta name="description" content="Join the Entertania gaming community. Discuss strategies, share theories, and connect with other gamers.">
+    <style>
+        /* --- RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #14171e;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: #001242;
+            border-bottom: 1px solid #001242;
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            z-index: 900;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: left 0.3s ease;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #f1f2f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .new-post-btn {
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .new-post-btn i {
+            font-size: 18px;
+        }
+
+        .new-post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+            background: linear-gradient(135deg, #5a9ef0, #4a80c0);
+        }
+
+        /* --- SIDEBAR (SAME AS HOMEPAGE) --- */
+        .sidebar {
+            width: 250px;
+            background: #121620;
+             border-right: 1px solid #2d3446;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        }
+
+        .sidebar.closed {
+            transform: translateX(-250px);
+        }
+
+        .sidebar__logo {
+            padding: 10px 0 0 0;
+            margin-bottom: -1px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar__logo img {
+           width: 200px;
+            height: auto;
+            filter: invert(1) contrast(200%) brightness(1.5);
+            mix-blend-mode: screen;
+        }
+
+        .sidebar__list {
+            margin: 0;
+            padding: 0 15px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar__item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: #a0a5b1;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .sidebar__item i {
+            margin-right: 12px;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar__item:hover {
+            background: #353b4b;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar__item.active {
+            background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .sidebar__item.active i {
+            color: white;
+        }
+
+        .sidebar-search-container {
+            padding: 10px 15px;
+        }
+
+        .sidebar-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2a3456;
+            border-radius: 20px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-search i {
+            color: #a0a5b1;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .sidebar-search input {
+            background: transparent;
+            border: none;
+            color: white;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .sidebar-search input::placeholder {
+            color: #6a7187;
+        }
+
+        .sidebar__footer {
+            padding: 20px 15px;
+            border-top: 1px solid #2a3456;
+            margin-top: auto;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, white 100%);
+            color: black;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+        }
+
+        /* --- TOGGLE BUTTON --- */
+        .toggle-btn {
+            position: fixed;
+            left: 235px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background: #2d3446;
+            border: 2px solid #4a5a8c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .toggle-btn:hover {
+            background: #4a5a8c;
+            transform: scale(1.1);
+        }
+
+        .toggle-btn.moved {
+            left: 15px;
+        }
+
+        /* --- PAGE CONTENT --- */
+        .page-content {
+            margin-left: 250px;
+            padding: 90px 30px 40px 30px;
+            min-height: 100vh;
+            transition: margin-left 0.4s ease;
+        }
+
+        /* --- FORUM HEADER/TOPBAR --- */
+        .forum-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .forum-tabs {
+            display: flex;
+            gap: 25px;
+            border-bottom: 2px solid #2a3456;
+            padding-bottom: 10px;
+        }
+
+        .forum-tabs span {
+            color: #a0a5b1;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .forum-tabs span:hover {
+            color: white;
+        }
+
+        .forum-tabs span.active {
+            color: white;
+        }
+
+        .forum-tabs span.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, #4a90e2, #ffd700);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .forum-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .forum-actions input,
+        .forum-actions select {
+            padding: 10px 15px;
+            background: #1a1f2b;
+            border: 1px solid #2a3456;
+            color:white;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .forum-actions input:focus,
+        .forum-actions select:focus {
+            border-color: #d6d9de;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        .forum-actions input {
+            width: 250px;
+        }
+
+        .forum-actions select {
+            cursor: pointer;
+            background: #1a1f2b url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 12px center;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-right: 40px;
+        }
+
+        /* --- FORUM LAYOUT --- */
+        .forum-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- CARDS --- */
+        .forum-card, .side-card {
+            background: linear-gradient(145deg, #1a1f2b, #1e2332);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgb(19, 19, 30);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        
+
+        .forum-card h2, .side-card h3 {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2a3456;
+            font-size: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .forum-card h2 i, .side-card h3 i {
+            color: #e1e5e9;
+            font-size: 24px;
+        }
+
+        /* --- CATEGORY ITEMS --- */
+        .category-item, .thread-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+
+        .category-item:hover, .thread-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateX(5px);
+        }
+
+        .category-item img, .thread-item img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #2a3456;
+            padding: 8px;
+        }
+
+        .thread-item img {
+            border-radius: 50%;
+            padding: 0;
+            background: white;
+        }
+
+        .category-item h3, .thread-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .category-item p, .thread-item p {
+            margin: 0 0 3px 0;
+            font-size: 13px;
+            color: #a0a5b1;
+            line-height: 1.4;
+        }
+
+        .category-item span, .thread-meta {
+            font-size: 12px;
+            color: #6a7187;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .thread-meta i {
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .thread-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .thread-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #6a7187;
+        }
+
+        /* --- SIDEBAR RIGHT PANEL --- */
+        .side-card p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .side-card p:hover {
+            background: rgba(74, 144, 226, 0.1);
+            transform: translateX(5px);
+        }
+
+        .side-card p i {
+            color: white;
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .trending-tag {
+            display: inline-block;
+            background: rgba(199, 202, 205, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: white;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #14171e;
+            transition: all 0.3s ease;
+        }
+
+        .trending-tag:hover {
+            background: #4a90e2;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 11000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1a1f2b, #1e2332);
+            padding: 35px;
+            width: 500px;
+            max-width: 90%;
+            border-radius: 20px;
+            border: 1px solid #4a90e2;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            margin-bottom: 25px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: #141924;
+            border: 1px solid #2a3456;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content input:focus,
+        .modal-content textarea:focus,
+        .modal-content select:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        .modal-content textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a90e2, #3570b2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .btn-secondary {
+            background: #2a3456;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #3a4568;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .forum-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                left: 0;
+            }
+            
+            .page-content {
+                margin-left: 0;
+                padding-top: 90px;
+            }
+            
+            .toggle-btn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .forum-topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .forum-actions {
+                flex-direction: column;
+            }
+            
+            .forum-actions input {
+                width: 100%;
+            }
+            
+            .nav-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-title">
+                    Forum Discussion
+                </div>
+                <button class="new-post-btn" onclick="openPostModal()">
+                    <i class='bx bx-plus'></i>
+                    New Thread
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="mySidebar">
+        <div class="sidebar__logo">
+            <a href="index.html"><img src="assets/images/Entertanialogo.jpeg" alt="Entertania"></a>
+        </div>
+        <ul class="sidebar__list">
+            <li><a href="index.html" class="sidebar__item"><i class='bx bx-home-alt-2'></i> Homepage</a></li>
+            <li class="sidebar-search-container">
+                <div class="sidebar-search">
+                    <i class='bx bx-search'></i> 
+                    <input type="text" placeholder="Search games...">
+                </div>
+            </li>
+            <li><a href="Forum-discussion.html" class="sidebar__item active"><i class='bx bx-message-detail'></i> Forum discussion</a></li>
+            <li><a href="game-reviews.html" class="sidebar__item"><i class='bx bx-star'></i> Game Reviews</a></li>
+            <li><a href="guides.html" class="sidebar__item"><i class='bx bx-compass'></i> Guide</a></li>
+             <li>
+                    <a href="price-tracker.html" class="sidebar__item">
+                        <i class='bx bx-line-chart'></i> Price Tracker
+                    </a>
+                </li>
+        </ul>
+        <div class="sidebar__footer">
+            <a href="login.html" style="text-decoration: none; display: block;">
+                <button class="btn-login">
+                    <i class='bx bx-user-circle' style="margin-right: 8px; vertical-align: middle;"></i>
+                    Sign up or log in
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- TOGGLE BUTTON -->
+    <button id="sidebarToggle" class="toggle-btn">
+        <span id="toggleIcon">❮</span>
+    </button>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-content" id="pageContent">
+
+        <!-- FORUM HEADER -->
+        <div class="forum-topbar">
+            <div class="forum-tabs">
+                <span class="active">Latest</span>
+                <span>Popular</span>
+                <span>Trending</span>
+                <span>All Discussions</span>
+            </div>
+
+            <div class="forum-actions">
+                <input type="text" placeholder="Search discussions...">
+                <select>
+                    <option>Most Recent</option>
+                    <option>Most Replies</option>
+                    <option>Most Viewed</option>
+                    <option>Oldest</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- FORUM LAYOUT -->
+        <div class="forum-layout">
+
+            <!-- LEFT SIDE - MAIN FORUM -->
+            <div class="forum-main">
+
+                <!-- FORUM CATEGORIES -->
+                <div class="forum-card">
+                    <h2>
+                        <i class='bx bx-category'></i>
+                        Forum Categories
+                    </h2>
+
+                    <a href="game-discussion.html" style="text-decoration:none; color:inherit;">
+                        <div class="category-item">
+                            <img src="assets/images/joystick_12953715.png" alt="Game Discussions">
+                            <div>
+                                <h3>Game Discussions</h3>
+                                <p>Talk about your favorite games and experiences.</p>
+                                <span><i class='bx bx-message'></i> 1 Threads</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="strategies&guides.html" style="text-decoration:none; color:inherit;">
+                        <div class="category-item">
+                        <img src="assets/images/sabre_461371.png" alt="strategies&guides">
+                        <div>
+                            <h3>Strategies & Guides</h3>
+                            <p>Share builds and gameplay strategies.</p>
+                            <span><i class='bx bx-message'></i>  Threads</span>
+                        </div>
+                    </div>
+
+                    <a href="lore&story.html" style="text-decoration:none; color:inherit;">
+                        <div class="category-item">
+                        <img src="assets/images/biography_6776510.png" alt="Lore&story">
+                        <div>
+                            <h3>Lore & Story</h3>
+                            <p>Discuss lore and theories.</p>
+                            <span><i class='bx bx-message'></i>  Threads</span>
+                        </div>
+                    </div>
+
+                    <a href="updates&patches.html" style="text-decoration:none; color:inherit;">
+                        <div class="category-item">
+                        <img src="assets/images/hammer_18683970.png" alt="Updates&patches">
+                        <div>
+                            <h3>Updates and Patches</h3>
+                            <p>Talk about the latest patches and game balances.</p>
+                            <span><i class='bx bx-message'></i>  Threads</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- POPULAR THREADS -->
+                <div class="forum-card">
+                    <h2>
+                        <i class='bx bx-fire'></i>
+                        Popular Discussion Threads
+                    </h2>
+
+                    <div class="thread-item" onclick="window.location.href='lore&story.html'" style="cursor: pointer;">
+                    <img src="assets/images/Alvez.jpeg" alt="User">
+                     <div>
+                    <h3>[SPOILER] Elden Ring Malenia is literally impossible</h3>
+                     <p>Posted by <strong>Alvez Tobrut</strong></p>
+                    <div class="thread-stats">
+                      <span><i class='bx bx-message'></i>  replies</span>
+                     <span><i class='bx bx-show'></i> views</span>
+                     <span><i class='bx bx-time'></i> 2 hours ago</span>
+                     </div>
+                     </div>
+                     </div>
+
+                    <div class="thread-item" onclick="window.location.href='updates&patches.html'" style="cursor: pointer;">
+                        <img src="assets/images/Zubir.jpeg" alt="User">
+                        <div>
+                            <h3>[UPDATE] GTA Online Weekly Update</h3>
+                            <p>Posted by <strong>BaiMotoKembali</strong></p>
+                            <div class="thread-stats">
+                                <span><i class='bx bx-message'></i>  replies</span>
+                                <span><i class='bx bx-show'></i>  views</span>
+                                <span><i class='bx bx-time'></i> 5 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="thread-item" onclick="window.location.href='strategies&guides.html'" style="cursor: pointer;">
+                     <img src="assets/images/Jynix.jpeg" alt="User">
+                      <div>
+                    <h3>[GUIDE] Best Settings for Max FPS in Cyberpunk 2077 (RTX 3060/4060 Optimization)</h3>
+                    <p>Posted by <strong>Jynix</strong></p>
+                    <div class="thread-stats">
+                    <span><i class='bx bx-message'></i>  replies</span>
+                    <span><i class='bx bx-show'></i>  views</span>
+                    <span><i class='bx bx-time'></i> 1 day ago</span>
+                    </div>
+                    </div> 
+                    </div>
+
+                </div>
+
+                <!-- THREAD LIST (DYNAMIC) -->
+                <div class="forum-card" id="threadList">
+                    <h2>
+                        <i class='bx bx-list-ul'></i>
+                        Recent Threads
+                    </h2>
+                    <!-- New threads will be added here dynamically -->
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE - SIDEBAR PANELS -->
+            <div class="forum-side">
+
+                <div class="side-card">
+                    <h3>
+                        <i class='bx bx-trophy'></i>
+                        Top Contributors
+                    </h3>
+                    
+                </div>
+
+                <div class="side-card">
+                    <h3>
+                        <i class='bx bx-trending-up'></i>
+                        Trending Topics
+                    </h3>
+                    <span class="trending-tag">#EldenRing</span>
+                    <span class="trending-tag">#Helldivers2</span>
+                    <span class="trending-tag">#DragonsDogma2</span>
+                    <span class="trending-tag">#GTA6</span>
+                    <span class="trending-tag">#FF7Rebirth</span>
+                    <span class="trending-tag">#Starfield</span>
+                </div>
+
+                <div class="side-card">
+                    <h3>
+                        <i class='bx bx-stats'></i>
+                        Forum Stats
+                    </h3>
+                    <p><i class='bx bx-message'></i> Total Threads: </p>
+                    <p><i class='bx bx-message-rounded'></i> Total Posts: </p>
+                    <p><i class='bx bx-user'></i> Members: </p>
+                    <p><i class='bx bx-user-plus'></i> Newest Member: <strong>GameMaster99</strong></p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CREATE THREAD MODAL -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <h2><i class='bx bx-edit'></i> Create New Thread</h2>
+            
+            <select id="threadCategory">
+                <option>Select Category</option>
+                <option>Game Discussions</option>
+                <option>Strategies & Guides</option>
+                <option>Lore & Story</option>
+                <option>Updates and Patches</option>
+            </select>
+            
+            <input type="text" id="threadTitle" placeholder="Thread Title">
+            <textarea id="threadMessage" placeholder="Write your message..."></textarea>
+            
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closePostModal()">Cancel</button>
+                <button class="btn-primary" onclick="addThread()">
+                    <i class='bx bx-send' style="margin-right: 5px;"></i>
+                    Post Thread
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar Toggle
+        const sidebar = document.getElementById('mySidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const pageContent = document.querySelector('.page-content');
+        const navbar = document.querySelector('.navbar');
+
+        // Check localStorage for sidebar state
+        const sidebarState = localStorage.getItem('forumSidebarState');
+        if (sidebarState === 'closed') {
+            sidebar.classList.add('closed');
+            toggleBtn.classList.add('moved');
+            toggleIcon.innerText = '❯';
+            pageContent.style.marginLeft = '20px';
+            navbar.style.left = '0';
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            toggleBtn.classList.toggle('moved');
+
+            const isClosed = sidebar.classList.contains('closed');
+            toggleIcon.innerText = isClosed ? '❯' : '❮';
+            
+            if (isClosed) {
+                pageContent.style.marginLeft = '20px';
+                navbar.style.left = '0';
+                localStorage.setItem('forumSidebarState', 'closed');
+            } else {
+                pageContent.style.marginLeft = '250px';
+                navbar.style.left = '250px';
+                localStorage.setItem('forumSidebarState', 'open');
+            }
+        });
+
+        // Check login status
+        let userLoggedIn = localStorage.getItem('username') || sessionStorage.getItem('username');
+
+        // Modal functions
+        function openPostModal() {
+            if (!userLoggedIn) {
+                alert('Please sign up or log in to create a thread!');
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('postModal').style.display = 'flex';
+        }
+
+        function closePostModal() {
+            document.getElementById('postModal').style.display = 'none';
+            // Clear form
+            document.getElementById('threadTitle').value = '';
+            document.getElementById('threadMessage').value = '';
+        }
+
+        function openCategory(categoryId) {
+            window.location.href = 'category.html?cat=' + categoryId;
+        }
+
+        // Add Thread Function
+        function addThread() {
+            const title = document.getElementById('threadTitle').value.trim();
+            const message = document.getElementById('threadMessage').value.trim();
+            const category = document.getElementById('threadCategory').value;
+
+            if (!title || !message || category === 'Select Category') {
+                alert('Please fill in all fields and select a category!');
+                return;
+            }
+
+            // Create new thread element
+            const threadList = document.getElementById('threadList');
+            const threadItem = document.createElement('div');
+            threadItem.className = 'thread-item';
+            
+            const now = new Date();
+            const timeString = now.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+            
+            threadItem.innerHTML = `
+                <img src="assets/images/https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="User">
+                <div>
+                    <h3>${title}</h3>
+                    <p>Posted by <strong>${userLoggedIn || 'EntertaniaUser'}</strong> in <strong>${category}</strong></p>
+                    <div class="thread-stats">
+                        <span><i class='bx bx-message'></i> 0 replies</span>
+                        <span><i class='bx bx-show'></i> 0 views</span>
+                        <span><i class='bx bx-time'></i> Just now</span>
+                    </div>
+                    <p style="margin-top: 8px; color: #a0a5b1;">${message.substring(0, 100)}${message.length > 100 ? '...' : ''}</p>
+                </div>
+            `;
+
+            // Add to top of list
+            threadList.insertBefore(threadItem, threadList.children[1]);
+            
+            // Close modal and show success
+            closePostModal();
+            alert('Thread created successfully!');
+        }
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.forum-tabs span');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // Here you would load different content based on tab
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.forum-actions input');
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            // Add your search logic here
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('postModal');
+            if (event.target === modal) {
+                closePostModal();
+            }
+        }
+        // Add this to your existing homepage script
+function checkLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const sidebarFooter = document.querySelector('.sidebar__footer');
+    const navActions = document.getElementById('navActions');
+    
+    if (currentUser && currentUser.loggedIn) {
+        // User is logged in - show profile with logout button
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="user-profile" onclick="viewProfile()">
+                    <img src="${currentUser.avatar || 'assets/images/default-avatar.png'}" alt="Profile">
+                    <span>${currentUser.username}</span>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <button class="btn-login" onclick="viewProfile()" style="margin-bottom: 10px;">
+                    <i class='bx bx-user-circle'></i> ${currentUser.username}
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            `;
+        }
+    } else {
+        // User is not logged in - show login buttons
+        if (navActions) {
+            navActions.innerHTML = `
+                <div class="login-prompt">
+                    <button class="signup-btn" onclick="window.location.href='register.html'">Sign Up</button>
+                    <button onclick="window.location.href='login.html'">Log In</button>
+                </div>
+            `;
+        }
+        
+        if (sidebarFooter) {
+            sidebarFooter.innerHTML = `
+                <a href="login.html" style="text-decoration: none; display: block;">
+                    <button class="btn-login">
+                        <i class='bx bx-user-circle'></i> Sign up or log in
+                    </button>
+                </a>
+            `;
+        }
+    }
+}
+
+function viewProfile() {
+    window.location.href = 'profile.html';
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// Add logout button CSS
+const logoutStyle = document.createElement('style');
+logoutStyle.textContent = `
+    .logout-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #b31919;
+        color: #b31919;
+        padding: 10px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    
+    .logout-btn:hover {
+        background: #b31919;
+        color: white;
+    }
+`;
+document.head.appendChild(logoutStyle);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+    </script>
+</body>
+</html>
